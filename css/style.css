@@ -4,8 +4,11 @@
   text-align: left;
 }
 
+body {
+   background-image: url("background.jpg");
+}
+
 nav a {
-    background-color: transparent;
     border-radius: 0px;
     border: medium none;
     cursor: pointer;
@@ -27,7 +30,7 @@ nav a {
     margin:10 auto;
     width: 300;
     height: 50px;
-    background-color: darkblue;
+    background-color: transparent;
 }
 
 .flex-item {
