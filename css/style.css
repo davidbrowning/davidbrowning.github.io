@@ -59,6 +59,15 @@ nav a {
    background-color: white;
 }
 
+.flex-item-til {
+
+   background-color: white;
+   width 400;
+   height 200;
+   margin: 5px;
+
+}
+
 nav {
   margin: 5px 0px 0px;
   position: relative;
