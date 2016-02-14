@@ -4,11 +4,13 @@
   text-align: left;
 }
 
-body {
-   background-image: url("background.png");
-   background-position: center top;
-   background-repeat: no-repeat;
-   background-color: lightblue;
+html {
+   background: url("background.png") no-repeat center center fixed;
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size:cover;
+   
 }
 
 nav a {
