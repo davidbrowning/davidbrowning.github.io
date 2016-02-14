@@ -52,7 +52,6 @@ nav a {
 .flex-container-til {
    display: -webkit-flex;
    display: flex;
-   justify-content: left;
    margin: 10 auto;
    width: 500;
    height: 300;
@@ -65,7 +64,6 @@ nav a {
    width 400;
    height 200;
    margin: 5px;
-
 }
 
 nav {
