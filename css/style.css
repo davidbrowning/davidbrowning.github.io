@@ -13,6 +13,10 @@ html {
    
 }
 
+a {
+  color: #FFF;
+}
+
 nav a {
     border-radius: 0px;
     border: medium none;
