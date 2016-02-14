@@ -49,6 +49,16 @@ nav a {
     margin: 5px;
 }
 
+.flex-container-til {
+   display: -webkit-flex;
+   display: flex;
+   justify-content: left;
+   margin: 10 auto;
+   width: 500;
+   height: 300;
+   background-color: white;
+}
+
 nav {
   margin: 5px 0px 0px;
   position: relative;
