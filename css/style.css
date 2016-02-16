@@ -10,7 +10,7 @@ html {
    -moz-background-size: cover;
    -o-background-size: cover;
    background-size:cover;
-   
+
 }
 
 a {
@@ -62,7 +62,7 @@ nav a {
 
    background-color: white;
    width 400;
-   height 200;
+   height:200;
    margin: 5px;
 }
 
