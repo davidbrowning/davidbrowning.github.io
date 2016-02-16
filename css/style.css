@@ -53,16 +53,16 @@ nav a {
    display: -webkit-flex;
    display: flex;
    margin: 10 auto;
-   width: 500;
-   height: 300;
+   width: 75 auto;
+   height: 75 auto;
    background-color: white;
 }
 
 .flex-item-til {
 
    background-color: white;
-   width 400;
-   height:200;
+   width: 50 auto;
+   height: 50 auto;
    margin: 5px;
 }
 
