@@ -56,7 +56,6 @@ nav a {
    width: 75 auto;
    height: 75 auto;
    background-color: white;
-   opacity: 0.7;
 }
 
 .flex-item-til {
