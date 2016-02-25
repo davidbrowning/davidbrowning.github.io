@@ -1,6 +1,5 @@
 #container{
   margin: 0 auto;
-  width: 300+3*16px;
   text-align: left;
 }
 
@@ -13,8 +12,12 @@ html {
 
 }
 
-a {
+a.indexmenu {
   color: #FFF;
+}
+
+a.inside{
+  color: #005;
 }
 
 nav a {
@@ -37,37 +40,63 @@ nav a {
     align-items: center;
     justify-content: center;
     margin:10 auto;
-    width: 300;
-    height: 50px;
+    width: 300px auto;
+    height: 50px auto;
     background-color: transparent;
 }
 
 .flex-item {
     background-color: transparent;
-    width: 100px;
-    height: 50px;
-    margin: 5px;
+    width: 100px ;
+    height: 50px ;
+    margin: 5px ;
 }
 
 .flex-container-til {
    display: -webkit-flex;
    display: flex;
    margin: 20 auto;
-   width: 75 auto;
-   height: 75 auto;
+   width: 75px auto;
+   height: 75px auto;
    background-color: white;
    opacity: 0.7;
 }
 
 .flex-item-til {
-
    background-color: white;
-   width: 50 auto;
-   height: 50 auto;
+   width: 50px auto;
+   height: 50px auto;
    margin: 15px;
+}
+
+.flex-container-redditexperiment {
+   display: -webkit-flex;
+   display: flex;
+   flex-flow:column;
+   flex-wrap:wrap;
+   background-color: white;
+   opacity: 0.7;
+}
+
+ .exp-headers{
+   background-color: white;
+   width:auto;
+   margin-left: 15px;
+   margin-right: 5px;
+   margin:5px auto;
+ }
+
+.flex-item-redditexperiment {
+  width:auto;
+  background-color: white;
+  margin-left: 15px;
 }
 
 nav {
   margin: 5px 0px 0px;
   position: relative;
+}
+
+h2{
+  margin:inherit;
 }
