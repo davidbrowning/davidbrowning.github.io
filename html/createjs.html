@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+
+<title>createjs</title>
+<script src="https://code.createjs.com/easeljs-0.8.2.min.js"></script>
+</head>
+<body onload="init();">
+
+  <style>canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 800px;
+}
+</style>
+  <script> var w = window.innerWidth; var h = window.innerHeight;</script>
+    <canvas id="game" width = 590 height = 590>
+      <script>
+      var w = 0;
+      var h = 0;
+
+        function init() {
+          var stage = new createjs.Stage("game");
+          function resize() {
+
+            var canvas = document.getElementById('game');
+            var canvasRatio = canvas.height / canvas.width;
+            var windowRatio = window.innerHeight / window.innerWidth;
+            var width;
+            var height;
+            w = width;
+            h = height;
+            if (windowRatio < canvasRatio) {
+              height = window.innerHeight;
+              width = height / canvasRatio;
+            } else {
+              width = window.innerWidth;
+              height = width * canvasRatio;
+            }
+
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+          };
+
+          window.addEventListener('resize', resize, false);
+
+          stage.enableMouseOver(100);
+
+          var rect = new createjs.Shape();
+          rect.graphics.beginFill("#211d20").drawRect(10,10,580,580);
+          resize();
+          //rect.on("mouseover", changeBoardColor, null, false);
+          //rect.on("mouseout", changeBoardColorBack, null, false);
+          stage.addChild(rect);
+          stage.update();
+
+          function changeBoardColor(){
+            rect.graphics.beginFill("#057951").drawRect(10,10,490,490);
+            stage.update();
+            return;
+          }
+          function changeBoardColorBack(){
+            rect.graphics.beginFill("#211d20").drawRect(10,10,490,490);
+            stage.update();
+            return;
+          }
+
+          var x = 10;
+          var spaceNumber = 1;
+          var myPiece = 90;
+
+
+            while (x <570){
+            var emptySpaceTop = new createjs.Shape();
+            emptySpaceTop.graphics.beginFill("#837c83").drawCircle(20+x,30,10);
+            stage.addChild(emptySpaceTop);
+            stage.update();
+            x = x + 30;
+            }
+            var x = 10;
+            while (x <570){
+            var emptySpaceRight = new createjs.Shape();
+            emptySpaceRight.graphics.beginFill("#837c83").drawCircle(570,20+x,10);
+            stage.addChild(emptySpaceRight);
+            stage.update();
+            x = x + 30;
+            }
+
+            var x = 10;
+            while (x <570){
+            var emptySpaceBottom = new createjs.Shape();
+            emptySpaceBottom.graphics.beginFill("#837c83").drawCircle(20+x,570,10);
+            stage.addChild(emptySpaceBottom);
+            stage.update();
+            x = x + 30;
+            }
+            var x = 10;
+            while (x <570){
+              var emptySpaceLeft = new createjs.Shape();
+              emptySpaceLeft.graphics.beginFill("#837c83").drawCircle(30,20+x,10);
+              stage.addChild(emptySpaceLeft);
+              stage.update();
+              x = x + 30;
+              }
+          var player1Piece = new createjs.Shape();
+          player1Piece.graphics.beginFill("#508080").drawCircle(myPiece,570,10);
+          player1Piece.on("click",movePiece, null, false);
+          stage.addChild(player1Piece);
+          stage.update();
+
+          function movePiece(){
+            player1Piece.x +=30;
+            stage.update();
+
+            return;
+          }
+        }
+
+      </script>
+
+    </canvas>
+</body>
+</html>
