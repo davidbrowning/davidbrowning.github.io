@@ -62,29 +62,103 @@ function init() {
 			data.push(new Space(x, y, "grey"));
 		}
 		
-			playerBlue = [];		
+		playerBlue = [];		
 
 			y = ((8%18)*30) + 10;
 			x = 40;
-			playerBlue.push(new Space(x, y, "blue"));
+			playerBlue.push(new Space(x, y, "blueMarble.png"));
 
 			
 			y = ((8%18)*30) + 10;
 			x = 70;
-			playerBlue.push(new Space(x, y, "blue"));
+			playerBlue.push(new Space(x, y, "blueMarble.png"));
 	
 	
 			y = ((8%18)*30) + 10;
 			x = 100;
-			playerBlue.push(new Space(x, y, "blue"));
+			playerBlue.push(new Space(x, y, "blueMarble.png"));
 
 			y = ((7%18)*30) + 10;
 			x = 70;
-			playerBlue.push(new Space(x, y, "blue"));
+			playerBlue.push(new Space(x, y, "blueMarble.png"));
 
 			y = ((9%18)*30) + 10;
 			x = 70;
-			playerBlue.push(new Space(x, y, "blue"));
+			playerBlue.push(new Space(x, y, "blueMarble.png"));
+
+			
+		playerGreen = [];		
+
+			x = ((10%18)*30) + 10;
+			y = 40;
+			playerGreen.push(new Space(x, y, "greenMarble.png"));
+
+			
+			x = ((10%18)*30) + 10;
+			y = 70;
+			playerGreen.push(new Space(x, y, "greenMarble.png"));
+	
+	
+			x = ((10%18)*30) + 10;
+			y = 100;
+			playerGreen.push(new Space(x, y, "greenMarble.png"));
+
+			x = ((9%18)*30) + 10;
+			y = 70;
+			playerGreen.push(new Space(x, y, "greenMarble.png"));
+
+			x = ((11%18)*30) + 10;
+			y = 70;
+			playerGreen.push(new Space(x, y, "greenMarble.png"));
+
+		playerRed = [];		
+
+			y = ((8%18)*30) + 10;
+			x = 580-60;
+			playerRed.push(new Space(x, y, "redMarble.png"));
+
+			
+			y = ((8%18)*30) + 10;
+			x = 580-90;
+			playerRed.push(new Space(x, y, "redMarble.png"));
+	
+	
+			y = ((8%18)*30) + 10;
+			x = 580-120;
+			playerRed.push(new Space(x, y, "redMarble.png"));
+
+			y = ((7%18)*30) + 10;
+			x = 580-90;
+			playerRed.push(new Space(x, y, "redMarble.png"));
+
+			y = ((9%18)*30) + 10;
+			x = 580-90;
+			playerRed.push(new Space(x, y, "redMarble.png"));
+
+			
+		playerYellow = [];		
+
+			x = ((8%18)*30) + 10;
+			y = 580-60;
+			playerYellow.push(new Space(x, y, "yellowMarble.png"));
+
+			
+			x = ((8%18)*30) + 10;
+			y = 580-90;
+			playerYellow.push(new Space(x, y, "yellowMarble.png"));
+	
+	
+			x = ((8%18)*30) + 10;
+			y = 580-120;
+			playerYellow.push(new Space(x, y, "yellowMarble.png"));
+
+			x = ((7%18)*30) + 10;
+			y =  580-90;
+			playerYellow.push(new Space(x, y, "yellowMarble.png"));
+
+			x = ((9%18)*30) + 10;
+			y =  580-90;
+			playerYellow.push(new Space(x, y, "yellowMarble.png"));
 	}
 }
 function tick() {
@@ -99,6 +173,10 @@ function update() {
 	}
 	for(var j = playerBlue.length; j--;){
 		playerBlue[j].update();
+		playerGreen[j].update();
+		playerYellow[j].update();
+		playerRed[j].update();
+		
 	}
 }
 function render() {
@@ -108,6 +186,9 @@ function render() {
 	}
 	for(var j = playerBlue.length; j--;){
 		playerBlue[j].draw(context);
+		playerGreen[j].draw(context);
+		playerYellow[j].draw(context);
+		playerRed[j].draw(context);
 	}
 
 }
@@ -119,7 +200,7 @@ function mouseDown(event) {
 
 	if(px > 75 && px < 95){
 		if(py>225 && py < 245){
-			alert("YOUR MOM");
+			alert("Click");
 		}
 	}
 	
@@ -152,14 +233,14 @@ function Space(x, y, color) {
 		//Space.BLANK.src = _c.toDataURL();
 		Space.BLANK.src = ("blankspace.png");
 		//FILLED
-		Space.FILLED = new Image();
-		Space.FILLED.src = ("blueMarble.png");
 
 		if(color == "grey"){
 			space = Space.BLANK;
 		}
 		else{
-			space = Space.FILLED	
+		Space.FILLED = new Image();
+		Space.FILLED.src = color;
+		space = Space.FILLED	
 		}	
 	}
 
