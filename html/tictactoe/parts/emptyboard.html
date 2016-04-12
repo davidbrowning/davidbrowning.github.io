@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Tic-tac-toe</title>
+
+<style>
+	canvas {
+		border: 4px solid #666;
+		position: absolute;
+		margin: auto;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: #272727;
+	}
+</style>
+
+<script>
+	
+var canvas, context;
+
+var data;
+
+window.onload = function main() {
+	canvas = document.createElement("canvas");
+	canvas.width = canvas.height = 550;
+	context = canvas.getContext("2d");
+
+	document.body.appendChild(canvas);
+
+	init();
+	tick();
+}
+function init() {
+	
+	if(data == null){
+		data = [];
+		//render the empty edges of the board
+		for (var i = 0; i < 74; i++){
+			var x;
+			var y;
+			if(i<18){
+				y = 10;
+				x = ((i%18)*30) + 10;
+			}
+			else if (i < 36){
+				x = 10;
+				y = ((i%18)*30)+10;
+				}
+			else if (i < 54){
+				x = 550-30;				
+				y = ((i%18)*30)+10;
+			}
+			else{
+				y = 550-30;
+				x = ((i%18)*30) + 10;
+			}
+			data.push(new Space(x, y, "grey"));
+		}
+	}
+}
+function tick() {
+	window.requestAnimationFrame(tick);
+	
+	update();
+	render();	
+}
+function update() {
+	for (var i = data.length; i--;){
+		data[i].update();
+	}
+}
+function render() {
+	context.clearRect(0,0,canvas.width, canvas.height);
+	for(var i = data.length; i--;){
+		data[i].draw(context);
+	}
+}
+function mouseDown(evt) {
+
+}
+function Space(x, y, color) {
+	var x = x, y = y;
+
+	var space = Space.BLUE;
+
+	if(space == null){
+		var _c = document.createElement("canvas");
+		_c.width = _c. height = 20;
+		_context = _c.getContext("2d");
+		//_context.fillStyle = color;
+		_context.fillRect(0,0,20,20);
+		//BLANK
+		Space.BLANK = new Image();
+		//Space.BLANK.src = _c.toDataURL();
+		Space.BLANK.src = ("blankspace.png");
+		//FILLED
+		Space.FILLED = new Image();
+		Space.FILLED.src = ("blueMarble.png");
+
+		if(color == "grey"){
+			space = Space.BLANK;
+		}
+		else{
+			space = Space.FILLED	
+		}	
+	}
+
+	this.update = function(){
+
+	}
+	this.draw = function(context){
+		context.drawImage(space, x, y);
+	}
+}
+</script>
+</head>
+<body>
+	
+</body>
+</html>
