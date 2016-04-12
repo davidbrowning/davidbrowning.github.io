@@ -117,10 +117,13 @@ function mouseDown(event) {
 	var px = event.clientX - el.offsetLeft;
 	var py = event.clientY - el.offsetTop;
 
-	var x = Math.floor(px%10);
-	var y = Math.floor(py%10);
-	console.log(x + " , " + y);
-	//console.log(px + " , " + py);
+	if(px > 75 && px < 95){
+		if(py>225 && py < 245){
+			alert("YOUR MOM");
+		}
+	}
+	
+	console.log(px + " ,"+py);
 
 
 
