@@ -22,13 +22,15 @@
 var canvas, context;
 
 var data;
+var playerBlue;
 
 window.onload = function main() {
 	canvas = document.createElement("canvas");
-	canvas.width = canvas.height = 550;
+	canvas.width = canvas.height = 580;
 	context = canvas.getContext("2d");
 
 	document.body.appendChild(canvas);
+	canvas.addEventListener("mousedown", mouseDown);
 
 	init();
 	tick();
@@ -38,27 +40,51 @@ function init() {
 	if(data == null){
 		data = [];
 		//render the empty edges of the board
-		for (var i = 0; i < 74; i++){
+		for (var i = 0; i < 78; i++){
 			var x;
 			var y;
-			if(i<18){
+			if(i<19){ //top
 				y = 10;
-				x = ((i%18)*30) + 10;
+				x = ((i%19)*30) + 10;
 			}
-			else if (i < 36){
+			else if (i < 37){ //left
 				x = 10;
-				y = ((i%18)*30)+10;
+				y = ((i%19)*30)+10;
 				}
-			else if (i < 54){
-				x = 550-30;				
-				y = ((i%18)*30)+10;
+			else if (i < 56){ //right
+				x = 550;				
+				y = ((i%19)*30)+10;
 			}
 			else{
-				y = 550-30;
-				x = ((i%18)*30) + 10;
+				y = 550; //bottom
+				x = ((i%19)*30) + 10;
 			}
 			data.push(new Space(x, y, "grey"));
 		}
+		
+			playerBlue = [];		
+
+			y = ((8%18)*30) + 10;
+			x = 40;
+			playerBlue.push(new Space(x, y, "blue"));
+
+			
+			y = ((8%18)*30) + 10;
+			x = 70;
+			playerBlue.push(new Space(x, y, "blue"));
+	
+	
+			y = ((8%18)*30) + 10;
+			x = 100;
+			playerBlue.push(new Space(x, y, "blue"));
+
+			y = ((7%18)*30) + 10;
+			x = 70;
+			playerBlue.push(new Space(x, y, "blue"));
+
+			y = ((9%18)*30) + 10;
+			x = 70;
+			playerBlue.push(new Space(x, y, "blue"));
 	}
 }
 function tick() {
@@ -71,14 +97,32 @@ function update() {
 	for (var i = data.length; i--;){
 		data[i].update();
 	}
+	for(var j = playerBlue.length; j--;){
+		playerBlue[j].update();
+	}
 }
 function render() {
 	context.clearRect(0,0,canvas.width, canvas.height);
 	for(var i = data.length; i--;){
 		data[i].draw(context);
 	}
+	for(var j = playerBlue.length; j--;){
+		playerBlue[j].draw(context);
+	}
+
 }
-function mouseDown(evt) {
+function mouseDown(event) {
+	var el = event.target;
+
+	var px = event.clientX - el.offsetLeft;
+	var py = event.clientY - el.offsetTop;
+
+	var x = Math.floor(px%18);
+	var y = Math.floor(py%18);
+	console.log(x + " , " + y);
+	//console.log(px + " , " + py);
+
+
 
 }
 function Player(color, marbles){
