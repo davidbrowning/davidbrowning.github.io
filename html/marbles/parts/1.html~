@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Tic-tac-toe</title>
+	<title>Marbles</title>
 
 <style>
 	canvas {
@@ -200,8 +200,11 @@ function mouseDown(event) {
 
 	if(px > playerBlue[1].getx() && px < playerBlue[1].getx()+30){
 		if(py>playerBlue[1].gety() && py < playerBlue[1].gety()+30){
+			var temp = playerBlue[1].getx();
 			playerBlue[1].makeEmpty();
-			playerBlue[1] = new Space((5*30+10),10,"blueMarble.png");
+			if(temp < 550){
+			playerBlue[1] = new Space((temp+30),10,"blueMarble.png");
+			}
 		}
 	}
 	
