@@ -201,7 +201,7 @@ function mouseDown(event) {
 	if(px > playerBlue[1].getx() && px < playerBlue[1].getx()+30){
 		if(py>playerBlue[1].gety() && py < playerBlue[1].gety()+30){
 			playerBlue[1].makeEmpty();
-			//playerBlue[1] = new Space((5*30+10),10,"blueMarble.png");
+			playerBlue[1] = new Space((5*30+10),10,"blueMarble.png");
 		}
 	}
 	
