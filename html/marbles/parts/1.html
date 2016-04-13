@@ -198,13 +198,18 @@ function mouseDown(event) {
 	var px = event.clientX - el.offsetLeft;
 	var py = event.clientY - el.offsetTop;
 
-	if(px > 75 && px < 95){
-		if(py>225 && py < 245){
-			alert("Click");
+	if(px > playerBlue[1].getx() && px < playerBlue[1].getx()+30){
+		if(py>playerBlue[1].gety() && py < playerBlue[1].gety()+30){
+			playerBlue[1].makeEmpty();
+			playerBlue[1] = new Space((5*30+10),10,"blueMarble.png");
 		}
 	}
 	
-	console.log(px + " ,"+py);
+//	console.log(px + " ,"+py);
+//	console.log(playerBlue[1].getx());
+//	console.log(playerBlue[1].getx());
+	update();
+	render();
 
 
 
@@ -221,7 +226,6 @@ function Space(x, y, color) {
 	var x = x, y = y;
 
 	var space = Space.BLUE;
-
 	if(space == null){
 		var _c = document.createElement("canvas");
 		_c.width = _c. height = 20;
@@ -242,6 +246,22 @@ function Space(x, y, color) {
 		Space.FILLED.src = color;
 		space = Space.FILLED	
 		}	
+	}
+
+	this.getx = function(){
+		return x;
+	}
+
+	this.gety = function(){
+		return y;
+	}
+
+
+
+	this.makeEmpty = function(){
+		//space = Space.BLANK;
+		//context.drawImage(space,x,y);
+		data.push(new Space(x, y, "grey"));
 	}
 
 	this.update = function(){
