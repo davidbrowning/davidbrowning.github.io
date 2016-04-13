@@ -213,7 +213,7 @@ function mouseDown(event) {
 			playerBlue[1] = new Space((tempx-30),550,"blueMarble.png");
 			}
 			else if (tempy > 10 && tempx == 10){
-			playerBlue[1] = new Space(550,(tempy-30),"blueMarble.png");
+			playerBlue[1] = new Space(10,(tempy-30),"blueMarble.png");
 			}
 			else if(tempx == 70){
 				playerBlue[1] = new Space(10,10,"blueMarble.png");
