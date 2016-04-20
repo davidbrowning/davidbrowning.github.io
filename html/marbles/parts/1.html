@@ -216,8 +216,7 @@ function render() {
 }
 
 function checkSpace(x, y){			//checkSpace will take the space the marble is going to and see if it is occupied. 
-						//If occupied, it will return the Space object which is occupying it. 
-	var sameX = [];
+						//If occupied, it will return the Space object which is occupying it.
 	for (var j = 0; j < 4; j++){
 		for (var i = 0; i < 5; i++){
 			if(occupiedSpaces[j][i].getx() == x){
@@ -235,6 +234,19 @@ function checkSpace(x, y){			//checkSpace will take the space the marble is goin
 
 
 
+function sendHome(toHome){    // Was working on this function last
+			if(toHome.getcolor() == "greenMarble.png"){
+					var x = ((10%18)*30) + 10;
+					var y = 40;
+					var i = 0;
+				if(checkSpace(x, y) == null){
+					toHome = new Space(x, y, "greenMarble.png");
+				}
+			}
+
+}
+
+
 
 //I need a way to keep track of turns. Ended up making each player turn a seperate function. Now to figure out how to specify how many moves the marble should
 //make in a turn, or perhaps to fix the bug where colliding marble dissappear. 
@@ -245,14 +257,20 @@ function player1(px, py){
 				var tempx = playerBlue[i].getx();
 				var tempy = playerBlue[i].gety();
 				playerBlue[i].makeEmpty();
-				if(tempx < 550 && tempy == 10){//Moving around the board
+				if(tempx < 550 && tempy == 10){		//Moving around the board
 					var goingTo = checkSpace(tempx+30, 10);
 						if(goingTo == null){
 							playerBlue[i] = new Space((tempx+30),10,"blueMarble.png");
 							setPlayer();
 						}
-						else {alert("occupied space, cannot move here!!");}
-					
+						else {
+							if(goingTo.getcolor() == "blueMarble.png"){
+								alert("one of your marbles is already there!");
+							}
+							else{
+								sendHome(goingTo);
+							}
+						}
 					
 				}
 				else if(tempy < 550 && tempx == 550){	
@@ -261,7 +279,8 @@ function player1(px, py){
 						playerBlue[i] = new Space(550,tempy+30,"blueMarble.png");
 						setPlayer();
 					}
-					else{alert("occupied space, cannot move here!!");}
+					else{alert("occupied space, cannot move here!!");
+					console.log(goingTo.getcolor())}
 				
 				}
 				else if (tempx > 10 && tempy == 550){
@@ -275,7 +294,7 @@ function player1(px, py){
 				else if (tempy > 10 && tempx == 10){
 					var goingTo = checkSpace(10, tempy-30);
 					if(goingTo == null){
-						playerBlue[i] = new Space(10,(tempy-30),"blueMarble.png");
+						playerBlue[i] = new Space(10,(tempy-30),"blueMarble.png"); // Augmenting (tempy-(x * 30)) will move you x spaces up.
 						setPlayer();
 					}
 					else{
@@ -527,8 +546,8 @@ function Space(x, y, color) {
 		return y;
 	}
 
-	this.isEmpty = function(){
-		return empty;
+	this.getcolor = function(){
+		return color;
 	}
 
 	this.makeEmpty = function(){
