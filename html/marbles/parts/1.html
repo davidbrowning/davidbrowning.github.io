@@ -24,6 +24,7 @@ var canvas, context;
 var data;
 var playerBlue;
 var player = 1;
+var occupiedSpaces = [];
 
 function getPlayer(){
 	return player;
@@ -36,6 +37,7 @@ function setPlayer(){
 	else {
 		player++;
 	}
+	document.getElementById("turn").innerHTML = "Player Turn: " + player;
 	return;
 }
 
@@ -174,6 +176,11 @@ function init() {
 			x = ((9%18)*30) + 10;
 			y =  580-90;
 			playerYellow.push(new Space(x, y, "yellowMarble.png"));
+	
+	occupiedSpaces.push(playerBlue);
+	occupiedSpaces.push(playerGreen);
+	occupiedSpaces.push(playerRed);
+	occupiedSpaces.push(playerYellow);
 	}
 }
 function tick() {
@@ -208,7 +215,29 @@ function render() {
 
 }
 
-//I need a way to keep track of turns.
+function checkSpace(x, y){			//checkSpace will take the space the marble is going to and see if it is occupied. 
+						//If occupied, it will return the Space object which is occupying it. 
+	var sameX = [];
+	for (var j = 0; j < 4; j++){
+		for (var i = 0; i < 5; i++){
+			if(occupiedSpaces[j][i].getx() == x){
+				if(occupiedSpaces[j][i].gety() == y){
+					alert("occupied space");
+					return occupiedSpaces[j][i];
+				}
+			
+			}
+		}
+	}
+	return null;
+
+}
+
+
+
+
+//I need a way to keep track of turns. Ended up making each player turn a seperate function. Now to figure out how to specify how many moves the marble should
+//make in a turn, or perhaps to fix the bug where colliding marble dissappear. 
 function player1(px, py){
 	for(var i = playerBlue.length; i--;){
 		if(px > playerBlue[i].getx() && px < playerBlue[i].getx()+30){
@@ -217,41 +246,68 @@ function player1(px, py){
 				var tempy = playerBlue[i].gety();
 				playerBlue[i].makeEmpty();
 				if(tempx < 550 && tempy == 10){//Moving around the board
-				playerBlue[i] = new Space((tempx+30),10,"blueMarble.png");
-				setPlayer();
+					var goingTo = checkSpace(tempx+30, 10);
+						if(goingTo == null){
+							playerBlue[i] = new Space((tempx+30),10,"blueMarble.png");
+							setPlayer();
+						}
+						else {alert("occupied space, cannot move here!!");}
+					
+					
 				}
 				else if(tempy < 550 && tempx == 550){	
-				playerBlue[i] = new Space(550,tempy+30,"blueMarble.png");
-				setPlayer();
+					var goingTo = checkSpace(550, tempy+30);
+					if(goingTo == null){
+						playerBlue[i] = new Space(550,tempy+30,"blueMarble.png");
+						setPlayer();
+					}
+					else{alert("occupied space, cannot move here!!");}
+				
 				}
 				else if (tempx > 10 && tempy == 550){
-				playerBlue[i] = new Space((tempx-30),550,"blueMarble.png");
-				setPlayer();
+					var goingTo = checkSpace(tempx-30, 550);
+					if(goingTo == null){
+						playerBlue[i] = new Space((tempx-30),550,"blueMarble.png");
+						setPlayer();
+					}
+					else {alert("occupied space, cannot move here!!");}
 				}
 				else if (tempy > 10 && tempx == 10){
-				playerBlue[i] = new Space(10,(tempy-30),"blueMarble.png");
-				setPlayer();
+					var goingTo = checkSpace(10, tempy-30);
+					if(goingTo == null){
+						playerBlue[i] = new Space(10,(tempy-30),"blueMarble.png");
+						setPlayer();
+					}
+					else{
+						alert("Occupied Space");
+					}
+			
 				}
-				else if(tempx == 70 && tempy == (8*30+10)){ //next 5 are if the marbles are home.
-					playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 40 && tempy == (8*30+10)){
-					playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 100 && tempy == (8*30+10)){
-					playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 70 && tempy == (7*30+10)){
-					playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 70 && tempy == (9*30+10)){
-					playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
-					setPlayer();
-				}
+				else if(checkSpace(10,250)){
+						alert("occupied space, cannot move here!!");
+						}
+						else{
+							if(tempx == 70 && tempy == (8*30+10)){ //next 5 are if the marbles are home.
+								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
+								setPlayer();
+							}
+							else if(tempx == 40 && tempy == (8*30+10)){
+								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
+								setPlayer();
+							}
+							else if(tempx == 100 && tempy == (8*30+10)){
+								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
+								setPlayer();
+							}
+							else if(tempx == 70 && tempy == (7*30+10)){
+								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
+								setPlayer();
+							}
+							else if(tempx == 70 && tempy == (9*30+10)){
+								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
+								setPlayer();
+							}
+						}
 			}
 		}
 	}
@@ -263,7 +319,6 @@ function player2(px, py){
 			if(py>playerGreen[i].gety() && py < playerGreen[i].gety()+30){
 				var tempx = playerGreen[i].getx();
 				var tempy = playerGreen[i].gety();
-				console.log(tempx, tempy);
 				playerGreen[i].makeEmpty();
 				if(tempx < 550 && tempy == 10){ // Moving around the board.
 				playerGreen[i] = new Space((tempx+30),10,"greenMarble.png");
@@ -360,7 +415,6 @@ function player4(px, py){
 			if(py>playerYellow[i].gety() && py < playerYellow[i].gety()+30){
 				var tempx = playerYellow[i].getx();
 				var tempy = playerYellow[i].gety();
-				console.log(tempx,tempy);
 				playerYellow[i].makeEmpty();
 				if(tempx < 550 && tempy == 10){
 				playerYellow[i] = new Space((tempx+30),10,"yellowMarble.png");
@@ -440,7 +494,7 @@ function marbles(x, y){
 
 function Space(x, y, color) {
 	var x = x, y = y;
-
+	var empty = false;
 	var space = Space.BLUE;
 	if(space == null){
 		var _c = document.createElement("canvas");
@@ -456,6 +510,7 @@ function Space(x, y, color) {
 
 		if(color == "grey"){
 			space = Space.BLANK;
+			empty = true;
 		}
 		else{
 		Space.FILLED = new Image();
@@ -472,12 +527,15 @@ function Space(x, y, color) {
 		return y;
 	}
 
-
+	this.isEmpty = function(){
+		return empty;
+	}
 
 	this.makeEmpty = function(){
 		//space = Space.BLANK;
 		//context.drawImage(space,x,y);
 		data.push(new Space(x, y, "grey"));
+		empty = true;
 	}
 
 	this.update = function(){
@@ -490,6 +548,6 @@ function Space(x, y, color) {
 </script>
 </head>
 <body>
-	
+	<h1 id = "turn">Player 1 Starts!</h1>	
 </body>
 </html>
