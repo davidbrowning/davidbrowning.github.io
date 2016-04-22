@@ -240,42 +240,11 @@ function sendHome(x, y){ //Blue | Green | Red | Yellow
 		for (var i = 0; i < 5; i++){
 			if(occupiedSpaces[j][i].getx() == x){
 				if(occupiedSpaces[j][i].gety() == y){
-					if(j ==1){
-						if(occupiedSpaces[j][i].gety() > 10){
-							green();						
-							occupiedSpaces[j][i].makeEmpty();
-							occupiedSpaces[j][i] = new Space(placex,placey,"greenMarble.png");
-						}
-					}
+					green();						
+					occupiedSpaces[j][i].makeEmpty();
+					occupiedSpaces[j][i] = new Space(placex,placey,"greenMarble.png");
 				}
 			}
-		}
-	}
-	return;
-	function green(){
-		if(j = 1){ //color == Green
-			console.log(placex + ","  +placey);
-				placey = 40;
-				placex = 310;
-				var tempy = occupiedSpaces[j][i].gety();
-				var tempx = occupiedSpaces[j][i].getx();
-				if(tempy > 10 && tempy < 550){
-					if (tempy == 40){
-						placey = placey + 30;
-						placex = placex - 30;
-						return green();
-					}
-					else if(tempx == 280 || tempx == 310){
-						placex = placex + 30;
-						return green();
-					}
-					else{
-						placex = 310;
-						placey = 100;
-					}	
-				}	
-			console.log(placex + ","  +placey);
-			console.log(tempx + ", " + tempy);
 		}
 	}
 
@@ -289,8 +258,8 @@ function player1(px, py){
 		if(px > playerBlue[i].getx() && px < playerBlue[i].getx()+30){
 			if(py>playerBlue[i].gety() && py < playerBlue[i].gety()+30){
 				var tempx = playerBlue[i].getx();
-				var tempy = playerBlue[i].gety();
-				playerBlue[i].makeEmpty();
+				var tempy = playerBlue[i].gety();		
+				playerBlue[i].makeEmpty();	
 				if(tempx < 550 && tempy == 10){		//Moving around the board
 					var goingTo = checkSpace(tempx+300, 10);
 						if(goingTo == null){
@@ -298,13 +267,45 @@ function player1(px, py){
 							setPlayer();
 						}
 						else {
-							if(goingTo.getcolor() == "blueMarble.png"){
-								alert("one of your marbles is already there!");
-							}
-							else{ //send the marble home
-								sendHome(tempx+300, 10);
-								playerBlue[i] = new Space((tempx+300),10,"blueMarble.png");
-								setPlayer();
+							alert("occupied space");
+							if (goingTo.getcolor() == "blueMarble.png"){
+								console.log("own marble");
+							}	
+							else{
+								var col = goingTo.getcolor();
+								if(col == "greenMarble.png"){
+									for (var i = 0; i < 5; i++){
+										if(playerGreen[i].getx() == goingTo.getx()){
+											if(playerGreen[i].gety() == goingTo.gety()){
+												var x = 40;
+												var y = 40;
+												if(i == 0){
+													x = ((10%18)*30) + 10;
+													y = 40;
+												}
+												else if(i == 1){
+													x = ((10%18)*30) + 10;
+													y = 70;
+												}
+												else if (i == 2){
+													x = ((10%18)*30) + 10;
+													y = 100;
+												}
+												else if (i == 3){
+													x = ((9%18)*30) + 10;
+													y = 70;
+												}
+												else if (i == 4){
+													x = ((11%18)*30) + 10;
+													y = 70;
+												}
+
+												playerGreen[i] = new Space(x,y,"greenMarble.png");
+
+											}	
+										}
+									}
+								}
 							}
 						}
 					
@@ -316,7 +317,7 @@ function player1(px, py){
 						setPlayer();
 					}
 					else{alert("occupied space, cannot move here!!");
-					console.log(goingTo.getcolor())}
+					}
 				
 				}
 				else if (tempx > 10 && tempy == 550){
@@ -342,6 +343,7 @@ function player1(px, py){
 						alert("occupied space, cannot move here!!");
 						}
 						else{
+							
 							if(tempx == 70 && tempy == (8*30+10)){ //next 5 are if the marbles are home.
 								playerBlue[i] = new Space(10,(8*30+10),"blueMarble.png");
 								setPlayer();
@@ -584,6 +586,10 @@ function Space(x, y, color) {
 
 	this.getcolor = function(){
 		return color;
+	}
+
+	this.isEmpty = function(){
+		return empty;
 	}
 
 	this.makeEmpty = function(){
