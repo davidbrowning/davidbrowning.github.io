@@ -237,7 +237,7 @@ function sendHome(x, y, col){ //Blue | Green | Red | Yellow
 		if(col == "blueMarble.png"){
 			for (var i = 0; i < 5; i++){
 				if(playerBlue[i].getx() == x){
-					if(playerBlue[i].gety == y){
+					if(playerBlue[i].gety() == y){
 						var xnew = 40;
 						var ynew = 40;
 						if(i == 0){
@@ -667,45 +667,7 @@ function player2(px, py){
 				var player = playerGreen;
 				var col = "greenMarble.png";
 				play(tempx, tempy, i, player, col);
-				/*
-				playerGreen[i].makeEmpty();
-				if(tempx < 550 && tempy == 10){ // Moving around the board.
-				playerGreen[i] = new Space((tempx+30),10,"greenMarble.png");
-				setPlayer();
 				}
-				else if(tempy < 550 && tempx == 550){	
-				playerGreen[i] = new Space(550,tempy+30,"greenMarble.png");
-				setPlayer();
-				}
-				else if (tempx > 10 && tempy == 550){
-				playerGreen[i] = new Space((tempx-30),550,"greenMarble.png");
-				setPlayer();
-				}
-				else if (tempy > 10 && tempx == 10){
-				playerGreen[i] = new Space(10,(tempy-30),"greenMarble.png");
-				setPlayer();
-				}
-				else if(tempy == 70 && tempx == (10*30+10)){ //Getting out of home.
-					playerGreen[i] = new Space((10*30+10),10,"greenMarble.png");
-					setPlayer();
-				}
-				else if(tempy == 40 && tempx == (10*30+10)){
-					playerGreen[i] = new Space((10*30+10),10,"greenMarble.png");
-					setPlayer();
-				}
-				else if(tempy == 100 && tempx == (10*30+10)){
-					playerGreen[i] = new Space((10*30+10),10,"greenMarble.png");
-					setPlayer();
-				}
-				else if(tempy == 70 && tempx == (9*30+10)){
-					playerGreen[i] = new Space((10*30+10),10,"greenMarble.png");
-					setPlayer();
-				}
-				else if(tempy == 70 && tempx == (11*30+10)){
-					playerGreen[i] = new Space((10*30+10),10,"greenMarble.png");
-					setPlayer();
-				}
-			*/}
 		}
 	}
 }
@@ -716,43 +678,9 @@ function player3(px, py){
 			if(py>playerRed[i].gety() && py < playerRed[i].gety()+30){
 				var tempx = playerRed[i].getx();
 				var tempy = playerRed[i].gety();
-				playerRed[i].makeEmpty();
-				if(tempx < 550 && tempy == 10){
-				playerRed[i] = new Space((tempx+30),10,"redMarble.png");
-				setPlayer();
-				}
-				else if(tempy < 550 && tempx == 550){	
-				playerRed[i] = new Space(550,tempy+30,"redMarble.png");
-				setPlayer();
-				}
-				else if (tempx > 10 && tempy == 550){
-				playerRed[i] = new Space((tempx-30),550,"redMarble.png");
-				setPlayer();
-				}
-				else if (tempy > 10 && tempx == 10){
-				playerRed[i] = new Space(10,(tempy-30),"redMarble.png");
-				setPlayer();
-				}
-				else if(tempx == 580-60 && tempy == (10*30+10)){
-					playerRed[i] = new Space(550,(10*30+10),"redMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 580-90 && tempy == (10*30+10)){
-					playerRed[i] = new Space(550,(10*30+10),"redMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 580-120 && tempy == (10*30+10)){
-					playerRed[i] = new Space(550,(10*30+10),"redMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 490 && tempy == (9*30+10)){
-					playerRed[i] = new Space(550,(10*30+10),"redMarble.png");
-					setPlayer();
-				}
-				else if(tempx == 490 && tempy == (11*30+10)){
-					playerRed[i] = new Space(550,(10*30+10),"redMarble.png");
-					setPlayer();
-				}
+				var player = playerRed;
+				var col = "redMarble.png";
+				play(tempx, tempy, i , player, col);
 			}
 		}
 	}
@@ -764,6 +692,10 @@ function player4(px, py){
 			if(py>playerYellow[i].gety() && py < playerYellow[i].gety()+30){
 				var tempx = playerYellow[i].getx();
 				var tempy = playerYellow[i].gety();
+				var player = playerYellow;
+				var col = "yellowMarble.png";
+				play(tempx, tempy, i, player, col);
+				/*
 				playerYellow[i].makeEmpty();
 				if(tempx < 550 && tempy == 10){
 				playerYellow[i] = new Space((tempx+30),10,"yellowMarble.png");
@@ -801,7 +733,7 @@ function player4(px, py){
 					playerYellow[i] = new Space((8*30+10),550,"yellowMarble.png");
 					setPlayer();
 				}
-			}
+			*/}
 		}
 	}
 }
