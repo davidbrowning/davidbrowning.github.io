@@ -237,7 +237,7 @@ function sendHome(x, y, col){ //Blue | Green | Red | Yellow
 		if(col == "blueMarble.png"){
 			for (var i = 0; i < 5; i++){
 				if(playerBlue[i].getx() == x){
-					if(playerBlue[i].gety == y){
+					if(playerBlue[i].gety() == y){
 						var xnew = 40;
 						var ynew = 40;
 						if(i == 0){
@@ -260,10 +260,12 @@ function sendHome(x, y, col){ //Blue | Green | Red | Yellow
 							ynew = ((9%18)*30) + 10;
 							xnew = 70;
 						}
+						//console.log(xnew + " ," +ynew+"it hit here");
 						playerBlue[i] = new Space(xnew, ynew, "blueMarble.png");
 					}
 				}
 			}
+			console.log(xnew + " ," +ynew+"it hit here");
 			
 		}
 		else if(col == "greenMarble.png"){
