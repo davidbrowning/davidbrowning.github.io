@@ -525,21 +525,25 @@ function isAtFinish(tempx, tempy, col){
 function finish(tempx, tempy, i, player, col, isFinalSpot){
 	if (col == "blueMarble.png"){
 		if(tempx == 10 && tempy == 100){
+			var goingTo = checkSpace(40,100,col);
 			player[i] = new Space(40, 100, "blueMarble.png");
 		}
 	}
 	else if(col == "greenMarble.png"){
 		if(tempx == (550-90) && tempy == 10){
+			var goingTo = checkSpace(460,10,col);
 			player[i] = new Space(550-90, 40, "greenMarble.png");
 		}
 	}
 	else if(col == "redMarble.png"){
 		if(tempx == (550) && tempy == (460)){
+			var goingTo = checkSpace(550,460,col);
 			player[i] = new Space((550-30),460,"redMarble.png");
 		}
 	}
 	else if(col == "yellowMarble.png"){
 		if(tempx == 100 && tempy == (550)){
+			var goingTo = checkSpace(100,550,col);
 			player[i] = new Space(100, (550-30), "yellowMarble.png");
 		}
 	}
