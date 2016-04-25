@@ -78,6 +78,30 @@ function init() {
 			}
 			data.push(new Space(x, y, "grey"));
 		}
+
+		data.push(new Space(100, 520, "grey"));
+		data.push(new Space(100, 490, "grey"));
+		data.push(new Space(100, 460, "grey"));
+		data.push(new Space(70, 460, "grey"));
+		data.push(new Space(70, 430, "grey"));
+
+		data.push(new Space(520, 460, "grey"));
+		data.push(new Space(490, 460, "grey"));
+		data.push(new Space(460, 460, "grey"));
+		data.push(new Space(460, 490, "grey"));
+		data.push(new Space(430, 490, "grey"));
+
+		data.push(new Space(460, 40, "grey"));
+		data.push(new Space(460, 70, "grey"));
+		data.push(new Space(460, 100, "grey"));
+		data.push(new Space(490, 100, "grey"));
+		data.push(new Space(490, 130, "grey"));
+
+		data.push(new Space(40, 100, "grey"));
+		data.push(new Space(70, 100, "grey"));
+		data.push(new Space(100, 100, "grey"));
+		data.push(new Space(100, 70, "grey"));
+		data.push(new Space(130, 70, "grey"));
 		
 		playerBlue = [];		
 
@@ -234,6 +258,7 @@ function checkSpace(x, y){			//checkSpace will take the space the marble is goin
 }
 
 function sendHome(x, y, col){ //Blue | Green | Red | Yellow
+	console.log("sendHome called");
 		if(col == "blueMarble.png"){
 			for (var i = 0; i < 5; i++){
 				if(playerBlue[i].getx() == x){
@@ -469,7 +494,7 @@ function fromHome(i, tempx, tempy, col, player, homex, homey){  //This function 
 					}
 }
 
-function play(tempx, tempy, i, player, col){
+function play(tempx, tempy, i, player, col, isFinalSpot){
 	{
 		var coord = [];
 			player[i].makeEmpty();
@@ -484,9 +509,10 @@ function play(tempx, tempy, i, player, col){
 					else{
 						if(goingTo.getcolor() ==col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space(10,(tempy+(30)),col);
 							coord.push(10);
 							coord.push(tempy+30);
@@ -505,9 +531,10 @@ function play(tempx, tempy, i, player, col){
 					else {
 						if(goingTo.getcolor() == col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space((tempx+30),550,col);
 							coord.push(tempx+30);
 							coord.push(550);
@@ -526,9 +553,10 @@ function play(tempx, tempy, i, player, col){
 					else{
 						if(goingTo.getcolor() ==col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space(550, (tempy-30), col);
 							coord.push(550);
 							coord.push(tempy-30);
@@ -547,9 +575,10 @@ function play(tempx, tempy, i, player, col){
 					else{
 						if(goingTo.getcolor() ==col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space(550, (tempy-30), col);
 							coord.push(550);
 							coord.push(tempy-30);
@@ -569,9 +598,10 @@ function play(tempx, tempy, i, player, col){
 						
 							if (goingTo.getcolor() == col){ //Attempting to run into your own marble.
 								console.log("own marble");
+								sendHome(player[i].getx(), player[i].gety(), player[i].getcolor()); //sends you home :)
 							}	
 							else{  // Two marbles of different teams collide. 
-								sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+								if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 								player[i] = new Space((tempx-30),10,col);
 								coord.push(10);
 								coord.push(tempy+30);
@@ -592,9 +622,10 @@ function play(tempx, tempy, i, player, col){
 					else{
 						if(goingTo.getcolor() ==col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space(550, (tempy-30), col);
 							//setPlayer();
 							coord.push(550);
@@ -615,9 +646,10 @@ function play(tempx, tempy, i, player, col){
 					else {
 						if(goingTo.getcolor() == col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space((tempx+30),550,col);
 							coord.push(tempx+30);
 							coord.push(550);
@@ -636,9 +668,10 @@ function play(tempx, tempy, i, player, col){
 					else{
 						if(goingTo.getcolor() ==col){
 							console.log("own marble");
+							sendHome(player[i].getx(), player[i].gety(), player[i].getcolor());
 						}
 						else{
-							sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());
+							if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 							player[i] = new Space(10,(tempy+(30)),col);
 							//setPlayer();
 							coord.push(10);
@@ -686,8 +719,10 @@ function player1(px, py){
 				var tempy = playerBlue[i].gety();
 				console.log(tempx + "," + tempy);
 				var n = prompt("Enter number of spaces:");
+				var isFinalSpot = false;
 				for (var j = 0; j < n; j++){
-					var co = play(tempx, tempy, i, playerBlue,"blueMarble.png");
+					if(j == (n-1)){isFinalSpot = true;console.log(isFinalSpot);}
+					var co = play(tempx, tempy, i, playerBlue,"blueMarble.png", isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
@@ -706,8 +741,10 @@ function player2(px, py){
 				var player = playerGreen;
 				var col = "greenMarble.png";
 				var n = prompt("Enter number of spaces");
+				var isFinalSpot = false;
 				for(var j = 0; j < n; j++){
-					var co = play(tempx, tempy, i, player, col);
+					if(j == (n-1)){isFinalSpot = true;}
+					var co = play(tempx, tempy, i, player, col, isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
@@ -726,8 +763,10 @@ function player3(px, py){
 				var player = playerRed;
 				var col = "redMarble.png";
 				var n = prompt("Enter number of spaces");
+				var isFinalSpot = false;
 				for(var j = 0; j < n; j++){
-					var co = play(tempx, tempy, i , player, col);
+					if(j == (n-1)){isFinalSpot = true;}
+					var co = play(tempx, tempy, i , player, col, isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
@@ -746,8 +785,10 @@ function player4(px, py){
 				var player = playerYellow;
 				var col = "yellowMarble.png";
 				var n = prompt("Enter number of spaces");
+				var isFinalSpot = false;
 				for(var j = 0; j < n; j++){
-					var co =play(tempx, tempy, i, player, col);
+					if(j == (n-1)){isFinalSpot = true;}
+					var co =play(tempx, tempy, i, player, col, isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
