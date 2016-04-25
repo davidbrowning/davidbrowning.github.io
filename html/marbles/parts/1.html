@@ -247,7 +247,8 @@ function checkSpace(x, y){			//checkSpace will take the space the marble is goin
 		for (var i = 0; i < 5; i++){
 			if(occupiedSpaces[j][i].getx() == x){
 				if(occupiedSpaces[j][i].gety() == y){
-					alert("occupied space");
+					console.log("occupied space");
+					console.log(x + ", " + y);
 					return occupiedSpaces[j][i];
 				}
 			}
@@ -494,10 +495,64 @@ function fromHome(i, tempx, tempy, col, player, homex, homey){  //This function 
 					}
 }
 
+function isAtFinish(tempx, tempy, col){
+	if (col == "blueMarble.png"){
+		if(tempx == 10 && tempy == 100){
+			return true;
+		}
+	}
+	else if(col == "greenMarble.png"){
+		if(tempx == (550-90) && tempy == 10){
+			return true;
+		}
+	}
+	else if(col == "redMarble.png"){
+		if(tempx == (550-30) && tempy == (550 - 90)){
+			return true;
+		}
+	}
+	else if(col == "yellowMarble.png"){
+		if(tempx == 130 && tempy == (550-90)){
+			return true;
+		}
+	}
+	else{
+		return false;
+	}
+
+}
+
+function finish(tempx, tempy, i, player, col, isFinalSpot){
+	if (col == "blueMarble.png"){
+		if(tempx == 10 && tempy == 100){
+			player[i] = new Space(40, 100, "blueMarble.png");
+		}
+	}
+	else if(col == "greenMarble.png"){
+		if(tempx == (550-90) && tempy == 10){
+			player[i] = new Space(550-90, 40, "greenMarble.png");
+		}
+	}
+	else if(col == "redMarble.png"){
+		if(tempx == (550-30) && tempy == (550 - 90)){
+			player[i] = new Space(550-60,550-90,"redMarble.png");
+		}
+	}
+	else if(col == "yellowMarble.png"){
+		if(tempx == 130 && tempy == (550-90)){
+			player[i] = new Space(130, 550-120, "yellowMarble.png");
+		}
+	}
+}
+
 function play(tempx, tempy, i, player, col, isFinalSpot){
 	{
 		var coord = [];
 			player[i].makeEmpty();
+			if(isAtFinish(tempx, tempy, col) == true){
+				finish(tempx, tempy, i, player, col, isFinalSpot);	
+			}
+			else{
 				if(tempx == 10 && tempy == 10){  //Top Left corner
 						var goingTo = checkSpace(10, tempy+(30));
 					if(goingTo == null){
@@ -603,8 +658,8 @@ function play(tempx, tempy, i, player, col, isFinalSpot){
 							else{  // Two marbles of different teams collide. 
 								if(isFinalSpot == true){sendHome(goingTo.getx(), goingTo.gety(), goingTo.getcolor());}
 								player[i] = new Space((tempx-30),10,col);
+								coord.push(tempx-30);
 								coord.push(10);
-								coord.push(tempy+30);
 								//setPlayer();
 							}
 						}
@@ -703,7 +758,7 @@ function play(tempx, tempy, i, player, col, isFinalSpot){
 					}
 				}
 				console.log(player[i].getx() + "," + player[i].gety());
-
+		}
 	}
 	return coord;
 }
@@ -715,13 +770,11 @@ function player1(px, py){
 		if(px > playerBlue[i].getx() && px < playerBlue[i].getx()+30){
 			if(py>playerBlue[i].gety() && py < playerBlue[i].gety()+30){
 				var tempx = playerBlue[i].getx();
-				console.log(tempx);
 				var tempy = playerBlue[i].gety();
-				console.log(tempx + "," + tempy);
 				var n = prompt("Enter number of spaces:");
 				var isFinalSpot = false;
 				for (var j = 0; j < n; j++){
-					if(j == (n-1)){isFinalSpot = true;console.log(isFinalSpot);}
+					if(j == (n-1)){isFinalSpot = true;}
 					var co = play(tempx, tempy, i, playerBlue,"blueMarble.png", isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
@@ -766,7 +819,7 @@ function player3(px, py){
 				var isFinalSpot = false;
 				for(var j = 0; j < n; j++){
 					if(j == (n-1)){isFinalSpot = true;}
-					var co = play(tempx, tempy, i , player, col, isFinalSpot);
+					var co = play(tempx, tempy, i, player, col, isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
@@ -788,7 +841,7 @@ function player4(px, py){
 				var isFinalSpot = false;
 				for(var j = 0; j < n; j++){
 					if(j == (n-1)){isFinalSpot = true;}
-					var co =play(tempx, tempy, i, player, col, isFinalSpot);
+					var co = play(tempx, tempy, i, player, col, isFinalSpot);
 					tempy = co.pop();
 					tempx = co.pop();
 				}
