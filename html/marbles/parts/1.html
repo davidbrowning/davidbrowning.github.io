@@ -507,12 +507,12 @@ function isAtFinish(tempx, tempy, col){
 		}
 	}
 	else if(col == "redMarble.png"){
-		if(tempx == (550-30) && tempy == (550 - 90)){
+		if(tempx == (550) && tempy == (550 - 90)){
 			return true;
 		}
 	}
 	else if(col == "yellowMarble.png"){
-		if(tempx == 130 && tempy == (550-90)){
+		if(tempx == 100 && tempy == (550)){
 			return true;
 		}
 	}
@@ -534,13 +534,13 @@ function finish(tempx, tempy, i, player, col, isFinalSpot){
 		}
 	}
 	else if(col == "redMarble.png"){
-		if(tempx == (550-30) && tempy == (550 - 90)){
-			player[i] = new Space(550-60,550-90,"redMarble.png");
+		if(tempx == (550) && tempy == (460)){
+			player[i] = new Space((550-30),460,"redMarble.png");
 		}
 	}
 	else if(col == "yellowMarble.png"){
-		if(tempx == 130 && tempy == (550-90)){
-			player[i] = new Space(130, 550-120, "yellowMarble.png");
+		if(tempx == 100 && tempy == (550)){
+			player[i] = new Space(100, (550-30), "yellowMarble.png");
 		}
 	}
 }
