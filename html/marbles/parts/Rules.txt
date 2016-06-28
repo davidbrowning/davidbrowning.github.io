@@ -1,0 +1,1 @@
+At this point in testing, the game is not yet team based, and the unique moves (7,8,A,J,Q,K, and joker) are not implimented. It is the very bare bones sorry, where landing on any opponent sends them back home. The first person with all 5 marbles back to home wins!
