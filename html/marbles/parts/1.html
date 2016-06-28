@@ -639,8 +639,24 @@ function finish(tempx, tempy, i, player, col, isFinalSpot){
 	}
 	else if(col == "yellowMarble.png"){
 		if(tempx == 100 && tempy == (550)){
-			if (checkSpace(100,550,col) == null){
+			if (checkSpace(100,520,col) == null){
 				player[i] = new Space(100, (550-30), "yellowMarble.png");
+			}
+		}
+		else if(tempy > 460 && tempx == 100){
+			var y = tempy - 30;
+			if(checkSpace(100,y,col)==null){
+				player[i] = new Space(100, y, "yellowMarble.png");
+			}	
+		}
+		else if(tempy == 460 && tempx == 100){
+			if(checkSpace(70,460,col)==null){
+				player[i] = new Space(70, 460, "yellowMarble.png");
+			}
+		}
+		else if(tempy == 460 && tempx == 70){
+			if(checkSpace(70,430,col)==null){
+				player[i] = new Space(70, 430, "yellowMarble.png");
 			}
 		}
 	}
