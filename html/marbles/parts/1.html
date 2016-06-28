@@ -518,20 +518,44 @@ function isAtFinish(tempx, tempy, col){
 		if(tempx == 10 && tempy == 100){
 			return true;
 		}
+		else if(tempx >= 30 && tempx <= 180){
+			if(tempy > 30 && tempy < 180){
+				console.log("blue stretch");
+				return true;	
+			}
+		}
 	}
 	else if(col == "greenMarble.png"){
 		if(tempx == (550-90) && tempy == 10){
 			return true;
+		}
+		else if(tempx > 370 && tempx < 550){
+			if(tempy > 30 && tempy < 180){
+				console.log("green stretch");
+					return true;
+			}
 		}
 	}
 	else if(col == "redMarble.png"){
 		if(tempx == (550) && tempy == (550 - 90)){
 			return true;
 		}
+		else if (tempx > 380 && tempx < 550){
+			if(tempy > 380 && tempy < 550){
+				console.log("red stretch");
+				return true;
+			}
+		}
 	}
 	else if(col == "yellowMarble.png"){
 		if(tempx == 100 && tempy == (550)){
 			return true;
+		}
+		else if(tempx > 30 && tempx < 180){
+			if(tempy > 380 && tempy < 550){
+				console.log("yellow stretch");
+				return true;
+			}
 		}
 	}
 	else{
@@ -542,27 +566,82 @@ function isAtFinish(tempx, tempy, col){
 
 function finish(tempx, tempy, i, player, col, isFinalSpot){
 	if (col == "blueMarble.png"){
+		console.log(tempx + ", " + tempy);
 		if(tempx == 10 && tempy == 100){
 			var goingTo = checkSpace(40,100,col);
 			player[i] = new Space(40, 100, "blueMarble.png");
+			
+		}
+		else if(tempy == 100 && tempx < 100){
+			console.log(x +","+ tempy);
+			var x = tempx + 30;
+			if(checkSpace(x,100,col)==null){
+				player[i] = new Space(x, 100, "blueMarble.png");
+			}	
+		}
+		else if(tempy == 100 && tempx == 100){
+			if(checkSpace(100,70,col)==null){
+				player[i] = new Space(100, 70, "blueMarble.png");
+			}
+		}
+		else if(tempy == 70 && tempx == 100){
+			if(checkSpace(130,70,col)==null){
+				player[i] = new Space(130, 70, "blueMarble.png");
+			}
 		}
 	}
 	else if(col == "greenMarble.png"){
 		if(tempx == (550-90) && tempy == 10){
-			var goingTo = checkSpace(460,10,col);
-			player[i] = new Space(550-90, 40, "greenMarble.png");
+			if(checkSpace(460,40,col) == null){
+				player[i] = new Space(550-90, 40, "greenMarble.png");
+			}
 		}
+		else if(tempy < 100 && tempx == 460){
+			var y = tempy + 30;
+			if(checkSpace(460,y,col)==null){
+				player[i] = new Space(460, y, "greenMarble.png");
+			}	
+		}
+		else if(tempy == 100 && tempx == 460){
+			if(checkSpace(490,100,col)==null){
+				player[i] = new Space(490, 100, "greenMarble.png");
+			}
+		}
+		else if(tempy == 100 && tempx == 490){
+			if(checkSpace(490,130,col)==null){
+				player[i] = new Space(490, 130, "greenMarble.png");
+			}
+		}
+		
 	}
 	else if(col == "redMarble.png"){
 		if(tempx == (550) && tempy == (460)){
-			var goingTo = checkSpace(550,460,col);
-			player[i] = new Space((550-30),460,"redMarble.png");
+			if (checkSpace(520,460,col) == null){
+				player[i] = new Space((550-30),460,"redMarble.png");
+			}
+		}
+		else if(tempy == 460 && tempx > 460){
+			var x = tempx - 30;
+			if(checkSpace(x,460,col)==null){
+				player[i] = new Space(x, 460, "redMarble.png");
+			}	
+		}
+		else if(tempy == 460 && tempx == 460){
+			if(checkSpace(460,490,col)==null){
+				player[i] = new Space(460, 490, "redMarble.png");
+			}
+		}
+		else if(tempy == 490 && tempx == 460){
+			if(checkSpace(430,490,col)==null){
+				player[i] = new Space(430, 490, "redMarble.png");
+			}
 		}
 	}
 	else if(col == "yellowMarble.png"){
 		if(tempx == 100 && tempy == (550)){
-			var goingTo = checkSpace(100,550,col);
-			player[i] = new Space(100, (550-30), "yellowMarble.png");
+			if (checkSpace(100,550,col) == null){
+				player[i] = new Space(100, (550-30), "yellowMarble.png");
+			}
 		}
 	}
 }
@@ -572,7 +651,9 @@ function play(tempx, tempy, i, player, col, isFinalSpot){
 		var coord = [];
 			player[i].makeEmpty();
 			if(isAtFinish(tempx, tempy, col) == true){
-				finish(tempx, tempy, i, player, col, isFinalSpot);	
+				finish(tempx, tempy, i, player, col, isFinalSpot);
+				coord.push(player[i].getx());
+				coord.push(player[i].gety());
 			}
 			else{
 				if(tempx == 10 && tempy == 10){  //Top Left corner
