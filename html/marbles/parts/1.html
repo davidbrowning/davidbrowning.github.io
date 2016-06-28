@@ -37,7 +37,7 @@ function setPlayer(){
 	else {
 		player++;
 	}
-	document.getElementById("turn").innerHTML = "Player Turn: " + player;
+	
 	return;
 }
 
@@ -48,7 +48,7 @@ window.onload = function main() {
 
 	document.body.appendChild(canvas);
 	canvas.addEventListener("mousedown", mouseDown);
-
+	
 	init();
 	tick();
 }
@@ -207,6 +207,10 @@ function init() {
 	occupiedSpaces.push(playerYellow);
 	}
 }
+
+
+
+
 function tick() {
 	window.requestAnimationFrame(tick);
 	
@@ -236,10 +240,24 @@ function render() {
 		playerYellow[j].draw(context);
 		playerRed[j].draw(context);
 	}
+	context.font = "30px Arial";
+	context.fillStyle = "white";
+	var colorOfCurrentPlayer = "white";
+	if(player == 1){
+		colorOfCurrentPlayer = "Blue";
+	}
+	else if(player == 2){
+		colorOfCurrentPlayer = "Green";
+	}
+	else if(player == 3){
+		colorOfCurrentPlayer = "Red";
+	}
+	else if(player == 4){
+		colorOfCurrentPlayer = "Yellow";
+	}
+	context.fillText("Player Turn: "+colorOfCurrentPlayer, 180, 275);
 
 }
-
-
 
 function checkSpace(x, y){			//checkSpace will take the space the marble is going to and see if it is occupied. 
 						//If occupied, it will return the Space object which is occupying it.
@@ -950,6 +968,6 @@ function Space(x, y, color) {
 </script>
 </head>
 <body>
-	<h1 id = "turn">Player 1 Starts!</h1>	
+
 </body>
 </html>
