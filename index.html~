@@ -1,22 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
-<head>
-<title>Index</title>
-<link href="css/style.css" rel="stylesheet">
-</head>
-<body>
-  <div id = "container">
-  <div class="flex-container">
+  <head>
+   
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400;300' rel='stylesheet' type='text/css'>
+    <link href='css/style.css' rel='stylesheet'>
 
-  <div class="flex-item"><nav><a href='html/home.html'>Home</a></nav></div>
-  <div class="flex-item"><nav><a href='html/survey.html'>Survey</a></nav></div>
-  <div class="flex-item"><nav><a href='html/til.html'>T.I.L.</a></nav></div>
-  <div class="flex-item"><nav><a href='index.html'>Index</a></nav></div>
+    
+  </head>
+  <body>
 
+    <div class="menu">
+      
+      <!-- Menu icon -->
+      <div class="icon-close">
+        <img src="css/x.png">
+      </div>
 
-</div>
-
-  <ul><li><a class="indexmenu" href='html/home.html'>Home</a></li>
+      <!-- Menu -->
+      <ul>
+  <li><a class="indexmenu" href='html/home.html'>Home</a></li>
   <li><a class="indexmenu" href='html/survery.html'>Survey</a></li>
   <li><a class="indexmenu" href='html/til.html'>T.I.L.</a></li>
   <li><a class="indexmenu" href='html/experiments.html'>experiments</a></li>
@@ -24,8 +25,19 @@
   <li><a class="indexmenu" href='index.html'>Index</a></li>
   <li><a class="indexmenu" href='css/style.css'>Style Sheet</a></li>
   <li><a class="indexmenu" href='html/createjs.html'>easeljs</a></li>
-  <li><a class="indexmenu" href='html/tictactoe/parts/1.html'>Empty Board</a></li>
-  <li><a class="indexmenu" href='css/style.css'>Style Sheet</a></ul>
-</div>
-</body>
+  <li><a class="indexmenu" href='html/marbles/parts/1.html'>Empty Board</a></li>
+  <li><a class="indexmenu" href='css/style.css'>Style Sheet</a></ul>>
+    </div>
+
+    <!-- Main body -->
+    <div class="jumbotron">
+
+      <div class="icon-menu">
+        <i class="fa fa-bars"></i>
+        Menu
+      </div>
+    
+    <script src="jquery.min.js"></script>
+    <script src="app.js"></script>
+  </body>
 </html>
