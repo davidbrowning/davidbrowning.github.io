@@ -6,7 +6,7 @@ var main = function() {
     }, 200);
 
     $('body').animate({
-      left: "285px"
+      left: "0px"
     }, 200);
   });
 
