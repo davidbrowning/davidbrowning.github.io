@@ -3,27 +3,27 @@ body {
   left: 0;
   margin: 0;
   position: relative;
-  background-image: url('silveredit2.jpg');
-    color: #f0f5f5 ;
-    font-family: 'Open Sans', sans-serif;
-    text-shadow: 1px 1px #669999;
+  background-color: #00CEFF;
+  font-family: 'Open Sans', sans-serif;
+  text-shadow: 1px 1px #669999;
 }
 
 
-/* Initial menu */
+
 .menu {
-  background: #202024 url('x.jpg') repeat left top;
-  left: -285px;  /* start off behind the scenes */
+  background: #202024; 
+  left: -285px; 
   height: 100%;
   position: fixed;
   width: 285px;
 }
 
-/* Basic styling */
+
 
 .jumbotron {
  
   height: 100%;
+  width: auto;
   -webkit-background-size: cover;
      -moz-background-size: cover;
        -o-background-size: cover;
@@ -74,3 +74,28 @@ body {
 .icon-menu i {
   margin-right: 5px;
 }
+
+.selfPortrait {
+  z-index: 0;
+  margin-right: 2%;
+  margin-left:2%;
+  position: relative;
+  overflow: hidden;
+}
+
+.spBottomLeft {
+  position: absolute;
+  bottom: 10px;
+  left: 20px;
+}
+
+.spBottomLeft:hover{
+  opacity: 0.8;
+}
+
+
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  }
