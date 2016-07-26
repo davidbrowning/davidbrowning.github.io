@@ -85,11 +85,62 @@ body {
 
 .spBottomLeft {
   position: absolute;
-  bottom: 10px;
-  left: 20px;
+  width:15%;
+  height:auto;
+  bottom: 0%;
+  left: 0%;
 }
 
 .spBottomLeft:hover{
+  opacity: 0.8;
+}
+
+
+.spMiddleLeft {
+  position: absolute;
+  width:15%;
+  height:auto;
+  bottom:20%;
+  left:20%;
+}
+
+.spMiddleLeft:hover{
+  opacity: 0.8;
+}
+
+.spMiddle {
+  position: absolute;
+  width:15%;
+  height:auto;
+  bottom: 40%;
+  left: 40%;
+}
+
+.spMiddle:hover{
+  opacity: 0.8;
+}
+
+.spMiddleRight {
+  position: absolute;
+  width:15%;
+  height:auto;
+  bottom: 60%;
+  left: 60%;
+}
+
+.spMiddleRight:hover{
+  opacity: 0.8;
+}
+
+.spTopRight {
+  position: absolute;
+  width:15%;
+  height:auto;
+  bottom: 80%;
+  left: 80%;
+}
+
+.spTopRight:hover{
   opacity: 0.8;
 }
 
