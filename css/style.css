@@ -5,7 +5,7 @@ body {
   position: relative;
   background-color: #00CEFF;
   font-family: 'Open Sans', sans-serif;
-  text-shadow: 1px 1px #669999;
+  text-shadow: 1px 1px #0090B2;
 }
 
 
@@ -47,7 +47,7 @@ body {
 }
 
 .menu a {
-  color: #fff;
+  color: #FF7900;
   font-size: 15px;
   text-decoration: none;
   text-transform: uppercase;
@@ -60,11 +60,11 @@ body {
 }
 
 .icon-menu {
-  color: #fff;
+  color: #FF7900;
   cursor: pointer;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
   padding-left: 25px;
   padding-top: 25px;
   text-decoration: none;
@@ -73,6 +73,15 @@ body {
 
 .icon-menu i {
   margin-right: 5px;
+}
+
+.heading {
+  text-align:center;
+  margin:5px;
+}
+
+a {
+  color:#FF7900;
 }
 
 .selfPortrait {
@@ -144,9 +153,36 @@ body {
   opacity: 0.8;
 }
 
+.spTopRightText {
+  position: absolute;
+  bottom: 55%;
+  left: 70%;
+}
 
+.spMidText {
+  position: absolute;
+  bottom: 30%;
+  left: 56%;
+}
+
+.spBottomText {
+  position: absolute;
+  bottom: 17%;
+  left: 36%;
+}
+
+.spList {
+  position: absolute;
+  bottom: -1%;
+  left: 17%;
+}
 
 img {
   max-width: 100%;
   max-height: 100%;
   }
+
+p {
+  font-size: 2vmin;
+  text-align: right;
+}
