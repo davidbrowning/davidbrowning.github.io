@@ -81,6 +81,29 @@ $ sha256sum &lsaquo; file to check &rsaquo; </br>
 is the typical command on many linux flavors. </br>
 You then compare this hash to the one on the downloads page from which you received the file.</br> If the two are the same, the check passes. 
 </p>
+
+<h1> 12/19/2016 </h1>
+</br>
+<p>
+Today I learned how to access pieces of an expression you've already found with a reg-ex </br>
+(Specifically with powershell, but according to powershell.org the syntax is the regex standard)</br>
+So you've got a string (We're going to stick with the example from powershell.org) "Don Jones". </br>
+You'd like to swap first and last names. Here's how you do it: "Don Jones" -replace "([a-z]+)\s([a-z])"+,'$2,$1' </br>
+The result: "Jones Dan" </br> </br>
+In the instance where I needed this idea, I had the following two expressions,    
+  [regex]$begOfName = '(\d)(,)([A-Z])';, and
+  [regex]$endOfName = '([A-Z].?)(,)(\d)';. </br>
+  
+Basically, when you export as a .csv from powershell, in compliance with the .csv standard, it puts " (double quotes) around every item. 
+I didn't want that for the project I was working on, I only wanted quotes around the name of the person behold: </br>
+
+$obj_arr | ConvertTo-Csv -NoTypeInformation |%{$_ -replace('"','') -replace($begOfName,',"$3') -replace($endOfName, '$1",$3') ; }|Out-File output.csv -fo -en ascii </br></br>
+In essence: take my objects, convert them to a .csv replace all the double quotes, then add them back in where I need them. (I'm sure there's a better way to do this, but it
+was sufficient for what I was doing. 
+
+Also, I realized that the reason a String[] is passed to the main function in Java is for giving the program command line arguments!
+
+</p>
 </div> 
 
 </body>
