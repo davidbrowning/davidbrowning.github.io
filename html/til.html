@@ -113,9 +113,30 @@ Also I learned how to page up and down. </br>
 Ctrl F (Page Down) </br>
 Ctrl B (Page Up) </br>
 In addition, I learned a little about ! in bash </br>
-!! (run the most recent command) </br>
+!! (run the most recent command) //aka bang bang</br>
 !$ (the paramater most recently used) </br>
 </p>
+<h1> 1/10/2017</h1>
+</br>
+<p>
+	Today I learned some more useful things from the VIM tutorial, </br>
+0 is a much more efficient way to move to the beginning of a line. </br>
+:dd will delete the entire line. </br>
+:dw will delete a word </br>
+:c is the 'change' operator so it will take w,e,$ etc as parameters. </br>
+:ce will delete the end of the current word and place the user into insert mode </br>
+x will delete a character </br>
+I still need to practice the 'count' command (for example: 2w will jump two words to the right, and 4dd will delete 4 lines). </br>
+Replace is just Ctrl+R </br>
+</br>
+	
+I also learned a bit about the terminal command 'history' </br>
+My quest for this knowledge was fueled by the following addition to my pi's .bashrc file </br>
+<i>alias please='sudo (history -p !!)'<i> </br>
+Basically, if I execute a command in bash, and have insufficient permissions, I can execute a 'please' command. </br>
+This will cause bash to execute the previous command (!!) with elevated permissions as history -p &lt; command &gt; </br>
+will simply display the command prior to execution this fits perfectly into the bash alias. </br>
+
 </div> 
 
 </body>
