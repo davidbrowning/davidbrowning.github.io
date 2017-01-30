@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="utf-8"/>
+<html>
+<head>
+<title>Event Loop</title>
+<link rel="stylesheet" type="text/css" href=./gameloop.css>
+</head>
+<body>
+ <div id = "screen">
+  <div id = "header">
+    <h1> Browser GameLoop </h1>
+   </div>
+  <div id="output">
+   </div>
+   <div id="input">
+    <form>
+     Name:
+     </br>
+     <input type="text" name="evtName">
+     </br>
+     Interval:
+     </br>
+     <input type="text" name="interval">
+     </br>
+     Repetition (# Times): 
+     </br>
+     <input type="text" name="rept">
+     </br>
+     <!--<input type="submit" value="Add Event" onclick="newEvent(evtName.value, interval.value, rept.value)">-->
+     <input type="button" value="Add Event" onclick="newEvent(evtName.value, interval.value, rept.value)">
+     <input type="button" value="stop" onclick="setStop()">
+     <input type="button" value="go" onclick="setGo()">
+    </form>
+    </div>
+    <div id = "footer">
+     <p>Made for CS 5410</p>
+     </div>
+   </div>
+ <script src="eventLoop.js"></script>
+</body>
+</html>
