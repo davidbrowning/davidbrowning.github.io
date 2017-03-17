@@ -100,7 +100,7 @@ MyGame.graphics = (function() {
                     if(spec.center.x > paddle_left && spec.center.x < paddle_mid){
                         that.current_x = 0;
                         if(spec.center.x < ((paddle_mid - paddle_left)/2)+paddle_left && that.current_x_depth < 3){
-                            alert('augmenting depth')
+                            //alert('augmenting depth')
                             that.current_x_depth++;
                         }
                         else if(that.current_x_depth > 1){
@@ -108,7 +108,7 @@ MyGame.graphics = (function() {
                         }
                         //console.log(((paddle_mid + paddle_right)/2)+paddle_right)
                         else if(spec.center.x > (((paddle_right - paddle_mid)/2) + paddle_mid) && that.current_x_depth < 3){
-                            alert('augmenting depth')
+                            //alert('augmenting depth')
                             that.current_x_depth++;
                         }
                         else if(that.current_x_depth > 1){
