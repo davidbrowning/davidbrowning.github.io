@@ -511,7 +511,7 @@ MyGame.main = (function(graphics, input) {
 
 
 	var	myBall = graphics.Ball( {
-			image : 'images/Ball.png',
+			image : 'images/ball.png',
 			center : { x : 100, y : 375 },
 			width : 25, height : 25,
 			moveRate : 100,			// pixels per second
