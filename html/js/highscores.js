@@ -10,7 +10,7 @@ MyGame.screens['high-scores'] = (function(game) {
 	function run() {
 		//
 		// I know this is empty, there isn't anything to do.
-        //MyGame.persistence.add('bob', 89)
+        MyGame.persistence.add('bob', 89)
         MyGame.persistence.report()
 	}
 	
@@ -31,16 +31,7 @@ MyGame.persistence = (function () {
         }
 
         function add(key, value) {
-            for (var keys in highScores){
-                if(highScores[keys] < value){
-                    highScores[key] = value;
-                    delete highScores[keys]
-                    break;
-                }    
-                else{
-                    highScores[key] = value;    
-                }
-            }
+            highScores[key] = value;    
             localStorage['MyGame.highScores'] = JSON.stringify(highScores);
         }
 
