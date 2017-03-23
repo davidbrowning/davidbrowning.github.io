@@ -744,6 +744,8 @@ MyGame.main = (function(graphics, input) {
 	// Update the state of the "model" based upon time.
 	//
 	//------------------------------------------------------------------
+
+
 	function update(elapsedTime) {
 		// Only we don't have anything to do here, kind of a boring game
         if(myBall.getGameStatus() == false){
@@ -751,6 +753,7 @@ MyGame.main = (function(graphics, input) {
         }
         else{
             //console.log('move called')
+            if(MyGame.noParticles === false){
             var p = myBall.getParticle()
             var particle = 0,
                 aliveParticles = [],
@@ -770,6 +773,7 @@ MyGame.main = (function(graphics, input) {
 
                 //
                 // Generate some new particles
+                
                 for (particle = 0; particle < 8; particle++) {
                     negX = Math.random() < 0.5 ? 1 : -1;
                     negY = Math.random() < 0.95 ? 1 : -1;
@@ -784,6 +788,7 @@ MyGame.main = (function(graphics, input) {
                     
                     particles.push(graphics.Particle(p1));
                 }
+            }
 
             myBall.validMove(elapsedTime, myTexture.getPosition(), myTexture.getWidth(), myBricks.getBricks())
             myBall.move(elapsedTime, myTexture.getPosition(), myTexture.getWidth())    
@@ -818,11 +823,16 @@ MyGame.main = (function(graphics, input) {
 	}
 
     MyGame.TotalTime = 0;
+    MyGame.noParticles = false;
     MyGame.lives = 3;
     MyGame.stop = false;
     MyGame.gameover = function(){
         var person = prompt("Please enter your name");
         MyGame.persistence.add(person, MyGame.current_score)
+    }
+    MyGame.stopParticles = function(){
+        MyGame.noParticles = true
+        console.log(MyGame.noParticles)
     }
 
 	//------------------------------------------------------------------
@@ -880,6 +890,7 @@ MyGame.main = (function(graphics, input) {
 	// Create the keyboard input handler and register the keyboard commands
 	myKeyboard.registerCommand(KeyEvent.DOM_VK_A, myTexture.moveLeft);
 	myKeyboard.registerCommand(KeyEvent.DOM_VK_D, myTexture.moveRight);
+    myKeyboard.registerCommand(KeyEvent.DOM_VK_P, MyGame.stopParticles);
 	//myKeyboard.registerCommand(KeyEvent.DOM_VK_W, myTexture.moveUp);
 	//myKeyboard.registerCommand(KeyEvent.DOM_VK_S, myTexture.moveDown);
 	//myKeyboard.registerCommand(KeyEvent.DOM_VK_Q, myTexture.rotateLeft);
