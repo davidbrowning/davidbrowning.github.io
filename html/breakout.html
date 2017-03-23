@@ -5,9 +5,57 @@
     <link rel="stylesheet" type="text/css" href=./style.css>
 	<meta charset = "UTF-8">
 </head>
-<body>
-	<canvas id = "canvas" width = "1000" height = "500"></canvas>	
+<body onload='MyGame.game.initialize()'>
+        <div id = "game">
+        <div id = "main-menu" class = "screen">
+            <ul class = "menu">
+                <li><button id = "id-new-game">New&nbsp;Game</button></li>
+                <li><button id = "id-high-scores">High&nbsp;Scores</button></li>
+                <li><button id = "id-help">Help</button></li>
+                <li><button id = "id-about">About</button></li>
+            </ul>
+        </div>
+        <div id = "game-play" class = "screen">
+	    <canvas id = "canvas" width = "1000" height = "500"></canvas>	
+            <ul class = "menu">
+                <li><button id = "id-game-play-back">Back</button></li>
+            </ul>
+        </div>
+        <div id = "high-scores" class = "screen">
+            <h1>High Scores</h1>
+            <div id = "div-console"></div>
+            <ul class = "menu">
+                <li><button id = "id-high-scores-back">Back</button></li>
+            </ul>
+        </div>
+        <div id = "help" class = "screen">
+            <h1>Help</h1>
+            <p>Welcome to breakout!</p>
+            <p>This game of immense skill and talent requires YOU to break through the alein fortress and save the world! </p>
+            <ul class = "menu">
+                <li><button id = "id-help-back">Back</button></li>
+            </ul>
+        </div>
+        <div id = "about" class = "screen">
+            <h1>About</h1>
+            <p>David Browning</p>
+            <p> 2017 </p>
+            <ul class = "menu">
+                <li><button id = "id-about-back">Back</button></li>
+            </ul>
+        </div>
+    </div>
+    <div id = "scoreboard">
+    Lives:<div id="lives"></div>
+    Score<div id = "score"></div>
+</div>
+    <script src = "js/game.js"></script>
 	<script src = "js/input.js"></script>
 	<script src = "js/renderer.js"></script>
+	<script src = "js/gamePlay.js"></script>
+	<script src = "js/mainmenu.js"></script>
+	<script src = "js/help.js"></script>
+	<script src = "js/about.js"></script>
+	<script src = "js/highscores.js"></script>
 </body>
 </html>
