@@ -1,0 +1,57 @@
+
+html{
+ background: black; /* For browsers that do not support gradients */    
+ background: -webkit-linear-gradient(left, #7ff4ff , #111111); /* For Safari 5.1 to 6.0 */
+ background: -o-linear-gradient(right, #7ff4ff, #111111); /* For Opera 11.1 to 12.0 */
+ background: -moz-linear-gradient(right, #7ff4ff, #111111); /* For Firefox 3.6 to 15 */
+ background: linear-gradient(to right, #7ff4ff , #111111); /* Standard syntax (must be last) */
+}
+
+button {
+   width: 200px;
+   border: 1px solid #111111;
+   background: #111111;
+   background: -webkit-gradient(linear, left top, left bottom, from(#e3e3e3), to(#111111));
+   background: -webkit-linear-gradient(top, #e3e3e3, #111111);
+   background: -moz-linear-gradient(top, #e3e3e3, #111111);
+   background: -ms-linear-gradient(top, #e3e3e3, #111111);
+   background: -o-linear-gradient(top, #e3e3e3, #111111);
+   background-image: -ms-linear-gradient(top, #e3e3e3 0%, #111111 100%);
+   padding: 15.5px 31px;
+   -webkit-border-radius: 3px;
+   -moz-border-radius: 3px;
+   border-radius: 3px;
+   -webkit-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   -moz-box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   box-shadow: rgba(255,255,255,0.4) 0 1px 0, inset rgba(255,255,255,0.4) 0 1px 0;
+   text-shadow: #111111 0 1px 0;
+   color: #ffffff;
+   font-size: 19px;
+   font-family: helvetica, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+button:hover {
+   border: 1px solid #111111;
+   text-shadow: #111111 0 1px 0;
+   background: #9ca7a8;
+   background: -webkit-gradient(linear, left top, left bottom, from(#111111), to(#9ca7a8));
+   background: -webkit-linear-gradient(top, #111111, #9ca7a8);
+   background: -moz-linear-gradient(top, #111111, #9ca7a8);
+   background: -ms-linear-gradient(top, #111111, #9ca7a8);
+   background: -o-linear-gradient(top, #111111, #9ca7a8);
+   background-image: -ms-linear-gradient(top, #111111 0%, #9ca7a8 100%);
+   color: #fff;
+   }
+button:active {
+   text-shadow: #111111 0 1px 0;
+   border: 1px solid #111111;
+   background: #cfd1d1;
+   background: -webkit-gradient(linear, left top, left bottom, from(#111111), to(#9ca7a8));
+   background: -webkit-linear-gradient(top, #111111, #cfd1d1);
+   background: -moz-linear-gradient(top, #111111, #cfd1d1);
+   background: -ms-linear-gradient(top, #111111, #cfd1d1);
+   background: -o-linear-gradient(top, #111111, #cfd1d1);
+   background-image: -ms-linear-gradient(top, #111111 0%, #cfd1d1 100%);
+   color: #fff;
+   }
