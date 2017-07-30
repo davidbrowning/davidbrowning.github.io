@@ -7,6 +7,42 @@ html{
  background: linear-gradient(to right, #7ff4ff , #111111); /* Standard syntax (must be last) */
 }
 
+div{
+ position: absolute;
+ margin: auto; 
+ top: 150px; 
+ right: 0; 
+ left: 220px;
+ bottom: 0;
+}
+
+img{
+ position: absolute;
+ margin: auto; 
+ top: 0; 
+ right: 0; 
+ left: 0;
+ bottom: 0;
+}
+
+object{
+ position: absolute;
+ margin: auto; 
+ top: 0; 
+ right: 0; 
+ left: 0;
+ bottom: 0;
+}
+
+iframe{
+ position: absolute;
+ margin: auto; 
+ top: 0; 
+ right: 0; 
+ left: 0;
+ bottom: 0;
+}
+
 button {
    width: 200px;
    border: 1px solid #111111;

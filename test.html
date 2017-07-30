@@ -6,63 +6,69 @@
   <style>
   </style>
   <script>
-  shrink_logo = function(){
-   $("#logo_image").animate({width: "300px"});
-   $("#logo").animate({bottom: "85%"});
+  logo_toggle = function(){
+   if($("#logo").css("bottom") == "0px"){
+    $("#logo_image").animate({width: "300px"});
+    $("#logo").animate({bottom: "85%"});
+   }
+   else{
+    $("#logo_image").animate({width:"500px"});
+    $("#logo").animate({bottom: "0"});
+   }
+   console.log($("#logo").css("bottom"));
   }
-  restore_logo = function(){
-   $("#logo_image").animate({width:"100%"});
-   $("#logo").animate({bottom: "0"});
+  center_project = function(){
+   console.log(this)
   }
   </script>
 
 </head>
 <body>
-<div id="logo" style="position:absolute; margin:auto; top:0; right:0; bottom: 0; left: 200px;" >
-    <img class="transparent shrinkToFit" id="logo_image" style = "text-align: center; position: absolute; margin: auto; top:0; right:0; bottom: 0; left: 0;" src="logo2.gif"></img>
+<div id="logo" style="top:0;" >
+    <img class="transparent shrinkToFit" id="logo_image" src="logo2.gif"></img>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#timePage").fadeToggle("slow"); '>Wordpress</button>
+    <button onClick='logo_toggle(); $("#timePage").fadeToggle("slow"); '>Wordpress</button>
     <div id="timePage" style = "display:none;">
     <object data=http://www.dmbrowning.net width="600" height="600" style="background-color:white;"> <embed src=http://www.dmbrowning.net width="600" height="600"> </embed> Error: Embedded data could not be displayed. </object>
     </div>
     </br>
     </br>
     <!-- 
-$("#logo").fadeToggle("slow");
+logo_toggle();
 	-->
-    <button onClick='shrink_logo(); $("#marbles").fadeToggle("slow");'>JavaScript</button>
+    <button onClick='logo_toggle(); $("#marbles").fadeToggle("slow");'>JavaScript</button>
 <div id="marbles" style = "display:none;">
     <object data=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="600"> <embed src=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#homeInventory").fadeToggle("slow");'>Android (Java)</button>
+    <button onClick='logo_toggle(); $("#homeInventory").fadeToggle("slow");'>Android (Java)</button>
     <div id="homeInventory" style="display:none;">
     <iframe width="400" height="630" src="https://www.youtube.com/embed/LztBqXfQvPI" frameborder="0" allowfullscreen></iframe>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#shell").fadeToggle("slow");'>C++</button>
+    <button onClick='logo_toggle(); $("#shell").fadeToggle("slow");'>C++</button>
     <div id="shell" style="display:none">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/U7MV7cIjLDI" frameborder="0" allowfullscreen></iframe>
+    <iframe width="760" height="415" src="https://www.youtube.com/embed/U7MV7cIjLDI" frameborder="0" allowfullscreen></iframe>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#breakout").fadeToggle("slow");'>JavaScript</button>
+    <button onClick='logo_toggle(); $("#breakout").fadeToggle("slow");'>JavaScript</button>
     <div id="breakout" style="display:none;">
-    <object data=http://davidbrowning.github.io/html/breakout.html width="1000" height="500"> <embed src=http://davidbrowning.github.io/html/breakout.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
+    <object data=http://davidbrowning.github.io/html/breakout.html width="1016" height="501"> <embed src=http://davidbrowning.github.io/html/breakout.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#ori").fadeToggle("slow");'>JavaScript</button>
+    <button onClick='logo_toggle(); $("#ori").fadeToggle("slow");'>JavaScript</button>
     <div id="ori" style="display:none;">
-    <object data=http://oriclone.herokuapp.com width="1200" height="900"> <embed src=http://oriclone.herokuapp.com width="100" height="100"> </embed> Error: Embedded data could not be displayed. </object>
+    <object data=http://oriclone.herokuapp.com width="1050" height="800"> <embed src=http://oriclone.herokuapp.com width="100" height="100"> </embed> Error: Embedded data could not be displayed. </object>
     </div>
     </br>
     </br>
-    <button onClick='$("#logo").fadeToggle("slow"); $("#simonish").fadeToggle("slow");'>Java</button>
+    <button onClick='logo_toggle(); $("#simonish").fadeToggle("slow");'>Java</button>
     <div id="simonish" style="display:none;">
     <iframe width="600" height="615" src="https://www.youtube.com/embed/kYVj_BY9k5M" frameborder="0" allowfullscreen></iframe>
     </div>

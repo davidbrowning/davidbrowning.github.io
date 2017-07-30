@@ -1,74 +1,76 @@
 <html>
-  <head>
- <meta name="viewport" content="width=device-width, initial-scale=0.5">
-   
-    <link href='css/style.css' rel='stylesheet'>
+<head>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.js"></script>
+  <script type="text/javascript" src="./jquery.scrollTo-2.1.2/jquery.scrollTo.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <style>
+  </style>
+  <script>
+  logo_toggle = function(){
+   if($("#logo").css("bottom") == "0px"){
+    $("#logo_image").animate({width: "300px"});
+    $("#logo").animate({bottom: "85%"});
+   }
+   else{
+    $("#logo_image").animate({width:"500px"});
+    $("#logo").animate({bottom: "0"});
+   }
+   console.log($("#logo").css("bottom"));
+  }
+  center_project = function(){
+   console.log(this)
+  }
+  </script>
 
-    
-  </head>
-  <body>
-
-    <div class="menu">
-      
-      <!-- Menu icon -->
-      <div class="icon-close">
-        <img src="css/x.png">
-	<br>
-      </div>
-
-      <!-- Menu -->
-      <ul>
-  <li><a class="indexmenu" href='index.html'>Home</a></li>
-  <li><a class="indexmenu" href='html/til.html'>T.I.L.</a></li>
-  <li><a class="indexmenu" href='html/redditKarma.html'>redditKarma</a></li>
-  <li><a class="indexmenu" href='css/style.css'>Style Sheet</a></li>
-  <li><a class="indexmenu" href='html/marbles/parts/1.html'>Marbles</a></li>
-  <li><a class="indexmenu" href='html/gameloop.html'>Game Loop</a></li>
-  <li><a class="indexmenu" href='html/breakout.html'>Breakout</a></li>
+</head>
+<body>
+<div id="logo" style="top:0;" >
+    <img class="transparent shrinkToFit" id="logo_image" src="logo2.gif"></img>
     </div>
-
-   
-    <div class="jumbotron">
-
-      <div class="icon-menu">
-	      Menu 
-      </div>
-      <div class="heading">David M. Browning   
-        </br>
-        <a class ="email" href="mailto:dmbrowning21@gmail.com">dmbrowning21@gmail.com</a>
-      </div>	
-  
-      <div class="selfPortrait">
-        <img src="indexSelfPortraitMid.png" alt="This is me."/>
-	<a href="https://github.com/davidbrowning">
-	<img class="spBottomLeft" src="languages.png" alt="Languages."/>
-	</a>
-	<a href="http://dutro.com">
-	<img class="spMiddleLeft" src="workExperience.png" alt="System and Network Administrator at Dutro Company."/>
-	</a>
-	<a href="resume_for_site.pdf">
-	  <img class="spMiddle" src="resumeCircle.png" alt="Resume."/>
-        </a>
-	<a href="https://usu.edu">
-	<img class="spMiddleRight" src="education.png" alt="education."/>
-	</a>
-	<a href="https://github.com/davidbrowning">
-	<img class="spTopRight" src="projects.png" alt="Work Experience."/>
-	</a>
-
-	<p class="spTopRightText">
-	  Hi! </br>
-       My name is Dave; </br>
-	  I'm a Computer Science student working on my undergrad at Utah State University.</p>
-	<p class="spMidText">
-	I am currently a systems and network administrator at <a href="http://www.dutro.com" target="_blank">Dutro Company</a> where I manage file, application, and SQL servers, perform maintenence on company websites, and oversee Infrastructure updates and upgrades. </p>
-	<p class="spBottomText">  I have experience with MRP systems as well as Linux/UNIX and Windows servers and clients. I am fluent in c++, and have experience in the following languages: </p>
-	<p class="spList"> JavaScript, Java, SQL, HTML, CSS, PowerShell, JQuery, Nodejs, Perl, and Bash. I have experience with (and adore) git and GitHub. I am comfortable in any IDE, as well as CLI coding environments. I primarily use PC (<a href="https://www.reddit.com/r/pcmasterrace" target="_blank">PCMR!</a>), but am comfortable in a Linux/Unix/Mac environment as well. </p> 
-      </div>
-        
-      <br class='clear'> 
-    <script src="jquery.min.js"></script>
-    <script src="app.js"></script>
-  </body>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#timePage").fadeToggle("slow"); '>Wordpress</button>
+    <div id="timePage" style = "display:none;">
+    <object data=http://www.dmbrowning.net width="600" height="600" style="background-color:white;"> <embed src=http://www.dmbrowning.net width="600" height="600"> </embed> Error: Embedded data could not be displayed. </object>
+    </div>
+    </br>
+    </br>
+    <!-- 
+logo_toggle();
+	-->
+    <button onClick='logo_toggle(); $("#marbles").fadeToggle("slow");'>JavaScript</button>
+<div id="marbles" style = "display:none;">
+    <object data=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="600"> <embed src=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
+    </div>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#homeInventory").fadeToggle("slow");'>Android (Java)</button>
+    <div id="homeInventory" style="display:none;">
+    <iframe width="400" height="630" src="https://www.youtube.com/embed/LztBqXfQvPI" frameborder="0" allowfullscreen></iframe>
+    </div>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#shell").fadeToggle("slow");'>C++</button>
+    <div id="shell" style="display:none">
+    <iframe width="760" height="415" src="https://www.youtube.com/embed/U7MV7cIjLDI" frameborder="0" allowfullscreen></iframe>
+    </div>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#breakout").fadeToggle("slow");'>JavaScript</button>
+    <div id="breakout" style="display:none;">
+    <object data=http://davidbrowning.github.io/html/breakout.html width="1016" height="501"> <embed src=http://davidbrowning.github.io/html/breakout.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
+    </div>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#ori").fadeToggle("slow");'>JavaScript</button>
+    <div id="ori" style="display:none;">
+    <object data=http://oriclone.herokuapp.com width="1050" height="800"> <embed src=http://oriclone.herokuapp.com width="100" height="100"> </embed> Error: Embedded data could not be displayed. </object>
+    </div>
+    </br>
+    </br>
+    <button onClick='logo_toggle(); $("#simonish").fadeToggle("slow");'>Java</button>
+    <div id="simonish" style="display:none;">
+    <iframe width="600" height="615" src="https://www.youtube.com/embed/kYVj_BY9k5M" frameborder="0" allowfullscreen></iframe>
+    </div>
+</body>
 </html>
-
