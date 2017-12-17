@@ -5,6 +5,7 @@ html{
  background: -o-linear-gradient(right, #7ff4ff, #111111); /* For Opera 11.1 to 12.0 */
  background: -moz-linear-gradient(right, #7ff4ff, #111111); /* For Firefox 3.6 to 15 */
  background: linear-gradient(to right, #7ff4ff , #111111); /* Standard syntax (must be last) */
+ font-family: helvetica, serif;
 }
 
 div{
@@ -14,6 +15,33 @@ div{
  right: 0; 
  left: 220px;
  bottom: 0;
+ background-color: #161616;
+ color: white;
+ font-size: 15px;
+ font-family: helvetica, serif;
+}
+
+#about-project{
+ position: relative;
+ top: 10px;
+ left: 10px;
+ margin-right: 75%;
+}
+
+#about-ori{
+ position: relative;
+ top: 10px;
+ left: 10px;
+ margin-right: 92%;
+}
+
+#bio{
+ margin-top: 10px;
+ position: static;
+ margin-left: 0px;
+ width: 200px;
+ color: black;
+ background-color: transparent;
 }
 
 img{
