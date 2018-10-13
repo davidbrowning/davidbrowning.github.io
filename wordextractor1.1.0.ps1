@@ -1,4 +1,4 @@
-﻿$root_dir = "C:\Users\Dave\Desktop\davidbrowning.github.io\history"
+﻿$root_dir = "C:\Users\David\dev\davidbrowning.github.io\history"
 New-Variable -Name wdFormatHTML -Value 10 -Option Constant
 $default = [Type]::Missing
 
@@ -86,10 +86,10 @@ foreach ($file in $(get-childitem -recurse *.doc*)) # had to also change to .doc
  $doc.SaveAs([ref]$temp_path,10, $default, $default, $default, $default, $default, $default, $default, $default, $default, 65001); # See comment above
 
  try{$doc.Close();}catch{}
+ get-process | Where-Object Name -Like "*Word*" | kill
 }
 cd ..
 }
 
 # in the event that you have to kill the script, run this:
-#get-process | Where-Object Name -Like "*Word*" | kill
 # 
