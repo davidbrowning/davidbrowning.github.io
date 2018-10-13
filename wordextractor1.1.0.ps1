@@ -11,6 +11,7 @@ function done(){
   end
 }
 
+Write-Host "Please ensure Microsoft Word is closed and all unsaved work is either discarded or saved."
 get-process | Where-Object Name -Like "*Word*" | kill
 #done
 # files in root directory
