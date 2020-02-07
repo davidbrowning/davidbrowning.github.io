@@ -1,0 +1,30 @@
+#center {
+     width: 300px;
+     height:300px;
+     margin: 0px auto;
+     font-family: Arial;
+}
+
+#gears {
+     width: 300px;
+     height:300px;
+     margin: 0px auto;
+     border: 1px solid red;
+     background-color: grey;
+}
+
+#coffee {
+     width: 300px;
+     height:300px;
+     margin: 0px auto;
+     border: 1px solid red;
+     background-color: grey;
+}
+
+#screen {
+     width: 300px;
+     height:300px;
+     margin: 0px auto;
+     border: 1px solid red;
+     background-color: grey;
+}
