@@ -31,6 +31,23 @@ body {
   #recipe-list li:hover {
     background-color: #f9f9f9;
   }
+
+  #reset {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease-in-out;
+    background-color: #fff;
+  }
+  
+  #reset :hover {
+    background-color: #f9f9f9;
+  }
   
   /* Recipe details styles */
   

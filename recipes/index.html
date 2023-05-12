@@ -84,7 +84,6 @@
         <li data-recipe="json/QuicheLorraine.json">QuicheLorraine</li>
         <li data-recipe="json/RaspberryDessert.json">RaspberryDessert</li>
         <li data-recipe="json/RaspberryStreuselMuffins-simple.json">RaspberryStreuselMuffins</li>
-        <li data-recipe="json/rename.bat">rename</li>
         <li data-recipe="json/roasted-chicken-and-potatoes.json">roasted</li>
         <li data-recipe="json/RoloCookies.json">RoloCookies</li>
         <li data-recipe="json/RoyalIcing.json">RoyalIcing</li>
@@ -107,6 +106,7 @@
         <li data-recipe="json/WhiteChocolateMacadamiaNutCookies-actualoriginalCCcookies-BeckyBrowning.json">WhiteChocolateMacadamiaNutCookies</li>
 	</ul>
 	<div id="recipe-details"></div>
+	<div id="reset">Reset</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
@@ -121,6 +121,7 @@
 						$(this).hide();
 					}
 				});
+                                $('#recipe-details').hide();
 			});
 
 			$('#recipe-list li').click(function() {
@@ -141,7 +142,17 @@
 					html += '</ol>';
 					$('#recipe-details').html(html);
 				});
+                                $('#recipe-list li').each(function() {
+					var recipeName = $(this).text().toLowerCase();
+				        $(this).hide();
+				});
+                                $('#recipe-details').show();
 			});
+			$('#reset').click(function() {
+                                $('#recipe-list li').each(function() {
+				        $(this).show();
+				});
+                        });
 		});
 	</script>
 </body>
