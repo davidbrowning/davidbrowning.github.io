@@ -17,6 +17,9 @@
       <button type="button" id="add-instruction">Add Instruction</button>
       <div id="instructions"></div>
       <br>
+      <label>Story:</label>
+      <input type="text" id="story">
+      <br>
       <button type="button" id="submit-recipe">Submit Recipe</button>
     </form>
     <script>
@@ -61,6 +64,7 @@
         // Handle recipe submission
         document.getElementById("submit-recipe").addEventListener("click", function() {
             var recipeName = document.getElementById("recipe-name").value;
+            var story = document.getElementById("story").value;
             for (var i = 0; i < ingredientCount; i++) {
                 var ingredient = {
                     quantity: document.getElementById(`ingredient-quantity-${i}`).value,
@@ -81,7 +85,8 @@
                 "name": recipeName,
                 "ingredients": ingredients,
                 "steps": instructions,
-                "timers": timers
+                "timers": timers,
+                "story": story
             };
 
             // Output recipe as JSON
