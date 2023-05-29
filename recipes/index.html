@@ -29,6 +29,7 @@
         <li data-recipe="json/ChickenCordonBleu.json">ChickenCordonBleu</li>
         <li data-recipe="json/ChickenMushroomRice.json">ChickenMushroomRice</li>
         <li data-recipe="json/ChickenSalad-Sandi.json">ChickenSalad</li>
+        <li data-recipe="json/ChocolateChipCookies.json">Chocolate Chip Cookies</li>
         <li data-recipe="json/ChocolateFrosting.json">ChocolateFrosting</li>
         <li data-recipe="json/ChocolateZucchiniCake.json">ChocolateZucchiniCake</li>
         <li data-recipe="json/CoconutCreamCake.json">CoconutCreamCake</li>
@@ -131,7 +132,7 @@
 					html += '<h3>Ingredients:</h3>';
 					html += '<ul>';
 					$.each(recipe.ingredients, function(index, ingredient) {
-						html += '<li>' + ingredient.quantity + ' ' + ingredient.name + '</li>';
+						html += '<li>' + ingredient.quantity + ' ' + ingredient.name  + ', ' + ingredient.type + '</li>';
 					});
 					html += '</ul>';
 					html += '<h3>Steps:</h3>';

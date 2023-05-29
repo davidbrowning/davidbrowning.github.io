@@ -1,0 +1,70 @@
+{
+    "name": "Chocolate Chip Cookies",
+    "ingredients": [
+        {
+            "quantity": "2 1/2 Cup",
+            "name": "Flour",
+            "type": ""
+        },
+        {
+            "quantity": "1/2 Tsp",
+            "name": "Salt",
+            "type": ""
+        },
+        {
+            "quantity": "1 Tsp",
+            "name": "Baking Soda",
+            "type": ""
+        },
+        {
+            "quantity": "3/4 Cup",
+            "name": "Sugar",
+            "type": "Brown "
+        },
+        {
+            "quantity": "3/4 Cup",
+            "name": "Sugar",
+            "type": "White"
+        },
+        {
+            "quantity": "1 Cup",
+            "name": "Butter",
+            "type": "Don't Soften"
+        },
+        {
+            "quantity": "1 Tsp",
+            "name": "Vanilla",
+            "type": ""
+        },
+        {
+            "quantity": "1",
+            "name": "Egg",
+            "type": ""
+        },
+        {
+            "quantity": "2 Cup",
+            "name": "Chocolate Chips",
+            "type": ""
+        }
+    ],
+    "steps": [
+        "Cream Butter and Sugars Completely",
+        "Add Egg, Vanilla, beat until fluffy",
+        "Combine Dry Ingredients, whisk together",
+        "Add to wet ingredients, mix thoroughly",
+        "Fold in chocolate chips",
+        "Roll into bite sized balls",
+        "Place on ungreased cookie sheet",
+        "Bake at 375 Degrees, don't brown"
+    ],
+    "timers": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "6-7 Minutes"
+    ],
+    "story": ""
+}
