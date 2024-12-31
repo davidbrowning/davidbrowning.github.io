@@ -1,101 +1,106 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Recipe Creator</title>
-	<link rel="stylesheet" type="text/css" href="style.css">
-  </head>
-  <body>
-    <h1>Create a Recipe</h1>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Create a Recipe!</h1>
     <form id="recipe-form">
-      <label>Recipe Name:</label>
-      <input type="text" id="recipe-name" placeholder="Crock Pot Roast">
-      <br>
-      <h2>Ingredients:</h2>
-      <button type="button" id="add-ingredient">Add Ingredient</button>
-      <div id="ingredients"></div>
-      <br>
-      <h2>Instructions:</h2>
-      <button type="button" id="add-instruction">Add Instruction</button>
-      <div id="instructions"></div>
-      <br>
-      <label>Story:</label>
-      <textarea id="story" style="width: 400px; height: 50px"></textarea>
-      <br>
-      <button type="button" id="submit-recipe">Submit Recipe</button>
+        <label>Recipe Name</label>
+        <input type="text" id="recipe-name" placeholder="Crock Pot Roast">
+        <br>
+			<label for="recipe-type">Recipe Type</label>
+			<select id="recipe-type">
+				<option value="" disabled selected>Select type</option>
+				<option value="appetizer">Appetizer</option>
+				<option value="main-dish">Entree</option>
+				<option value="side-dish">Side Dish</option>
+				<option value="dessert">Dessert</option>
+				<option value="beverage">Beverage</option>
+				<option value="snack">Snack</option>
+				<option value="other">Other</option>
+			</select>
+        <br>
+        
+        <h2>Ingredients</h2>
+        <div id="ingredients"></div>
+        <button type="button" id="add-ingredient">Add Ingredient</button>
+        <br>
+        
+        <h2>Instructions</h2>
+        <div id="instructions"></div>
+        <button type="button" id="add-instruction">Add Instruction</button>
+        <br>
+        
+        <h2>Story/Notes</h2>
+        <textarea id="story" style="width: 400px; height: 50px"></textarea>
+        <br>
+        <button type="button" id="submit-recipe">Submit Recipe</button>
     </form>
     <script>
-        var ingredientCount = 0;
-        var instructionCount = 0;
-        var ingredients = [];
-        var instructions = [];
-        var timers = [];
-        var imageURL = "";
-        var originalURL = "";
+        let ingredientCount = 0;
+        let instructionCount = 0;
+        const ingredients = [];
+        const instructions = [];
 
         // Add ingredient input fields
         document.getElementById("add-ingredient").addEventListener("click", function() {
-            var ingredientDiv = document.getElementById("ingredients");
-            var ingredient = document.createElement("div");
+            const ingredientDiv = document.getElementById("ingredients");
+            const ingredient = document.createElement("div");
             ingredient.innerHTML = `
-                <label>Quantity:</label>
-                <input type="text" id="ingredient-quantity-${ingredientCount}">
-                <label>Name:</label>
-                <input type="text" id="ingredient-name-${ingredientCount}">
-                <label>Type:</label>
-                <input type="text" id="ingredient-type-${ingredientCount}">
+                <label>Ingredient ${ingredientCount + 1}:</label>
+                <input type="text" id="ingredient-${ingredientCount}" placeholder="e.g., Sugar">
             `;
             ingredientDiv.appendChild(ingredient);
+            document.getElementById(`ingredient-${ingredientCount}`).focus(); // Auto-focus
             ingredientCount++;
         });
 
         // Add instruction input fields
         document.getElementById("add-instruction").addEventListener("click", function() {
-            var instructionDiv = document.getElementById("instructions");
-            var instruction = document.createElement("div");
+            const instructionDiv = document.getElementById("instructions");
+            const instruction = document.createElement("div");
             instruction.innerHTML = `
                 <label>Step ${instructionCount + 1}:</label>
-                <input type="text" id="instruction-${instructionCount}">
-                <label>Timer:</label>
-                <input type="text" id="timer-${instructionCount}">
+                <input type="text" id="instruction-${instructionCount}" placeholder="e.g., Mix all ingredients">
             `;
             instructionDiv.appendChild(instruction);
+            document.getElementById(`instruction-${instructionCount}`).focus(); // Auto-focus
             instructionCount++;
         });
 
         // Handle recipe submission
         document.getElementById("submit-recipe").addEventListener("click", function() {
-            var recipeName = document.getElementById("recipe-name").value;
-            var story = document.getElementById("story").value;
-            for (var i = 0; i < ingredientCount; i++) {
-                var ingredient = {
-                    quantity: document.getElementById(`ingredient-quantity-${i}`).value,
-                    name: document.getElementById(`ingredient-name-${i}`).value,
-		    type: document.getElementById(`ingredient-type-${i}`).value
-                };
+            const recipeName = document.getElementById("recipe-name").value;
+            const recipeType = document.getElementById("recipe-type").value;
+            const story = document.getElementById("story").value;
+
+            for (let i = 0; i < ingredientCount; i++) {
+                const ingredient = document.getElementById(`ingredient-${i}`).value;
                 ingredients.push(ingredient);
             }
 
-            for (var i = 0; i < instructionCount; i++) {
-                var instruction = document.getElementById(`instruction-${i}`).value;
-                var timer = document.getElementById(`timer-${i}`).value;
+            for (let i = 0; i < instructionCount; i++) {
+                const instruction = document.getElementById(`instruction-${i}`).value;
                 instructions.push(instruction);
-                timers.push(timer);
             }
 
-            var recipe = {
+            const recipe = {
                 "name": recipeName,
+                "type": recipeType,
                 "ingredients": ingredients,
                 "steps": instructions,
-                "timers": timers,
                 "story": story
             };
 
             // Output recipe as JSON
             console.log(JSON.stringify(recipe));
-	    // Download recipe as a JSON file
-            var json = JSON.stringify(recipe);
-            var blob = new Blob([json], {type: "application/json"});
-            var link = document.createElement("a");
+
+            // Download recipe as a JSON file
+            const json = JSON.stringify(recipe);
+            const blob = new Blob([json], { type: "application/json" });
+            const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = recipeName + ".json";
             link.click();
@@ -104,10 +109,83 @@
             document.getElementById("recipe-form").reset();
             ingredientCount = 0;
             instructionCount = 0;
-            ingredients = [];
-            instructions = [];
-            timers = [];
+            ingredients.length = 0;
+            instructions.length = 0;
+
+            // Clear dynamically added elements
+            document.getElementById("ingredients").innerHTML = "";
+            document.getElementById("instructions").innerHTML = "";
         });
+		
+		document.getElementById("submit-recipe").addEventListener("click", function () {
+    var recipeName = document.getElementById("recipe-name").value;
+    var recipeType = document.getElementById("recipe-type").value; // Get the selected recipe type
+    var story = document.getElementById("story").value;
+
+    // Collect ingredients
+    for (var i = 0; i < ingredientCount; i++) {
+        var ingredient = document.getElementById(`ingredient-${i}`).value;
+        ingredients.push(ingredient);
+    }
+
+    // Collect instructions
+    for (var i = 0; i < instructionCount; i++) {
+        var instruction = document.getElementById(`instruction-${i}`).value;
+        instructions.push(instruction);
+    }
+
+    var recipe = {
+        name: recipeName,
+        type: recipeType, // Include type in the recipe object
+        ingredients: ingredients,
+        steps: instructions,
+        story: story
+    };
+
+    // Output recipe as JSON
+    console.log(JSON.stringify(recipe));
+
+    // Reset form and arrays
+    document.getElementById("recipe-form").reset();
+    ingredientCount = 0;
+    instructionCount = 0;
+    ingredients = [];
+    instructions = [];
+});
+
+		
+		// Utility to focus text box and trigger button on Enter key
+function addEnterKeyHandler(inputId, buttonId) {
+    const inputElement = document.getElementById(inputId);
+    const buttonElement = document.getElementById(buttonId);
+
+    if (inputElement && buttonElement) {
+        inputElement.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Prevent default form submission
+                buttonElement.click(); // Trigger the button click
+            }
+        });
+    }
+}
+
+// Initialize Enter key handlers for ingredient and instruction buttons
+document.addEventListener("DOMContentLoaded", function () {
+    const recipeNameInput = document.getElementById("recipe-name");
+    addEnterKeyHandler("recipe-name", "add-ingredient");
+
+    // Reapply for dynamically added ingredients and instructions
+    document.getElementById("add-ingredient").addEventListener("click", function () {
+        const newIngredientInput = `ingredient-${ingredientCount - 1}`;
+        addEnterKeyHandler(newIngredientInput, "add-ingredient");
+    });
+
+    document.getElementById("add-instruction").addEventListener("click", function () {
+        const newInstructionInput = `instruction-${instructionCount - 1}`;
+        addEnterKeyHandler(newInstructionInput, "add-instruction");
+    });
+});
+
     </script>
-  </body>
+</body>
 </html>
