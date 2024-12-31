@@ -1,0 +1,102 @@
+/* General styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+h2 {
+    color: #2c3e50;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Input and Textarea Styles */
+input[type="text"], textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+textarea {
+    resize: vertical;
+    height: 80px;
+}
+
+/* Buttons */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 5px 0;
+    display: inline-block;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* Section Styles */
+#ingredients, #instructions {
+    margin-bottom: 20px;
+}
+
+#ingredients li, #instructions li {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-bottom: 5px;
+    padding: 5px 10px;
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 4px;
+}
+
+select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+select:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+select option {
+    font-size: 14px;
+    padding: 10px;
+}
+/* Section Headers */
+h2 {
+    font

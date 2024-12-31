@@ -153,7 +153,12 @@
 					html += '<h3>Ingredients:</h3>';
 					html += '<ul>';
 					$.each(recipe.ingredients, function(index, ingredient) {
-						html += '<li>' + ingredient.quantity + ' ' + ingredient.name  + ', ' + ingredient.type + '</li>';
+						if(ingredient.quantity != null){
+							html += '<li>' + ingredient.quantity + ' ' + ingredient.name  + ', ' + ingredient.type + '</li>';
+						}
+						else {
+							html += '<li>' + ingredient + '</li>';
+						}
 					});
 					html += '</ul>';
 					html += '<h3>Steps:</h3>';
