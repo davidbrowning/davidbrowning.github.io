@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Explorer</title>
+    <link rel="stylesheet" href="sierrastyle.css">
+</head>
+<body>
+    <header>
+        <h1>Recipe Explorer</h1>
+        <p>Discover recipes that inspire your culinary adventures.</p>
+    </header>
+
+    <main class="container">
+        <div class="search-section">
+            <label for="search-field" class="label">Search for a recipe:</label>
+            <input type="text" id="search-field" name="search-field" placeholder="Type to search...">
+        </div>
+
+        <ul id="recipe-list">
+            <li data-recipe="json/VanillaCustardCream.json">Vanilla Custard Cream</li>
+            <li data-recipe="json/WatermelonSliceCookies.json">Watermelon Slice Cookies</li>
+            <li data-recipe="json/WhippedCreamFrosting.json">Whipped Cream Frosting</li>
+            <li data-recipe="json/WhiteChocolateChexMix.json">White Chocolate Chex Mix</li>
+            <li data-recipe="json/WhiteChocolateMacadamiaNutCookies-actualoriginalCCcookies-BeckyBrowning.json">White Chocolate Macadamia Nut Cookies</li>
+            <li data-recipe="json/WiltonButtercream-useforGranny_scookies.json">Wilton Buttercream</li>
+        </ul>
+
+        <div id="recipe-details">
+  
+        </div>
+		
+		<div id="back-button">
+            <button id="back" class="back-button">Back to Recipe List</button>
+        </div>
+    </main>
+
+<footer id="footer">
+    <p>© 2025 Recipe Explorer. All rights reserved.</p>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search-field').on('input', function() {
+                const searchValue = $(this).val().toLowerCase();
+                $('#recipe-list li').each(function() {
+                    $(this).toggle($(this).text().toLowerCase().includes(searchValue));
+                });
+            });
+
+			$('#recipe-list li').click(function () {
+				const selectedRecipe = $(this).data('recipe');
+				const listItem = $(this);
+
+				$.getJSON(selectedRecipe, function (recipe) {
+					const html = `
+						<h2>${recipe.name}</h2>
+						<h3>Ingredients</h3>
+						<ul>
+							${recipe.ingredients
+								.map(ing => `<li>${ing.quantity || ''} ${ing.name || ing}, ${ing.type || ''}</li>`)
+								.join('')}
+						</ul>
+						<h3>Steps</h3>
+						<ol>
+							${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+						</ol>
+					`;
+					$('#recipe-details').html(html).removeClass('hidden');
+
+
+					// Scroll to the footer
+					$('html, body').animate(
+						{
+							scrollTop: $('#footer').offset().top,
+						},
+						800 // Duration in milliseconds for the scrolling animation
+					);
+	
+				});
+			});
+
+
+            $('#back').click(function() {
+                $('#recipe-details').addClass('hidden');
+                $('#recipe-list').removeClass('hidden');
+					// Scroll to the header
+					$('html, body').animate(
+						{
+							scrollTop: $('#header'),
+						},
+						800 // Duration in milliseconds for the scrolling animation
+					);
+            });
+			
+			
+        });
+    </script>
+</body>
+</html>
