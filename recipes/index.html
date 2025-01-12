@@ -1,213 +1,243 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>Recipe Selector</title>
-	<link rel="stylesheet" type="text/css" href="sierrastyle.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Explorer</title>
+	<link rel="icon" href="./recipe-images/favicon-recipe.png" type="image/png">
+    <link rel="stylesheet" href="sierrastyle.css">
 </head>
 <body>
-	<label for="search-field">Search for a recipe:</label>
-	<input type="text" id="search-field" name="search-field" placeholder="Type to search...">
-	<ul id="recipe-list">
-	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
-	<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
-	<li data-recipe="json/MothersPeasantBread.json">Mother's Peasant Bread</li>
-	<li data-recipe="json/Sourdoughbread.json">Sourdough bread</li>
-	<li data-recipe="json/SourdoughThumbprintCookies.json">Sourdough Thumbprint Cookies</li>
-	<li data-recipe="json/MashedPotatoes.json">Mashed Potatoes</li>
-	<li data-recipe="json/InstantPotCornChowder.json">Instant Pot Corn Chowder</li>
-	<li data-recipe="json/InstantPotChickenAndRice.json">Instant Pot Chicken And Rice</li>
-	<li data-recipe="json/InstantPotBurritoBowls.json">Instant Pot Burrito Bowls</li>
-	<li data-recipe="json/InstantPotBeefStew.json">Instant Pot Beef Stew</li>
-	<li data-recipe="json/ZucchiniMuffins.json">Zucchini Muffins</li>
-	<li data-recipe="json/AmericanChopSuey.json">American Chop Suey</li>
-	<li data-recipe="json/JellyCake.json">Jelly Cake</li>
-	<li data-recipe="json/LemonMeltawayCookies.json">Lemon Meltaway Cookies</li>
-	<li data-recipe="json/InstantPotMacNCheese.json">Instant Pot Mac N Cheese</li>
-	<li data-recipe="json/ButternutSquashSoup.json">Butternut Squash Soup</li>
-	<li data-recipe="json/RoastedChickenAndVeggies.json">Roasted Chicken And Veggies</li>
-	<li data-recipe="json/TaterTotAndChickenCasserole.json">Tater Tot And Chicken Casserole</li>
-	<li data-recipe="json/WhiteGrapeJelly.json">White Grape Jelly</li>
-	<li data-recipe="json/NutSeedPaleoBread.json">Nut Seed Paleo Bread</li>
+    <header>
+        <h1>Recipe Explorer</h1>
+    </header>
 
-        <li data-recipe="json/AppleDappleCake.json">Apple Dapple Cake</li>
-        <li data-recipe="json/AuntPamsPie.json">Aunt Pams Pie</li>
-        <li data-recipe="json/BaconWrappedChicken.json">Bacon Wrapped Chicken</li>
-        <li data-recipe="json/BananaCake.json">Banana Cake</li>
-        <li data-recipe="json/BasicCreamPuffs.json">Basic Cream Puffs</li>
-        <li data-recipe="json/BavarianCream.json">Bavarian Cream</li>
-        <li data-recipe="json/BestEverChocolateLayerFudgeCake.json">Best Ever Chocolate Layer Fudge Cake</li>
-        <li data-recipe="json/BowTiePastaSalad.json">Bow Tie Pasta Salad</li>
-        <li data-recipe="json/BranMuffins.json">Bran Muffins</li>
-        <li data-recipe="json/BreadPudding.json">Bread Pudding</li>
-        <li data-recipe="json/BreadstickTwists.json">Breadstick Twists</li>
-        <li data-recipe="json/BrownSugarFrosting.json">Brown Sugar Frosting</li>
-        <li data-recipe="json/ButterCreamFrosting.json">Butter Cream Frosting</li>
-	<li data-recipe="json/Blueberryscones.json">Blueberry scones</li>
-	<li data-recipe="json/CafeRioChicken.json">Cafe Rio Chicken</li>
-	<li data-recipe="json/CafeRioPork.json">Cafe Rio Pork</li>
-	<li data-recipe="json/CafeRioRanchDressing.json">Cafe Rio Ranch Dressing</li>
-        <li data-recipe="json/CaeserSalad-Mary.json">Caeser Salad</li>
-        <li data-recipe="json/CarmelAppleDip.json">Carmel Apple Dip</li>
-        <li data-recipe="json/CarrotSouffle.json">Carrot Souffle</li>
-        <li data-recipe="json/CerealCandyCrunch-MaeBrowning.json">Cereal Candy Crunch</li>
-        <li data-recipe="json/ChickenBroccoliBake.json">Chicken Broccoli Bake</li>
-        <li data-recipe="json/ChickenCordonBleu.json">Chicken Cordon Bleu</li>
-        <li data-recipe="json/ChickenMushroomRice.json">Chicken Mushroom Rice</li>
-        <li data-recipe="json/ChickenSalad-Sandi.json">Chicken Salad</li>
-        <li data-recipe="json/ChocolateChipCookies.json">Chocolate Chip Cookies</li>
-        <li data-recipe="json/ChocolateFrosting.json">Chocolate Frosting</li>
-        <li data-recipe="json/ChocolateZucchiniCake.json">Chocolate Zucchini Cake</li>
-        <li data-recipe="json/CoconutCreamCake.json">Coconut Cream Cake</li>
-        <li data-recipe="json/CoconutCrunchDelight.json">Coconut Crunch Delight</li>
-        <li data-recipe="json/CookieDoughBrownies-RashellAinsworth.json">Cookie Dough Brownies</li>
-        <li data-recipe="json/CornMedley-MaryWaters.json">Corn Medley</li>
-        <li data-recipe="json/CranberryAppleCrisp.json">Cranberry Apple Crisp</li>
-        <li data-recipe="json/CreamCheeseSheetCake.json">Cream Cheese Sheet Cake</li>
-        <li data-recipe="json/Crepes.json">Crepes</li>
-        <li data-recipe="json/CrispWaffles.json">Crisp Waffles</li>
-        <li data-recipe="json/Croissants.json">Croissants</li>
-	<li data-recipe="json/Doughnuts.json">Doughnuts</li>
-        <li data-recipe="json/DePePeFruitSalad.json">DePePe Fruit Salad</li>
-        <li data-recipe="json/DutchApplePie.json">Dutch Apple Pie</li>
-        <li data-recipe="json/DutchOvenBeefPotRoast.json">Dutch Oven Beef Pot Roast</li>
-        <li data-recipe="json/FarmCake-MichelleWhiting.json">Farm Cake Michelle Whiting</li>
-        <li data-recipe="json/FarmCake.json">Farm Cake</li>
-        <li data-recipe="json/Fluffypancakes.json">Fluffy Pancakes</li>
-        <li data-recipe="json/FrenchOnionSoup.json">French Onion Soup</li>
-        <li data-recipe="json/FudgeNutBars.json">Fudge Nut Bars</li>
-	<li data-recipe="json/FudgeTorte.json">Fudge Torte</li>
-	<li data-recipe="json/GrandmasWhiteBread.json">Grandmas White Bread</li>
-	<li data-recipe="json/Granny_sPinkSugarCookies.json">Grannys Pink Sugar Cookies</li>
-        <li data-recipe="json/GermanBakedBeans.json">German Baked Beans</li>
-        <li data-recipe="json/GingerbreadHouse.json">Gingerbread House</li>
-        <li data-recipe="json/GingerbreadwithLemonSauce.json">Gingerbread with Lemon Sauce</li>
-        <li data-recipe="json/GreatHarvestPumpkinChocolateChipBread.json">Great Harvest Pumpkin Chocolate Chip Bread</li>
-        <li data-recipe="json/GrilledBruschettaChicken.json">Grilled Bruschetta Chicken</li>
-        <li data-recipe="json/HamQuiches.json">Ham Quiches</li>
-	<li data-recipe="json/HollandaiseSauce.json">Hollandaise Sauce</li>
-        <li data-recipe="json/HomemadeChickenNoodleSoup.json">Homemade Chicken Noodle Soup</li>
-        <li data-recipe="json/IceCream-Kathy.json">IceCream</li>
-	<li data-recipe="json/Krumkake.json">Krumkake</li>
-        <li data-recipe="json/LavaFrenchToast.json">Lava French Toast</li>
-        <li data-recipe="json/LayeredMintBrownies.json">Layered Mint Brownies</li>
-        <li data-recipe="json/LemonCheeseCake.json">Lemon Cheese Cake</li>
-        <li data-recipe="json/LemonPuddingCake.json">Lemon Pudding Cake</li>
-        <li data-recipe="json/LemonPuddingDessert.json">Lemon Pudding Dessert</li>
-        <li data-recipe="json/Maddy_sSnickerdoodles.json">Maddy_s Snickerdoodles</li>
-        <li data-recipe="json/MandarinOrangeSalad-GrandmaMacKay.json">Mandarin Orange Salad</li>
-        <li data-recipe="json/Mary_MarthaOatmealChocolatechip.json">Mary_Martha OatmealChocolatechip</li>
-        <li data-recipe="json/Michelle_sRolls.json">Michelle_sRolls</li>
-        <li data-recipe="json/MomStewart_sPotatoSalad.json">MomStewart_sPotatoSalad</li>
-        <li data-recipe="json/Mom_sraisinbars.json">Mom_sraisinbars</li>
-        <li data-recipe="json/MushroomandTomatoSalad.json">MushroomandTomatoSalad</li>
-        <li data-recipe="json/NeverFailPieCrust-AuntDonna.json">NeverFailPieCrust</li>
-        <li data-recipe="json/NoBakeCheesecake.json">NoBakeCheesecake</li>
-        <li data-recipe="json/NoBakeOreoTruffles.json">NoBakeOreoTruffles</li>
-        <li data-recipe="json/OatmealCookies.json">OatmealCookies</li>
-        <li data-recipe="json/PeachCobbler-BeckyLovinggood.json">PeachCobbler</li>
-	<li data-recipe="json/PerfectPotatoGratin.json">Perfect Potato Gratin</li>
-	<li data-recipe="json/PorkRoast_Surkaal.json">Pork Roast Surkaal</li>
-	<li data-recipe="json/PumpkinLog.json">Pumpkin Log</li>
-        <li data-recipe="json/PeachCobbler-WendyBentley.json">PeachCobbler</li>
-        <li data-recipe="json/Peroshkies.json">Peroshkies</li>
-        <li data-recipe="json/PetitPearls.json">PetitPearls</li>
-        <li data-recipe="json/PoppySeedBread-Martha.json">PoppySeedBread</li>
-        <li data-recipe="json/PorkChopsinMustardSauce.json">PorkChopsinMustardSauce</li>
-        <li data-recipe="json/PortlandSandwichCookies.json">PortlandSandwichCookies</li>
-        <li data-recipe="json/PulledPork-JeremiahMohr.json">PulledPork</li>
-        <li data-recipe="json/PumpkinBread-ClaireMiller.json">PumpkinBread</li>
-        <li data-recipe="json/PumpkinBrownies.json">PumpkinBrownies</li>
-        <li data-recipe="json/QuicheLorraine.json">QuicheLorraine</li>
-        <li data-recipe="json/RaspberryDessert.json">RaspberryDessert</li>
-        <li data-recipe="json/RaspberryStreuselMuffins-simple.json">RaspberryStreuselMuffins</li>
-        <li data-recipe="json/roasted-chicken-and-potatoes.json">roasted</li>
-        <li data-recipe="json/RoloCookies.json">RoloCookies</li>
-        <li data-recipe="json/RoyalIcing.json">RoyalIcing</li>
-	<li data-recipe="json/RisKrem.json">RisKrem</li>
-        <li data-recipe="json/Salsa-Sandi.json">Salsa</li>
-        <li data-recipe="json/Sandi_sGoldenGrahamMix.json">Sandi_sGoldenGrahamMix</li>
-        <li data-recipe="json/SausageCasserole.json">SausageCasserole</li>
-        <li data-recipe="json/ScandinavianAlmondPastry.json">ScandinavianAlmondPastry</li>
-        <li data-recipe="json/Scones-VickyGeilman.json">Scones</li>
-        <li data-recipe="json/Skollerbrodfilling(PastryCream).json">Skollerbrodfilling</li>
-	<li data-recipe="json/Sjokoladesaus.json">Sjokoladesaus</li>
-        <li data-recipe="json/SoftGingerCookies.json">SoftGingerCookies</li>
-        <li data-recipe="json/StickyQuickies.json">StickyQuickies</li>
-        <li data-recipe="json/Strawberrydessert.json">Strawberrydessert</li>
-        <li data-recipe="json/StuffedFrenchToast.json">StuffedFrenchToast</li>
-        <li data-recipe="json/SweetandSourMeatloaf.json">SweetandSourMeatloaf</li>
-        <li data-recipe="json/SweetPotatoCasserole-MomStewart.json">SweetPotatoCasserole</li>
-	<li data-recipe="json/SwigSourCreamfrosting.json">Swig Sour Cream Frosting</li>
-	<li data-recipe="json/SwigSugarCookies.json">Swig Sugar Cookies</li>
-	<li data-recipe="json/TortillaSoup.json">Tortilla Soup</li>
-        <li data-recipe="json/Twicecookeddivinity.json">Twicecookeddivinity</li>
-	<li data-recipe="json/VanillaCustardCream.json">Vanilla Custard Cream</li>
-        <li data-recipe="json/WatermelonSliceCookies.json">WatermelonSliceCookies</li>
-        <li data-recipe="json/WhippedCreamFrosting.json">WhippedCreamFrosting</li>
-        <li data-recipe="json/WhiteChocolateChexMix.json">White Chocolate Chex Mix</li>
-        <li data-recipe="json/WhiteChocolateMacadamiaNutCookies-actualoriginalCCcookies-BeckyBrowning.json">White Chocolate Macadamia Nut Cookies</li>
-	<li data-recipe="json/WiltonButtercream-useforGranny_scookies.json">Wilton Buttercream</li>
-	</ul>
-	<div id="recipe-details"></div>
-	<div id="reset">Reset</div>
 
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		$(document).ready(function() {
-			$('#search-field').keyup(function() {
-				var searchValue = $(this).val().toLowerCase();
-				$('#recipe-list li').each(function() {
-					var recipeName = $(this).text().toLowerCase();
-					if (recipeName.indexOf(searchValue) !== -1) {
-						$(this).show();
-					} else {
-						$(this).hide();
-					}
-				});
-                                $('#recipe-details').hide();
-			});
 
-			$('#recipe-list li').click(function() {
-				var selectedRecipe = $(this).data('recipe');
-				$.getJSON(selectedRecipe, function(recipe) {
-					var html = '<h2>' + recipe.name + '</h2>';
-					html += '<h3>Ingredients:</h3>';
-					html += '<ul>';
-					$.each(recipe.ingredients, function(index, ingredient) {
-						if(ingredient.quantity != null){
-							html += '<li>' + ingredient.quantity + ' ' + ingredient.name  + ', ' + ingredient.type + '</li>';
-									// Scroll to the footer
+<body>
+		       
+    <main class="container">
+        <div class="search-section">
+		 <p>Discover recipes that will inspire your culinary adventures.</p>
+            <input type="text" id="search-field" name="search-field" placeholder="Type to search...">
+        </div>
+
+			<h2>Favorites</h2>
+<ul id="favorites-list">
+    	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
+		<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
+		<li data-recipe="json/MothersPeasantBread.json">Mother's Peasant Bread</li>
+		<li data-recipe="json/Sourdoughbread.json">Sourdough bread</li>
+		<li data-recipe="json/SourdoughThumbprintCookies.json">Sourdough Thumbprint Cookies</li>
+		<li data-recipe="json/MashedPotatoes.json">Mashed Potatoes</li>
+		<li data-recipe="json/InstantPotCornChowder.json">Instant Pot Corn Chowder</li>
+		<li data-recipe="json/InstantPotChickenAndRice.json">Instant Pot Chicken And Rice</li>
+		<li data-recipe="json/InstantPotBurritoBowls.json">Instant Pot Burrito Bowls</li>
+		<li data-recipe="json/InstantPotBeefStew.json">Instant Pot Beef Stew</li>
+		<li data-recipe="json/ZucchiniMuffins.json">Zucchini Muffins</li>
+		<li data-recipe="json/AmericanChopSuey.json">American Chop Suey</li>
+		<li data-recipe="json/JellyCake.json">Jelly Cake</li>
+		<li data-recipe="json/LemonMeltawayCookies.json">Lemon Meltaway Cookies</li>
+		<li data-recipe="json/InstantPotMacNCheese.json">Instant Pot Mac N Cheese</li>
+		<li data-recipe="json/ButternutSquashSoup.json">Butternut Squash Soup</li>
+		<li data-recipe="json/RoastedChickenAndVeggies.json">Roasted Chicken And Veggies</li>
+		<li data-recipe="json/TaterTotAndChickenCasserole.json">Tater Tot And Chicken Casserole</li>
+		<li data-recipe="json/WhiteGrapeJelly.json">White Grape Jelly</li>
+		<li data-recipe="json/NutSeedPaleoBread.json">Nut Seed Paleo Bread</li>
+</ul>
+			<h2>Family Recipe Selection</h2>
+<ul id="recipe-list">
+		<li data-recipe="json/AppleDappleCake.json">Apple Dapple Cake</li>
+		<li data-recipe="json/AuntPamsPie.json">Aunt Pams Pie</li>
+		<li data-recipe="json/BaconWrappedChicken.json">Bacon Wrapped Chicken</li>
+		<li data-recipe="json/BananaCake.json">Banana Cake</li>
+		<li data-recipe="json/BasicCreamPuffs.json">Basic Cream Puffs</li>
+		<li data-recipe="json/BavarianCream.json">Bavarian Cream</li>
+		<li data-recipe="json/BestEverChocolateLayerFudgeCake.json">Best Ever Chocolate Layer Fudge Cake</li>
+		<li data-recipe="json/BowTiePastaSalad.json">Bow Tie Pasta Salad</li>
+		<li data-recipe="json/BranMuffins.json">Bran Muffins</li>
+		<li data-recipe="json/BreadPudding.json">Bread Pudding</li>
+		<li data-recipe="json/BreadstickTwists.json">Breadstick Twists</li>
+		<li data-recipe="json/BrownSugarFrosting.json">Brown Sugar Frosting</li>
+		<li data-recipe="json/ButterCreamFrosting.json">Butter Cream Frosting</li>
+		<li data-recipe="json/Blueberryscones.json">Blueberry scones</li>
+		<li data-recipe="json/CafeRioChicken.json">Cafe Rio Chicken</li>
+		<li data-recipe="json/CafeRioPork.json">Cafe Rio Pork</li>
+		<li data-recipe="json/CafeRioRanchDressing.json">Cafe Rio Ranch Dressing</li>
+		<li data-recipe="json/CaeserSalad-Mary.json">Caeser Salad</li>
+		<li data-recipe="json/CarmelAppleDip.json">Carmel Apple Dip</li>
+		<li data-recipe="json/CarrotSouffle.json">Carrot Souffle</li>
+		<li data-recipe="json/CerealCandyCrunch-MaeBrowning.json">Cereal Candy Crunch</li>
+		<li data-recipe="json/ChickenBroccoliBake.json">Chicken Broccoli Bake</li>
+		<li data-recipe="json/ChickenCordonBleu.json">Chicken Cordon Bleu</li>
+		<li data-recipe="json/ChickenMushroomRice.json">Chicken Mushroom Rice</li>
+		<li data-recipe="json/ChickenSalad-Sandi.json">Chicken Salad</li>
+		<li data-recipe="json/ChocolateChipCookies.json">Chocolate Chip Cookies</li>
+		<li data-recipe="json/ChocolateFrosting.json">Chocolate Frosting</li>
+		<li data-recipe="json/ChocolateZucchiniCake.json">Chocolate Zucchini Cake</li>
+		<li data-recipe="json/CoconutCreamCake.json">Coconut Cream Cake</li>
+		<li data-recipe="json/CoconutCrunchDelight.json">Coconut Crunch Delight</li>
+		<li data-recipe="json/CookieDoughBrownies-RashellAinsworth.json">Cookie Dough Brownies</li>
+		<li data-recipe="json/CornMedley-MaryWaters.json">Corn Medley</li>
+		<li data-recipe="json/CranberryAppleCrisp.json">Cranberry Apple Crisp</li>
+		<li data-recipe="json/CreamCheeseSheetCake.json">Cream Cheese Sheet Cake</li>
+		<li data-recipe="json/Crepes.json">Crepes</li>
+		<li data-recipe="json/CrispWaffles.json">Crisp Waffles</li>
+		<li data-recipe="json/Croissants.json">Croissants</li>
+		<li data-recipe="json/Doughnuts.json">Doughnuts</li>
+		<li data-recipe="json/DePePeFruitSalad.json">DePePe Fruit Salad</li>
+		<li data-recipe="json/DutchApplePie.json">Dutch Apple Pie</li>
+		<li data-recipe="json/DutchOvenBeefPotRoast.json">Dutch Oven Beef Pot Roast</li>
+		<li data-recipe="json/FarmCake-MichelleWhiting.json">Farm Cake Michelle Whiting</li>
+		<li data-recipe="json/FarmCake.json">Farm Cake</li>
+		<li data-recipe="json/Fluffypancakes.json">Fluffy Pancakes</li>
+		<li data-recipe="json/FrenchOnionSoup.json">French Onion Soup</li>
+		<li data-recipe="json/FudgeNutBars.json">Fudge Nut Bars</li>
+		<li data-recipe="json/FudgeTorte.json">Fudge Torte</li>
+		<li data-recipe="json/GrandmasWhiteBread.json">Grandmas White Bread</li>
+		<li data-recipe="json/Granny_sPinkSugarCookies.json">Grannys Pink Sugar Cookies</li>
+		<li data-recipe="json/GermanBakedBeans.json">German Baked Beans</li>
+		<li data-recipe="json/GingerbreadHouse.json">Gingerbread House</li>
+		<li data-recipe="json/GingerbreadwithLemonSauce.json">Gingerbread with Lemon Sauce</li>
+		<li data-recipe="json/GreatHarvestPumpkinChocolateChipBread.json">Great Harvest Pumpkin Chocolate Chip Bread</li>
+		<li data-recipe="json/GrilledBruschettaChicken.json">Grilled Bruschetta Chicken</li>
+		<li data-recipe="json/HamQuiches.json">Ham Quiches</li>
+		<li data-recipe="json/HollandaiseSauce.json">Hollandaise Sauce</li>
+		<li data-recipe="json/HomemadeChickenNoodleSoup.json">Homemade Chicken Noodle Soup</li>
+		<li data-recipe="json/IceCream-Kathy.json">IceCream</li>
+		<li data-recipe="json/Krumkake.json">Krumkake</li>
+		<li data-recipe="json/LavaFrenchToast.json">Lava French Toast</li>
+		<li data-recipe="json/LayeredMintBrownies.json">Layered Mint Brownies</li>
+		<li data-recipe="json/LemonCheeseCake.json">Lemon Cheese Cake</li>
+		<li data-recipe="json/LemonPuddingCake.json">Lemon Pudding Cake</li>
+		<li data-recipe="json/LemonPuddingDessert.json">Lemon Pudding Dessert</li>
+		<li data-recipe="json/Maddy_sSnickerdoodles.json">Maddy's Snickerdoodles</li>
+		<li data-recipe="json/MandarinOrangeSalad-GrandmaMacKay.json">Mandarin Orange Salad</li>
+		<li data-recipe="json/Mary_MarthaOatmealChocolatechip.json">Mary/Martha Oatmeal Chocolate chip</li>
+		<li data-recipe="json/Michelle_sRolls.json">Michelle's Rolls</li>
+		<li data-recipe="json/MomStewart_sPotatoSalad.json">Mom Stewart's PotatoSalad</li>
+		<li data-recipe="json/Mom_sraisinbars.json">Mom's raisin bars</li>
+		<li data-recipe="json/MushroomandTomatoSalad.json">Mushroom and Tomato Salad</li>
+		<li data-recipe="json/NeverFailPieCrust-AuntDonna.json">Never Fail Pie Crust</li>
+		<li data-recipe="json/NoBakeCheesecake.json">NoBake Cheesecake</li>
+		<li data-recipe="json/NoBakeOreoTruffles.json">NoBake Oreo Truffles</li>
+		<li data-recipe="json/OatmealCookies.json">Oatmeal Cookies</li>
+		<li data-recipe="json/PeachCobbler-BeckyLovinggood.json">Peach Cobbler</li>
+		<li data-recipe="json/PerfectPotatoGratin.json">Perfect Potato Gratin</li>
+		<li data-recipe="json/PorkRoast_Surkaal.json">Pork Roast Surkaal</li>
+		<li data-recipe="json/PumpkinLog.json">Pumpkin Log</li>
+		<li data-recipe="json/PeachCobbler-WendyBentley.json">Peach Cobbler</li>
+		<li data-recipe="json/Peroshkies.json">Peroshkies</li>
+		<li data-recipe="json/PetitPearls.json">Petit Pearls</li>
+		<li data-recipe="json/PoppySeedBread-Martha.json">Poppy Seed Bread</li>
+		<li data-recipe="json/PorkChopsinMustardSauce.json">Pork Chops in Mustard Sauce</li>
+		<li data-recipe="json/PortlandSandwichCookies.json">Portland Sandwich Cookies</li>
+		<li data-recipe="json/PulledPork-JeremiahMohr.json">Pulled Pork</li>
+		<li data-recipe="json/PumpkinBread-ClaireMiller.json">Pumpkin Bread</li>
+		<li data-recipe="json/PumpkinBrownies.json">Pumpkin Brownies</li>
+		<li data-recipe="json/QuicheLorraine.json">Quiche Lorraine</li>
+		<li data-recipe="json/RaspberryDessert.json">Raspberry Dessert</li>
+		<li data-recipe="json/RaspberryStreuselMuffins-simple.json">Raspberry Streusel Muffins</li>
+		<li data-recipe="json/roasted-chicken-and-potatoes.json">Roasted chicken and potatoes - Becky</li>
+		<li data-recipe="json/RoloCookies.json">Rolo Cookies</li>
+		<li data-recipe="json/RoyalIcing.json">Royal Icing</li>
+		<li data-recipe="json/RisKrem.json">RisKrem</li>
+		<li data-recipe="json/Salsa-Sandi.json">Salsa</li>
+		<li data-recipe="json/Sandi_sGoldenGrahamMix.json">Sandi's Golden Graham Mix</li>
+		<li data-recipe="json/SausageCasserole.json">Sausage Casserole</li>
+		<li data-recipe="json/ScandinavianAlmondPastry.json">Scandinavian Almond Pastry</li>
+		<li data-recipe="json/Scones-VickyGeilman.json">Scones</li>
+		<li data-recipe="json/Skollerbrodfilling(PastryCream).json">Skollerbrod filling</li>
+		<li data-recipe="json/Sjokoladesaus.json">Sjokoladesaus</li>
+		<li data-recipe="json/SoftGingerCookies.json">Soft Ginger Cookies</li>
+		<li data-recipe="json/StickyQuickies.json">Sticky Quickies</li>
+		<li data-recipe="json/Strawberrydessert.json">Strawberry dessert</li>
+		<li data-recipe="json/StuffedFrenchToast.json">Stuffed French Toast</li>
+		<li data-recipe="json/SweetandSourMeatloaf.json">Sweet and Sour Meatloaf</li>
+		<li data-recipe="json/SweetPotatoCasserole-MomStewart.json">Sweet Potato Casserole</li>
+		<li data-recipe="json/SwigSourCreamfrosting.json">Swig Sour Cream Frosting</li>
+		<li data-recipe="json/SwigSugarCookies.json">Swig Sugar Cookies</li>
+		<li data-recipe="json/TortillaSoup.json">Tortilla Soup</li>
+		<li data-recipe="json/Twicecookeddivinity.json">Twice cooked divinity</li>
+		<li data-recipe="json/VanillaCustardCream.json">Vanilla Custard Cream</li>
+		<li data-recipe="json/WatermelonSliceCookies.json">Watermelon Slice Cookies</li>
+		<li data-recipe="json/WhippedCreamFrosting.json">Whipped Cream Frosting</li>
+		<li data-recipe="json/WhiteChocolateChexMix.json">White Chocolate Chex Mix</li>
+		<li data-recipe="json/WhiteChocolateMacadamiaNutCookies-actualoriginalCCcookies-BeckyBrowning.json">White Chocolate Macadamia Nut Cookies</li>
+		<li data-recipe="json/WiltonButtercream-useforGranny_scookies.json">Wilton Buttercream</li>
+</ul>
+
+
+        <div id="recipe-details">
+  
+        </div>
+		
+		<div id="back-button">
+            <button id="back" class="back-button">Back to Recipe List</button>
+        </div>
+    </main>
+
+<footer id="footer">
+    <p>© 2025 Recipe Explorer. All rights reserved.</p>
+</footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search-field').on('input', function() {
+                const searchValue = $(this).val().toLowerCase();
+                $('#recipe-list li').each(function() {
+                    $(this).toggle($(this).text().toLowerCase().includes(searchValue));
+                });
+            });
+
+			$('#recipe-list li').click(function () {
+				const selectedRecipe = $(this).data('recipe');
+				const listItem = $(this);
+
+				$.getJSON(selectedRecipe, function (recipe) {
+					const html = `
+						<h2>${recipe.name}</h2>
+						<h3>Ingredients</h3>
+						<ul>
+							${recipe.ingredients
+								.map(ing => `<li>${ing.quantity || ''} ${ing.name || ing}, ${ing.type || ''}</li>`)
+								.join('')}
+						</ul>
+						<h3>Steps</h3>
+						<ol>
+							${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+						</ol>
+					`;
+					$('#recipe-details').html(html).removeClass('hidden');
+
+
+					// Scroll to the footer
 					$('html, body').animate(
 						{
 							scrollTop: $('#footer').offset().top,
 						},
 						800 // Duration in milliseconds for the scrolling animation
-					);		}
-						else {
-							html += '<li>' + ingredient + '</li>';
-						}
-					});
-					html += '</ul>';
-					html += '<h3>Steps:</h3>';
-					html += '<ol>';
-					$.each(recipe.steps, function(index, step) {
-						html += '<li>' + step + '</li>';
-					});
-					html += '</ol>';
-					$('#recipe-details').html(html);
+					);
+	
 				});
-                                $('#recipe-list li').each(function() {
-					var recipeName = $(this).text().toLowerCase();
-				        $(this).hide();
-				});
-                                $('#recipe-details').show();
 			});
-			$('#reset').click(function() {
-                                $('#recipe-list li').each(function() {
-				        $(this).show();
-				});
-                        });
-		});
-	</script>
+
+
+            $('#back').click(function() {
+                $('#recipe-details').addClass('hidden');
+                $('#recipe-list').removeClass('hidden');
+					// Scroll to the header
+					$('html, body').animate(
+						{
+							scrollTop: $('#header'),
+						},
+						800 // Duration in milliseconds for the scrolling animation
+					);
+            });
+			
+			
+        });
+    </script>
 </body>
 </html>
