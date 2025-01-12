@@ -190,12 +190,12 @@
 	        $(document).ready(function() {
             $('#search-field').on('input', function() {
                 const searchValue = $(this).val().toLowerCase();
-                $('#recipe-list li').each(function() {
+                $("#recipe-list li, #favorites-list li").each(function() {
                     $(this).toggle($(this).text().toLowerCase().includes(searchValue));
                 });
             });
 
-			$('#recipe-list li').click(function () {
+			$("#recipe-list li, #favorites-list li").click(function () {
 				const selectedRecipe = $(this).data('recipe');
 				const listItem = $(this);
 
@@ -231,7 +231,7 @@
 
             $('#back').click(function() {
                 $('#recipe-details').addClass('hidden');
-                $('#recipe-list').removeClass('hidden');
+                $("#recipe-list li, #favorites-list li").removeClass('hidden');
 					// Scroll to the header
 					$('html, body').animate(
 						{
