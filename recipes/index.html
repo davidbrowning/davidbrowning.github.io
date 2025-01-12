@@ -8,6 +8,11 @@
 	<label for="search-field">Search for a recipe:</label>
 	<input type="text" id="search-field" name="search-field" placeholder="Type to search...">
 	<ul id="recipe-list">
+	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
+	<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
+	<li data-recipe="json/MothersPeasantBread.json">Mother's Peasant Bread</li>
+	<li data-recipe="json/Sourdoughbread.json">Sourdough bread</li>
+	<li data-recipe="json/SourdoughThumbprintCookies.json">Sourdough Thumbprint Cookies</li>
 	<li data-recipe="json/MashedPotatoes.json">Mashed Potatoes</li>
 	<li data-recipe="json/InstantPotCornChowder.json">Instant Pot Corn Chowder</li>
 	<li data-recipe="json/InstantPotChickenAndRice.json">Instant Pot Chicken And Rice</li>
@@ -171,7 +176,13 @@
 					$.each(recipe.ingredients, function(index, ingredient) {
 						if(ingredient.quantity != null){
 							html += '<li>' + ingredient.quantity + ' ' + ingredient.name  + ', ' + ingredient.type + '</li>';
-						}
+									// Scroll to the footer
+					$('html, body').animate(
+						{
+							scrollTop: $('#footer').offset().top,
+						},
+						800 // Duration in milliseconds for the scrolling animation
+					);		}
 						else {
 							html += '<li>' + ingredient + '</li>';
 						}
