@@ -11,10 +11,6 @@
     <header>
         <h1>Recipe Explorer</h1>
     </header>
-
-
-
-<body>
 		       
     <main class="container">
         <div class="search-section">
@@ -183,7 +179,15 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
+	document.getElementById("search-field").addEventListener("input", function() {
+    const filter = this.value.toLowerCase();
+    const recipeItems = document.querySelectorAll("#recipe-list li, #favorites-list li");
+    recipeItems.forEach(item => {
+        item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
+    });
+});
+
+	        $(document).ready(function() {
             $('#search-field').on('input', function() {
                 const searchValue = $(this).val().toLowerCase();
                 $('#recipe-list li').each(function() {
@@ -197,6 +201,7 @@
 
 				$.getJSON(selectedRecipe, function (recipe) {
 					const html = `
+    
 						<h2>${recipe.name}</h2>
 						<h3>Ingredients</h3>
 						<ul>
