@@ -3,17 +3,35 @@ body {
     font-family: 'Verdana', serif;
     margin: 0;
     padding: 0;
-    background-color: #fdfdfd;
+    background-color: #036264;
     color: #333;
     line-height: 1.6;
 }
 
+h2 {
+    font-family: 'Merriweather', serif; /* Elegant, readable font */
+    font-size: 32px;
+    color: #c19b9a;
+    text-align: left;
+    border-bottom: 4px solid #c19b9a; /* Subtle accent underline */
+    padding-bottom: 10px;
+    margin: 20px auto;
+    letter-spacing: 1px;
+}
+
+p {
+	color: #fff;
+}
+
+
+
 /* Header */
 header {
-    background: linear-gradient(45deg, #f4e4c1, #c89d6e);
+    background: #c19b9a;
     color: #fff;
     text-align: center;
     padding: 40px 20px;
+	font-family: 'Merriweather';
 }
 
 header h1 {
@@ -63,13 +81,13 @@ header p {
 }
 
 /* Recipe List */
-#recipe-list {
+#recipe-list li, #favorites-list li {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-#recipe-list li {
+#recipe-list li, #favorites-list li {
     background: #fff;
     margin-bottom: 12px;
     padding: 14px 20px;
@@ -77,12 +95,17 @@ header p {
     border-radius: 6px;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-#recipe-list li:hover {
+
+#recipe-list li:hover, #favorites-list li:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Recipe Details */
 #recipe-details {
@@ -116,8 +139,9 @@ header p {
     margin-top: 20px;
     padding: 10px 20px;
     font-size: 1rem;
-    color: #fff;
-    background: #c89d6e;
+	font-weight: bold;
+    color: #c19b9a;
+    background: #036264;
     border: none;
     border-radius: 6px;
     cursor: pointer;
@@ -125,14 +149,15 @@ header p {
 }
 
 .back-button:hover {
-    background: #a67d4f;
+    background: #c19b9a;
+	color: #036264;
 }
 
 /* Footer */
 footer {
     text-align: center;
     padding: 20px;
-    background: #f4e4c1;
+    background: #8f5774;
     color: #333;
     font-size: 0.9rem;
     margin-top: 40px;
