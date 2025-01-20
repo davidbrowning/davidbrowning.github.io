@@ -10,15 +10,15 @@
 <body>
     <header>
         <h1>Recipe Explorer</h1>
+				 <p>Discover recipes that will inspire your culinary adventures.</p>
     </header>
 		       
     <main class="container">
         <div class="search-section">
-		 <p>Discover recipes that will inspire your culinary adventures.</p>
             <input type="text" id="search-field" name="search-field" placeholder="Type to search...">
         </div>
 
-			<h2>Favorites</h2>
+			<h2>Sierra's Favorites</h2>
 <ul id="favorites-list">
     	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
 		<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
@@ -40,6 +40,11 @@
 		<li data-recipe="json/TaterTotAndChickenCasserole.json">Tater Tot And Chicken Casserole</li>
 		<li data-recipe="json/WhiteGrapeJelly.json">White Grape Jelly</li>
 		<li data-recipe="json/NutSeedPaleoBread.json">Nut Seed Paleo Bread</li>
+		<li data-recipe="json/ChocolateChipCookies.json">Chocolate Chip Cookies</li>
+		<li data-recipe="json/BestEverChocolateLayerFudgeCake.json">Best Ever Chocolate Layer Fudge Cake</li>
+		<li data-recipe="json/ChickenMarsala.json">Sierra's Chicken Marsala</li>
+		<li data-recipe="json/InstantPotYogurt.json">Instant Pot Yogurt $</li>
+		<li data-recipe="json/InstantPotLentilStew.json">Instant Pot Lentil Stew</li>
 </ul>
 			<h2>Family Recipe Selection</h2>
 <ul id="recipe-list">
@@ -49,7 +54,6 @@
 		<li data-recipe="json/BananaCake.json">Banana Cake</li>
 		<li data-recipe="json/BasicCreamPuffs.json">Basic Cream Puffs</li>
 		<li data-recipe="json/BavarianCream.json">Bavarian Cream</li>
-		<li data-recipe="json/BestEverChocolateLayerFudgeCake.json">Best Ever Chocolate Layer Fudge Cake</li>
 		<li data-recipe="json/BowTiePastaSalad.json">Bow Tie Pasta Salad</li>
 		<li data-recipe="json/BranMuffins.json">Bran Muffins</li>
 		<li data-recipe="json/BreadPudding.json">Bread Pudding</li>
@@ -68,7 +72,6 @@
 		<li data-recipe="json/ChickenCordonBleu.json">Chicken Cordon Bleu</li>
 		<li data-recipe="json/ChickenMushroomRice.json">Chicken Mushroom Rice</li>
 		<li data-recipe="json/ChickenSalad-Sandi.json">Chicken Salad</li>
-		<li data-recipe="json/ChocolateChipCookies.json">Chocolate Chip Cookies</li>
 		<li data-recipe="json/ChocolateFrosting.json">Chocolate Frosting</li>
 		<li data-recipe="json/ChocolateZucchiniCake.json">Chocolate Zucchini Cake</li>
 		<li data-recipe="json/CoconutCreamCake.json">Coconut Cream Cake</li>
@@ -179,59 +182,63 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-	document.getElementById("search-field").addEventListener("input", function() {
-    const filter = this.value.toLowerCase();
-    const recipeItems = document.querySelectorAll("#recipe-list li, #favorites-list li");
-    recipeItems.forEach(item => {
-        item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
-    });
-});
+			document.getElementById("search-field").addEventListener("input", function() {
+			const filter = this.value.toLowerCase();
+			const recipeItems = document.querySelectorAll("#recipe-list li, #favorites-list li");
+			recipeItems.forEach(item => {
+				item.style.display = item.textContent.toLowerCase().includes(filter) ? "" : "none";
+			});
+		});
 
 	        $(document).ready(function() {
             $('#search-field').on('input', function() {
                 const searchValue = $(this).val().toLowerCase();
                 $("#recipe-list li, #favorites-list li").each(function() {
                     $(this).toggle($(this).text().toLowerCase().includes(searchValue));
-                });
             });
+        });
 
 			$("#recipe-list li, #favorites-list li").click(function () {
 				const selectedRecipe = $(this).data('recipe');
 				const listItem = $(this);
+				
+			$.getJSON(selectedRecipe, function (recipe) { 
+				const html = `
+					<h2>${recipe.name}</h2>
+					${recipe.story && recipe.story.trim() ? `<p>${recipe.story}</p>` : ''}  <!-- Show story only if it has content -->
+					<h3>Ingredients</h3>
+					<ul>
+						${recipe.ingredients
+							.map(ing => `<li>${ing.quantity || ''} ${ing.name || ing}, ${ing.type || ''}</li>`)
+							.join('')}
+					</ul>
+					<h3>Steps</h3>
+					<ol>
+						${recipe.steps.map(step => `<li>${step}</li>`).join('')}
+					</ol>
+				`;
+		
+		$('#recipe-details').html(html).removeClass('hidden');
 
-				$.getJSON(selectedRecipe, function (recipe) {
-					const html = `
-    
-						<h2>${recipe.name}</h2>
-						<h3>Ingredients</h3>
-						<ul>
-							${recipe.ingredients
-								.map(ing => `<li>${ing.quantity || ''} ${ing.name || ing}, ${ing.type || ''}</li>`)
-								.join('')}
-						</ul>
-						<h3>Steps</h3>
-						<ol>
-							${recipe.steps.map(step => `<li>${step}</li>`).join('')}
-						</ol>
-					`;
-					$('#recipe-details').html(html).removeClass('hidden');
-
-
-					// Scroll to the footer
-					$('html, body').animate(
-						{
-							scrollTop: $('#footer').offset().top,
-						},
-						800 // Duration in milliseconds for the scrolling animation
-					);
-	
-				});
-			});
+		// Ensure the page scrolls to the top of the selected recipe
+		setTimeout(() => {
+			$('html, body').animate({
+				scrollTop: $('#recipe-details').offset().top
+			}, 300); // Smooth scroll with 300ms animation
+		}, 100); // Small delay to allow rendering
+	});
 
 
             $('#back').click(function() {
                 $('#recipe-details').addClass('hidden');
                 $("#recipe-list li, #favorites-list li").removeClass('hidden');
+				    // Clear the search field
+				$('#search-field').val('');
+				  // Reset the display of all items in the list (showing all items)
+				const recipeItems = document.querySelectorAll("#recipe-list li, #favorites-list li");
+				recipeItems.forEach(item => {
+					item.style.display = ""; // Ensure all items are visible
+				});
 					// Scroll to the header
 					$('html, body').animate(
 						{
@@ -243,6 +250,7 @@
 			
 			
         });
+		});
     </script>
 </body>
 </html>
