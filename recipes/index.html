@@ -21,6 +21,7 @@
 			<h2>Sierra's Favorites</h2>
 <ul id="favorites-list">
     	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
+		<li data-recipe="json/SierrasSourdoughBread.json">Sierra's Sourdough Bread</li>
 		<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
 		<li data-recipe="json/MothersPeasantBread.json">Mother's Peasant Bread</li>
 		<li data-recipe="json/Sourdoughbread.json">Sourdough bread</li>
@@ -45,6 +46,8 @@
 		<li data-recipe="json/ChickenMarsala.json">Sierra's Chicken Marsala</li>
 		<li data-recipe="json/InstantPotYogurt.json">Instant Pot Yogurt $</li>
 		<li data-recipe="json/InstantPotLentilStew.json">Instant Pot Lentil Stew</li>
+		<li data-recipe="json/InstantPotCornChowder2.json">Instant Pot Corn Chowder 2</li>
+		<li data-recipe="json/SierrasEasySourdoughBearclaws.json">Sierra's Easy Sourdough Bearclaws</li>
 </ul>
 			<h2>Family Recipe Selection</h2>
 <ul id="recipe-list">
@@ -229,23 +232,8 @@
 	});
 
 
-            $('#back').click(function() {
-                $('#recipe-details').addClass('hidden');
-                $("#recipe-list li, #favorites-list li").removeClass('hidden');
-				    // Clear the search field
-				$('#search-field').val('');
-				  // Reset the display of all items in the list (showing all items)
-				const recipeItems = document.querySelectorAll("#recipe-list li, #favorites-list li");
-				recipeItems.forEach(item => {
-					item.style.display = ""; // Ensure all items are visible
-				});
-					// Scroll to the header
-					$('html, body').animate(
-						{
-							scrollTop: $('#header'),
-						},
-						800 // Duration in milliseconds for the scrolling animation
-					);
+	$('#back').click(function() {
+    window.location.href = "https://davidbrowning.github.io/recipes/index.html";
             });
 			
 			
