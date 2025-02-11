@@ -3,47 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Explorer</title>
-	<link rel="icon" href="./recipe-images/favicon-recipe.png" type="image/png">
+    <title>Bearclaw Forest</title>
+	<link rel="icon" href="./recipe-images/favicon-bearclaw.png" type="image/png" sizes="256x256">
     <link rel="stylesheet" href="output.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.5/dist/tailwind.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Alice&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Alice&family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+	<style>
+  .font-alice {
+    font-family: 'Alice', serif;
+  }
+	</style>
+		<style>
+  .font-nunito {
+    font-family: 'Alice', serif;
+  }
+	</style>
+
 </head>
 
-<body class="rounded-full bg-radial from-blue-100 to-blue-200  text-gray-900 leading-relaxed">
+<body class="rounded-full bg-radial bg-lightgreen font-nunito-light text-gray-900 leading-relaxed">
     
-    <!-- Header -->
-    <header class="bg-rose-200 text-black py-4 fixed w-full top-0 left-0 z-10">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold">Recipe Collection</h1>
-            <nav>
-                <ul class="flex space-x-4">
-					<li class="text-md hover:bg-rose-500 py-2 px-4 rounded transition"><button  onClick="document.getElementById('search-field').focus()">Search</button></li>
-					<li class="text-md hover:bg-rose-500 py-2 px-4 rounded transition"><a href="#favorites-list">Sierra's Favorites</a></li>
-					<li class="text-md hover:bg-rose-500 py-2 px-4 rounded transition"><a href="#recipe-list">Family Recipes</a></li>
-                </ul>
-            </nav>
+<!-- Header -->
+<header class="py-4 fixed w-full top-0 left-0 z-10 bg-white">
+    <div class="container mx-auto flex justify-between items-center px-6">
+        <!-- Logo and Title Container -->
+        <div class="flex items-center space-x-4">
+            <!-- Logo Image -->
+            <img src="./recipe-images/Bearclaw-Forest.png" width="150" height="150" alt="Bearclaw Forest Logo" class="flex-shrink-0">
+            <!-- Website Name -->
+            <h1 class="font-alice text-forest text-2xl sm:text-3xl md:text-4xl">Bearclaw Forest Kitchen</h1>
         </div>
-    </header>
+
+        <!-- Navigation (Stacked Buttons) -->
+        <nav class="ml-auto">
+            <ul class="flex flex-col space-y-4">
+                <!-- Search Button -->
+                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <button class="w-full text-center inline-block cursor-pointer" onClick="document.getElementById('search-field').focus()">Search</button>
+                </li>
+                <!-- Favorites Link -->
+                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <a href="#favorites-list" class="w-full text-center inline-block">Sierra's Favorites</a>
+                </li>
+                <!-- Recipes Link -->
+                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <a href="#recipe-list" class="w-full text-center inline-block">Family Recipes</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+
+
+        
+        <!-- Navigation -->
+        <nav>
+            <ul class="flex space-x-4">
+                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <button class="inline-block cursor-pointer" onClick="document.getElementById('search-field').focus()">Search</button>
+                </li>
+                <li class="inline-block cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <a href="#favorites-list">Sierra's Favorites</a>
+                </li>
+                <li class="inline-block cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
+                    <a href="#recipe-list">Family Recipes</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
 	
 	    <!-- Search Section -->
 		<main 
-        <section id="search" class="mb-6 max-w-3xl mx-auto my-8 p-6 pt-24">
+        <section id="search" class="max-w-3xl mx-auto my-8 p-6 pt-40">
+			<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md" >
             <label class="block text-lg font-semibold mb-2 text-gray-900">Search Recipes</label>
             <input id="search-field" placeholder="Type to search..." type="text" class="w-full p-3 text-lg border border-gray-900 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-300">
-        </section>
+			</div>
+		</section>
+		        <!-- No results message -->
+        <div id="no-results-message" class="hidden text-center text-red-500 font-semibold mt-4">
+            No results found.
+        </div>
 		</main>
 
 	
 	<!-- Main Container -->
 	<main
-	<section
-    <div class="max-w-3xl mx-auto my-8 p-6 bg-white rounded-lg shadow-md">
+	<section id="recipes" class="max-w-3xl mx-auto p-6">
+    <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
      </section>
 
 		
 	 <!-- Sierra's Favorite Recipe List -->
 
 
-<h1 class="mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-5l">Sierra's Favorites</h1>
+<h1 class="text-2xl text-forest dark:text-white">Sierra's Favorites</h1>
 	<ul id="favorites-list" class="space-y-4">
     	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
 		<li data-recipe="json/SierrasSourdoughBread.json">Sierra's Sourdough Bread</li>
@@ -77,7 +137,7 @@
 		<li data-recipe="json/SourdoughTorillas.json">Sourdough Tortillas</li>
 		<li data-recipe="json/SourdoughCrackers.json">Sourdough Crackers</li>		
 </ul>
-<h1 class="mt-4 mb-4 text-3xl font-bold text-gray-900 dark:text-white md:text-5l">Family Recipes</h1>
+<h1 class="mt-4 mb-4 text-2xl text-forest dark:text-white">Family Recipes</h1>
 <ul id="recipe-list" class="space-y-4">
 		<li data-recipe="json/AppleDappleCake.json">Apple Dapple Cake</li>
 		<li data-recipe="json/AuntPamsPie.json">Aunt Pams Pie</li>
@@ -199,8 +259,8 @@
 
 
         <!-- Recipe Details -->
-        <div id="recipe-details" class="hidden bg-white p-6 border border-gray-300 rounded-md shadow-md mt-6">
-            <h2 class="text-2xl font-semibold mb-4 text-rose-400 border-b-4 border-rose-400 pb-2">Recipe Name</h2>
+        <div id="recipe-details" class="font-nunito hidden bg-white p-6 border border-gray-300 rounded-md shadow-md mt-6">
+            <h2 class="text-2xl font-semibold mb-4 text-emerald-800 border-b-4 border-emerald-800 pb-2">Recipe Name</h2>
             <h3 class="text-xl mt-4 font-semibold">Ingredients</h3>
             <ul class="list-disc pl-6 text-gray-700">
                 <li>Ingredient 1</li>
@@ -211,15 +271,13 @@
                 <li>Step 1</li>
                 <li>Step 2</li>
             </ol>
-            <button class="inline-block mt-5 px-5 py-2 text-lg font-bold text-white bg-rose-400 rounded-md hover:bg-rose-500 transition">Back</button>
+            <button class="inline-block mt-5 px-5 py-2 text-lg font-bold text-white bg-text-emerald-800 rounded-md hover:bg-rose-500 transition">Back</button>
         </div>
-	
+			<div id="back-button" class="mt-6 mb-6 flex flex-col items-center">
+            <button class="inline-block cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" id="back">Back to Recipe List</button>
+        </div>
     </main>
-	<main>
-		<div id="back-button" class="mt-6 mb-6 flex flex-col items-center">
-            <button class="cursor-pointer ring-4 ring-black px-4 py-2 bg-white text-gray-900 text-bold rounded-md hover:bg-blue-600" id="back">Back to Recipe List</button>
-        </div>
-	</main>
+
 	
     <!-- Footer -->
 <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
@@ -286,6 +344,42 @@
 			
         });
 		});
+		    // Get the header element
+    const header = document.querySelector('header');
+
+    // Function to add overlay class on scroll
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {  // Adjust 50 based on when you want the overlay to appear
+            header.classList.add('header-overlay');
+        } else {
+            header.classList.remove('header-overlay');
+        }
+    });
+	// Example JavaScript to show "No results" message
+	document.getElementById('search-field').addEventListener('input', function(event) {
+		const query = event.target.value.toLowerCase();
+		const recipes = document.querySelectorAll('#favorites-list li, #recipe-list li');
+		let found = false;
+
+		// Hide "No results" message initially
+		document.getElementById('no-results-message').classList.add('hidden');
+		
+		// Loop through each recipe and check if it matches the query
+		recipes.forEach(function(recipe) {
+			const recipeText = recipe.textContent.toLowerCase();
+			if (recipeText.includes(query)) {
+				recipe.style.display = 'block';
+				found = true;
+			} else {
+				recipe.style.display = 'none';
+			}
+		});
+
+		// Show "No results" message if no matches are found
+		if (!found && query.length > 0) {
+			document.getElementById('no-results-message').classList.remove('hidden');
+		}
+	});
     </script>
 </body>
 </html>

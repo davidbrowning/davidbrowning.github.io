@@ -1,4 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Alice&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --color-greengray: #707f62;
+  --color-forest: #2f4b30;
+  --color-lightgreen: #dee2d7;
+}
 
 #recipe-list li, #favorites-list li{
 	@apply mt-2 bg-gray-100 p-4 border border-gray-300 rounded-md cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg;
@@ -9,7 +16,7 @@
 }
 
 #recipe-details h2 {
-    @apply text-2xl font-semibold mb-4 text-rose-400 border-b-4 border-rose-400 pb-2;
+    @apply text-2xl font-semibold mb-4 text-forest border-b-4 border-forest pb-2;
 }
 
 #recipe-details h3 {
@@ -24,9 +31,40 @@
     list-style-type: decimal !important;
 }
 
+.font-alice {
+    font-family: 'Alice', serif !important;
+}
+
+.font-nunito {
+  font-family: 'Nunito', sans-serif !important;
+}
+
+/* Nunito variations */
+.font-nunito-light {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 300; /* Light */
+}
+
+.font-nunito-normal {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400; /* Normal */
+}
+
+.font-nunito-bold {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700; /* Bold */
+}
+
 :target:before {
 content:"";
 display:block;
 height:140px; /* fixed header height*/
 margin:-140px 0 0; /* negative fixed header height */
 }
+
+/*header effect */
+.header-overlay {
+    background-color: rgba(255, 255, 255, 0.7); /* Opaque white with some transparency */
+    transition: background-color 0.3s ease-in-out; /* Smooth transition */
+}
+
