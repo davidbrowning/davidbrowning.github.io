@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bearclaw Forest</title>
-	<link rel="icon" href="./recipe-images/favicon-bearclaw.png" type="image/png" sizes="256x256">
+	<link rel="icon" href="./recipe-images/favicon-bearclaw.png" type="image/png">
     <link rel="stylesheet" href="output.css">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,7 +32,7 @@
         <!-- Logo and Title Container -->
         <div class="flex items-center space-x-4">
             <!-- Logo Image -->
-            <img src="./recipe-images/Bearclaw-Forest.png" width="150" height="150" alt="Bearclaw Forest Logo" class="flex-shrink-0">
+            <img src="./recipe-images/Bearclaw-Forest.png" width="125" height="125" alt="Bearclaw Forest Logo" class="flex-shrink-0">
             <!-- Website Name -->
             <h1 class="font-alice text-forest text-2xl sm:text-3xl md:text-4xl">Bearclaw Forest Kitchen</h1>
         </div>
@@ -43,14 +43,6 @@
                 <!-- Search Button -->
                 <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                     <button class="w-full text-center inline-block cursor-pointer" onClick="document.getElementById('search-field').focus()">Search</button>
-                </li>
-                <!-- Favorites Link -->
-                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <a href="#favorites-list" class="w-full text-center inline-block">Sierra's Favorites</a>
-                </li>
-                <!-- Recipes Link -->
-                <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <a href="#recipe-list" class="w-full text-center inline-block">Family Recipes</a>
                 </li>
             </ul>
         </nav>
@@ -66,12 +58,6 @@
                 <li class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                     <button class="inline-block cursor-pointer" onClick="document.getElementById('search-field').focus()">Search</button>
                 </li>
-                <li class="inline-block cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <a href="#favorites-list">Sierra's Favorites</a>
-                </li>
-                <li class="inline-block cursor-pointer text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
-                    <a href="#recipe-list">Family Recipes</a>
-                </li>
             </ul>
         </nav>
     </div>
@@ -79,32 +65,30 @@
 
 	
 	    <!-- Search Section -->
-		<main 
-        <section id="search" class="max-w-3xl mx-auto my-8 p-6 pt-40">
-			<div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md" >
-            <label class="block text-lg font-semibold mb-2 text-gray-900">Search Recipes</label>
-            <input id="search-field" placeholder="Type to search..." type="text" class="w-full p-3 text-lg border border-gray-900 rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-300">
-			</div>
-		</section>
-		        <!-- No results message -->
-        <div id="no-results-message" class="hidden text-center text-red-500 font-semibold mt-4">
-            No results found.
+	
+<main>
+    <section id="search" class="max-w-3xl mx-auto pt-40">
+        <div>
+            <input id="search-field" placeholder="Type to search..." type="text" class="w-full p-3 text-lg border border-forest rounded-md shadow-sm focus:outline-none focus:border-indigo-500 focus:ring focus:ring-indigo-300">
         </div>
-		</main>
+    </section>
+    <!-- No results message -->
+    <div id="no-results-message" class="hidden text-center text-red-500 font-semibold mt-4">
+        No results found.
+    </div>
+</main>
+
 
 	
 	<!-- Main Container -->
 	<main
 	<section id="recipes" class="max-w-3xl mx-auto p-6">
-    <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <div>
      </section>
 
-		
 	 <!-- Sierra's Favorite Recipe List -->
 
-
-<h1 class="text-2xl text-forest dark:text-white">Sierra's Favorites</h1>
-	<ul id="favorites-list" class="space-y-4">
+<ul id="recipe-list" class="space-y-4">
     	<li data-recipe="json/GarlicButterChickenMeatballs.json">Garlic Butter Chicken Meatballs</li>
 		<li data-recipe="json/SierrasSourdoughBread.json">Sierra's Sourdough Bread</li>
 		<li data-recipe="json/HomemadeDogFood.json">Homemade Dog Food</li>
@@ -135,10 +119,7 @@
 		<li data-recipe="json/SierrasEasySourdoughBearclaws.json">Sierra's Easy Sourdough Bearclaws</li>
 		<li data-recipe="json/SourdoughDiscardGranolaBars.json">Sourdough Discard Granola Bars</li>
 		<li data-recipe="json/SourdoughTorillas.json">Sourdough Tortillas</li>
-		<li data-recipe="json/SourdoughCrackers.json">Sourdough Crackers</li>		
-</ul>
-<h1 class="mt-4 mb-4 text-2xl text-forest dark:text-white">Family Recipes</h1>
-<ul id="recipe-list" class="space-y-4">
+		<li data-recipe="json/SourdoughCrackers.json">Sourdough Crackers</li>	
 		<li data-recipe="json/AppleDappleCake.json">Apple Dapple Cake</li>
 		<li data-recipe="json/AuntPamsPie.json">Aunt Pams Pie</li>
 		<li data-recipe="json/BaconWrappedChicken.json">Bacon Wrapped Chicken</li>
@@ -282,7 +263,7 @@
     <!-- Footer -->
 <footer class="bg-white rounded-lg shadow-sm m-4 dark:bg-gray-800">
     <div class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between">
-      <p class="text-sm text-gray-500 text-center dark:text-gray-400">2025 Browning Recipe Book - All Rights Reserved </p>
+      <p class="text-sm text-gray-500 text-center dark:text-gray-400">2025 Bearclaw Forest - All Rights Reserved </p>
     </div>
 </footer>
 
@@ -331,7 +312,7 @@
         setTimeout(() => {
             // Scroll to the top of the #recipe-details section after content is rendered
             $('html, body').animate({
-                scrollTop: $('#recipe-details').offset().top - 100 // Adjust the -100 to account for header height if fixed
+                scrollTop: $('#recipe-details').offset().top - 200 // Adjust the -200 to account for header height if fixed
             }, 300); // Smooth scroll with 300ms animation
         }, 100); // Small delay to ensure the content is rendered
 	});
