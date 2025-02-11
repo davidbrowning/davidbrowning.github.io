@@ -8,7 +8,7 @@
 }
 
 #recipe-list li, #favorites-list li{
-	@apply mt-2 bg-gray-100 p-4 border border-gray-300 rounded-md cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg;
+	@apply mt-2 bg-white p-4 border border-gray-300 rounded-md cursor-pointer transition-transform transform hover:-translate-y-1 hover:shadow-lg;
 }
 
 #recipe-details {
@@ -58,8 +58,8 @@
 :target:before {
 content:"";
 display:block;
-height:140px; /* fixed header height*/
-margin:-140px 0 0; /* negative fixed header height */
+height:300px; /* fixed header height*/
+margin:-300px 0 0; /* negative fixed header height */
 }
 
 /*header effect */
