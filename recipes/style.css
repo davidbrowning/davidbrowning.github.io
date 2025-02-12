@@ -5,6 +5,7 @@
   --color-greengray: #707f62;
   --color-forest: #2f4b30;
   --color-lightgreen: #dee2d7;
+  --color-complimentary: #dbd7e2;
 }
 
 #recipe-list li, #favorites-list li{
@@ -68,3 +69,7 @@ margin:-300px 0 0; /* negative fixed header height */
     transition: background-color 0.3s ease-in-out; /* Smooth transition */
 }
 
+#search-field {
+  z-index: 10; /* Assuming header has a lower z-index or default */
+  position: relative; /* If needed to ensure it's above other elements */
+}
