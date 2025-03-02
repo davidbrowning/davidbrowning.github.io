@@ -24,7 +24,8 @@ def convert_docx_to_markdown(docx_path, output_dir, image_base_url):
     image_counter = 0
     
     # Extract filename for output
-    base_filename = os.path.splitext(os.path.basename(docx_path))[0]
+    base_filename_spaces = os.path.splitext(os.path.basename(docx_path))[0]
+    base_filename = base_filename_spaces.replace(" ", "_")
     markdown_filename = f"{base_filename}.md"
     
     # Process each paragraph
@@ -34,12 +35,16 @@ def convert_docx_to_markdown(docx_path, output_dir, image_base_url):
             markdown_lines.append("")
             continue
             
-        # Handle headings based on style or bold formatting
-        if para.style.name.startswith('Heading') or (para.runs and para.runs[0].bold):
-            heading_level = min(int(para.style.name.split()[-1]) if para.style.name.startswith('Heading') else 1, 6)
+    # Heading detection: must be <= 60 chars and either styled as Heading or bold
+        is_heading_style = para.style.name.startswith('Heading')
+        is_bold = para.runs and para.runs[0].bold
+        is_short_enough = len(text) <= 60
+        
+        if (is_heading_style or is_bold) and is_short_enough:
+            heading_level = min(int(para.style.name.split()[-1]) if is_heading_style else 1, 6)
             markdown_lines.append(f"{'#' * heading_level} {text}")
         else:
-            # Basic text formatting
+            # Treat as regular paragraph, apply basic formatting
             formatted_text = text
             for run in para.runs:
                 if run.bold:
@@ -89,6 +94,6 @@ if __name__ == "__main__":
     # Example usage
     input_directory = "Maes_life_history/"
     output_directory = "Maes_life_history/mdout/"
-    image_base_url = "https://davidbrowning.github.io/history/Maes_life_history/mdout/"  # Replace with your actual image hosting URL
+    image_base_url = "https://davidbrowning.github.io/history/Maes_life_history/mdout"  # Replace with your actual image hosting URL
     
     process_directory(input_directory, output_directory, image_base_url)
