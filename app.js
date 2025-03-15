@@ -102,7 +102,7 @@ function lsCommand(dir = filesystem, cwd) {
 }
 
 function helpCommand() {
-    return `\n\n\tWelcome to davidbrowning.github.io. Here are the commands I've implemented so far: ls, cd, clear, reset, whoami, w, history, help, ?`;
+    return `\n\n\tWelcome to davidbrowning.github.io. Here are the commands I've implemented so far: ls, cd, clear, open, reset, whoami, w, history, help, ?`;
 }
 
 function openCommand(file) {
