@@ -1,84 +1,13 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.js"></script>
-  <!--  <script type="text/javascript" src="./jquery.scrollTo-2.1.2/jquery.scrollTo.js"></script>-->
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script>
-  logo_toggle = function(){
-   if($("#logo").css("bottom") == "0px"){
-    $("#logo_image").animate({width: "300px"});
-    $("#logo").animate({bottom: "85%"});
-   }
-   else{
-    $("#logo_image").animate({width:"500px"});
-    $("#logo").animate({bottom: "0"});
-   }
-   console.log($("#logo").css("bottom"));
-  }
-  center_project = function(){
-   console.log(this)
-  }
-  </script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTY Simulator</title>
+    <link href='css/style.css' rel='stylesheet'>
 </head>
 <body>
-<div id="logo" style="top:0;" >
-    <img class="transparent shrinkToFit" id="logo_image" src="logo2.gif"></img>
-    </div>
-    <button onClick='logo_toggle(); $("#marbles").fadeToggle("slow");'>JavaScript</button>
-<div id="marbles" style = "display:none;">
-    <div id="about-project">
-      Marbles: A board game similar to Hasbro's Sorry.  </br> Objective: get all four of your marbles into the home stretch before the other players. </br></br> Notes: This project is the first extracurricular project I started as an undergrad. Eventually I'd like to turn this into a truly multiplayer game using <a href="https://www.airconsole.com/">Air Console.</a> The game is functional within this page, and it accepts any number as input. When I have time to complete it, the game will accept a playing card chosen by the player through the smartphone interface. <a href="https://github.com/davidbrowning/Marbles">Source.</a> 
-    </div>
-    <object data=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="600"> <embed src=http://davidbrowning.github.io/html/marbles/parts/1.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
-    </div>
-    </br>
-    <button onClick='logo_toggle(); $("#homeInventory").fadeToggle("slow");'>Android (Java)</button>
-    <div id="homeInventory" style="display:none;">
-    <div id="about-project">
-      Home Inventory: An android app designed to help people manage their groceries. The app is intended to be used shortly after grocery trips in order to centralize food purchases. The long term intent for this app is to give users the ability to know what groceries they have on hand so they can see what they would need for certain recipes. <a href="https://github.com/davidbrowning/FinalProjectCS3200">Source.</a>
-    </div>
-    <iframe width="400" height="630" src="https://www.youtube.com/embed/LztBqXfQvPI" frameborder="0" allowfullscreen></iframe>
-    </div>
-    </br>
-    <button onClick='logo_toggle(); $("#shell").fadeToggle("slow");'>C++</button>
-    <div id="shell" style="display:none">
-    <div id="about-project">
-      Shell: This simple shell program was an assignment in my operating systems course. It supports some native commands while making use of the c++ execvp call in the unistd library. <a href="https://github.com/davidbrowning/shell">Source.</a> 
-    </div>
-    <iframe width="760" height="415" src="https://www.youtube.com/embed/U7MV7cIjLDI" frameborder="0" allowfullscreen></iframe>
-    </div>
-    </br>
-    <button onClick='logo_toggle(); $("#breakout").fadeToggle("slow");'>JavaScript</button>
-    <div id="breakout" style="display:none;">
-    <div id="about-project">
-      Breakout: My version of the classic breakout game! <a href="https://github.com/davidbrowning/breakoutjs">Source.</a>
-    </div>
-    <object data=http://davidbrowning.github.io/html/breakout.html width="1016" height="501"> <embed src=http://davidbrowning.github.io/html/breakout.html width="600" height="400"> </embed> Error: Embedded data could not be displayed. </object>
-    </div>
-    </br>
-    <button onClick='logo_toggle(); $("#ori").fadeToggle("slow");'>JavaScript</button>
-    <div id="ori" style="display:none;">
-    <div id="about-ori">
-      Ori Clone: An online multi-player platforming game. This makes use of the socket.io JavaScript library. Watch out for snakes! <a href="https://github.com/davidbrowning/GameDev">Source.</a>
-    </div>
-    <object data=http://oriclone.herokuapp.com width="1050" height="800"> <embed src=http://oriclone.herokuapp.com width="100" height="100"> </embed> Error: Embedded data could not be displayed. </object>
-    </div>
-    </br>
-    <button onClick='logo_toggle(); $("#simonish").fadeToggle("slow");'>Java</button>
-    <div id="simonish" style="display:none;">
-    <div id="about-project">
-    Simon-ish: Based on the hand-held <a href="https://en.wikipedia.org/wiki/Simon_(game)">simon</a> game, this Java project uses the swing library to allow the user to play simon at different difficulties. <a href="https://github.com/davidbrowning/Simon-ish">Source.</a>
-    </div>
-    <iframe width="600" height="615" src="https://www.youtube.com/embed/kYVj_BY9k5M" frameborder="0" allowfullscreen></iframe>
-    </div>
-    </br>
-    <a href="history/index.html"><button onClick=''>Family History</button></a>
-    </br>
-    <a href="recipes/index.html"><button onClick=''>Family Recipes</button></a>
-    </br>
-    <div id="bio"> 
-      Hi! My name is Dave, and I am a software engineer from Utah. I will graduate from Utah State Univsity in May of 2018, so I created this website as a showcase for some of the work I have done individually, collaboratively, and in the classroom. 
-    </div>
+    <div id="terminal"></div>
+    <script src="app.js"></script>
 </body>
 </html>
