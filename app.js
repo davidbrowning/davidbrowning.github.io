@@ -3,7 +3,7 @@ let input = '';
 let ipAddress = 'Unknown';
 
 function showHelp(){
-  console.log("todo: non-terminal site for marketing/management types")
+  window.open("https://davidbrowning.github.io/portfolio/index.html", '_blank').focus()
 }
 
 function showKeyboard(){
