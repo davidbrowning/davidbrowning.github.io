@@ -2,6 +2,10 @@ const terminal = document.getElementById('terminal');
 let input = '';
 let ipAddress = 'Unknown';
 
+function getHelp(){
+  console.log("todo")
+}
+
 // Cookie handling
 function getHistory() {
     const cookies = document.cookie.split('; ').reduce((acc, cookie) => {
@@ -178,8 +182,6 @@ function renderTerminal() {
         prev_dir = key.split(':').at(2)
         output += `user@${ipAddress}:${prev_dir} $ ${cmd}\n${result}\n`;
     }
-    console.log(cwd)
-    console.dir(cwd)
     terminal.innerHTML = `${output}user@${ipAddress}:${cwd.name} $ <span id="input-line">${input}</span><span class="cursor"></span>`;
 }
 // Input handling
