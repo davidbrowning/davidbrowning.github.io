@@ -2,8 +2,12 @@ const terminal = document.getElementById('terminal');
 let input = '';
 let ipAddress = 'Unknown';
 
-function getHelp(){
-  console.log("todo")
+function showHelp(){
+  console.log("todo: non-terminal site for marketing/management types")
+}
+
+function showKeyboard(){
+  document.getElementById("mobile").focus();
 }
 
 // Cookie handling

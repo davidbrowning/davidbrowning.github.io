@@ -22,6 +22,15 @@ button:hover {
   background-color: #0f0; /* Green */
   color: #000;
 }
+input {
+  background-color: #000;
+  color: #000;
+  border: 0;
+  outline: none;
+}
+textarea:focus, input:focus{
+    outline: none;
+}
 #terminal {
     width: 100%;
     height: 100vh;
