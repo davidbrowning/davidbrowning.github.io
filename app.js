@@ -191,7 +191,6 @@ function renderTerminal() {
 // Input handling
 function handleInput(e) {
     const inputLine = document.getElementById('input-line');
-    
     if (e.key === 'Enter') {
       if (input.trim()) {  // Only process non-empty input
               const history = getHistory();
