@@ -49,6 +49,7 @@ const filesystem = {
                     type: 'directory',
                     children: [
                         { name: 'readme.txt', type: 'file' },
+                        { name: 'resume.html', type: 'file' },
                         { name: 'script.sh', type: 'file' },
                         { name: 'games',
                           type: 'directory',
@@ -129,6 +130,8 @@ function openCommand(file) {
         return `opening ${file}...`
       case 'oscilloscope.rs':window.open("https://github.com/davidbrowning/oscilloscope", '_blank').focus();
         return `opening ${file}...`
+      case 'resume.html':window.open("https://davidbrowning.github.io/portfolio/index.html", '_blank').focus();
+        return `opening ${file}...`
       default:
         return `file not found`
     }
@@ -136,6 +139,22 @@ function openCommand(file) {
 
 function whoamiCommand() {
     return `\n\tNormally, this would tell you which user you logged in as; however, this is my website.\n\n\tSo hi! My name is Dave Browning.\n\n\tI am an aspiring linux geek. I have been playing with computers since 2013.\n\n\tI have worked as a sysadmin, software engineer, SRE, and platform engineer\n\n\tI like making computers sing`;
+}
+
+
+function catCommand(file) {
+    if(file == "readme.txt"){
+      return `\n\tAs you may have guessed, there's nothing real about this shell\n\n\tIt's a tribute to Torvalds and the GNU community\n\n\tMany of the files in my "filesystem" do refer to real projects,\n\n\t"open filename.ext" will bring you to those I like the best`;
+    } else if (file == "script.sh"){
+      return `#!/bin/davesh\ncat readme.txt`
+    }
+    else {
+      return `cat ${file} # TODO, make cat work for anything but readme.txt :D`
+    }
+}
+
+function scriptCommand() {
+    return catCommand("readme.txt");
 }
 
 function clearCommand() {
@@ -170,6 +189,10 @@ function handleCommand(cmd) {
             return historyCommand();
         case 'help':
             return helpCommand();
+        case './script.sh':
+            return scriptCommand();
+        case 'cat':
+            return catCommand(args[0]);
         case '?':
             return helpCommand();
         default:
