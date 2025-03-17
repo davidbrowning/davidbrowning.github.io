@@ -21,3 +21,19 @@
     opacity: 1;
     transform: scale(1);
 }
+.preview {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    transition: opacity 0.2s ease;
+}
+.tile:hover .preview {
+    display: block;
+    opacity: 1;
+}
+.prose h1 { @apply text-3xl font-bold mb-4; }
+.prose p { @apply mb-4; }
+.prose code { @apply bg-gray-100 p-1 rounded; }
