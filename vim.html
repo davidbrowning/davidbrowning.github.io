@@ -3,757 +3,861 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vim Editor</title>
+    <title>Static Vim - Web Edition (Cut/Fix)</title>
     <style>
-        * {
+        :root {
+            --background: #1e1e1e;
+            --foreground: #d4d4d4;
+            --cursor: #a0a0a0;
+            --line-number: #6e6e6e;
+            --status-bg: #3c3c3c;
+            --visual-bg: #264f78;
+            --font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            --font-size: 16px;
+            --line-height: 1.4;
+        }
+
+        body, html {
             margin: 0;
             padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+        }
+
+        #editor-container {
+            display: flex;
+            height: calc(100% - 30px); /* Full height minus status bar */
+            width: 100%;
+            overflow: hidden; /* Prevent container scroll, handle internally */
+        }
+
+        #line-numbers {
+            background-color: var(--background);
+            color: var(--line-number);
+            padding: 5px 10px 5px 5px;
+            text-align: right;
+            user-select: none;
+            white-space: pre;
+            overflow: hidden; /* Hide extra numbers */
+            line-height: var(--line-height);
+            min-width: 40px; /* Ensure space for numbers */
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Courier New', monospace;
-            background: #1a1a1a;
-            color: #ffffff;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .vim-container {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .editor-area {
-            flex: 1;
-            display: flex;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .line-numbers {
-            background: #2a2a2a;
-            border-right: 1px solid #444;
-            padding: 10px 8px;
-            font-size: 14px;
-            color: #666;
-            min-width: 60px;
-            text-align: right;
-            user-select: none;
-            white-space: pre-line;
-            line-height: 20px;
-        }
-
-        .editor {
-            flex: 1;
-            padding: 10px;
-            font-size: 14px;
-            line-height: 1.4;
-            background: #1a1a1a;
-            border: none;
-            outline: none;
-            resize: none;
-            color: #ffffff;
-            font-family: 'Courier New', monospace;
+        #editor {
+            flex-grow: 1;
+            padding: 5px;
             white-space: pre;
-            overflow: auto;
+            overflow-y: scroll; /* Enable scrolling for the editor area */
+            position: relative;
+            line-height: var(--line-height);
+            cursor: text; /* Default cursor, will be hidden/managed by JS */
+            outline: none; /* Remove focus outline */
+        }
+
+        .line {
+            min-height: calc(var(--font-size) * var(--line-height)); /* Ensure lines have height */
+            position: relative;
+            &:empty::after {
+              content: ' ';
+              white-space: pre;
+            }
         }
 
         .cursor {
             position: absolute;
-            width: 8px;
-            height: 20px;
-            background: #ffffff;
-            animation: blink 1s infinite;
-            pointer-events: none;
+            background-color: var(--cursor);
+            width: calc(var(--font-size) * 0.6); /* Approx width of a char */
+            height: calc(var(--font-size) * var(--line-height));
             z-index: 10;
+            opacity: 0.7;
+            animation: blink 1s step-start 0s infinite;
+            pointer-events: none; /* Allow clicks through cursor */
         }
 
         .cursor.insert-mode {
-            width: 2px;
-            background: #00ff00;
+             width: 1px;
+             animation: blink-insert 0.5s step-start 0s infinite;
         }
 
         @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
+            50% { opacity: 0; }
+        }
+       @keyframes blink-insert {
+            50% { opacity: 0; }
         }
 
-        .status-bar {
-            background: #0066cc;
-            color: white;
-            padding: 5px 10px;
-            font-size: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .visual-selection {
+            background-color: var(--visual-bg);
+            position: absolute;
+            opacity: 0.6;
+            z-index: 5;
+            pointer-events: none;
         }
 
-        .command-line {
-            background: #2a2a2a;
-            color: white;
-            padding: 5px 10px;
-            font-size: 14px;
-            min-height: 30px;
+        #status-bar {
+            height: 30px;
+            background-color: var(--status-bg);
+            color: var(--foreground);
             display: flex;
             align-items: center;
+            padding: 0 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            box-sizing: border-box;
+            line-height: 30px;
         }
 
-        .mode-indicator {
+        #status-mode {
             font-weight: bold;
+            margin-right: 10px;
+            text-transform: uppercase;
+            min-width: 80px; /* Ensure space */
         }
 
-        .normal-mode { color: #ffffff; }
-        .insert-mode { color: #00ff00; }
-        .visual-mode { color: #ffff00; }
-        .command-mode { color: #ff6600; }
+        #status-command {
+            flex-grow: 1;
+        }
 
-        .hidden {
+        #status-command input {
+            background: none;
+            border: none;
+            color: var(--foreground);
+            font-family: var(--font-family);
+            font-size: var(--font-size);
+            width: 100%;
+            outline: none;
+        }
+
+        #status-info {
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        #file-input {
             display: none;
         }
 
-        .file-input {
-            position: absolute;
-            left: -9999px;
-            opacity: 0;
-        }
-
-        .editor-wrapper {
-            position: relative;
-            flex: 1;
-        }
-
-        .vim-content {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            line-height: 20px;
-            white-space: pre;
-            overflow: auto;
-            color: #ffffff;
-            z-index: 1;
-        }
-
-        .highlight {
-            background: #444;
-        }
     </style>
 </head>
 <body>
-    <div class="vim-container">
-        <div class="editor-area">
-            <div class="line-numbers" id="lineNumbers"></div>
-            <div class="editor-wrapper">
-                <div class="vim-content" id="vimContent" tabindex="0"></div>
-                <div class="cursor" id="cursor"></div>
-            </div>
-        </div>
-        <div class="status-bar">
-            <span class="mode-indicator" id="modeIndicator">-- NORMAL --</span>
-            <span id="statusInfo">Line 1, Col 1</span>
-        </div>
-        <div class="command-line" id="commandLine"></div>
-        <input type="file" id="fileInput" class="file-input" accept=".txt,.js,.html,.css,.py,.md,*">
+
+    <div id="editor-container">
+        <div id="line-numbers">1</div>
+        <div id="editor" tabindex="0"> </div>
+        <div class="cursor"></div>
     </div>
+
+    <div id="status-bar">
+        <span id="status-mode">NORMAL</span>
+        <span id="status-command">:</span>
+        <span id="status-info">0,0</span>
+    </div>
+
+    <input type="file" id="file-input">
 
     <script>
         class VimEditor {
             constructor() {
-                this.content = [''];
-                this.cursorRow = 0;
-                this.cursorCol = 0;
-                this.mode = 'NORMAL';
-                this.command = '';
-                this.lastCommand = '';
-                this.registers = { '"': '' };
-                this.searchTerm = '';
-                this.visualStart = null;
-                this.history = [['']];
-                this.historyIndex = 0;
-                
-                this.contentEl = document.getElementById('vimContent');
-                this.cursorEl = document.getElementById('cursor');
-                this.modeEl = document.getElementById('modeIndicator');
-                this.statusEl = document.getElementById('statusInfo');
-                this.commandEl = document.getElementById('commandLine');
-                this.lineNumbersEl = document.getElementById('lineNumbers');
-                this.fileInputEl = document.getElementById('fileInput');
-                
-                this.setupEventListeners();
+                this.editor = document.getElementById('editor');
+                this.lineNumbers = document.getElementById('line-numbers');
+                this.cursorElement = document.querySelector('.cursor');
+                this.statusBarMode = document.getElementById('status-mode');
+                this.statusBarCommand = document.getElementById('status-command');
+                this.statusBarInfo = document.getElementById('status-info');
+                this.fileInput = document.getElementById('file-input');
+                this.editorContainer = document.getElementById('editor-container');
+
+                this.lines = [
+                    "Welcome to Static Vim - Cut/Fix!",
+                    "",
+                    "Try 'x' to cut a character.",
+                    "Try 'dd' to cut a line.",
+                    "Try 'p' to paste.",
+                    "Try 'gg' to go to the top.",
+                    "Try 'G' to go to the bottom.",
+                    "Try 'Ctrl+d' to scroll down.",
+                    "Try 'Ctrl+u' to scroll up.",
+                    "",
+                    "Press 'i' to enter Insert mode.",
+                    "Press 'Esc' to return to Normal mode.",
+                    "Try 'h', 'j', 'k', 'l' for movement.",
+                    "Try 'v' for Visual mode, 'V' for Visual Line.",
+                    "Use ':' for commands like :w, :q, :e.",
+                    "",
+                    "This is a longer line to test scrolling and movement capabilities.",
+                    "Line 17", "Line 18", "Line 19", "Line 20",
+                    "Line 21", "Line 22", "Line 23", "Line 24", "Line 25", "Line 26",
+                    "Line 27", "Line 28", "Line 29", "Line 30", "Line 31", "Line 32",
+                    "Line 33", "Line 34", "Line 35", "Line 36", "Line 37", "Line 38",
+                    "Line 39", "Line 40", "This is the last line."
+                ];
+                this.cursor = { row: 0, col: 0 };
+                this.mode = 'NORMAL'; // NORMAL, INSERT, VISUAL, VISUAL_LINE, VISUAL_BLOCK, COMMAND
+                this.visual = { start: null, end: null };
+                this.commandBuffer = '';
+                this.charWidth = 0;
+                this.lineHeight = 0;
+                this.commandInput = null;
+                this.pendingKey = null;
+
+                this.init();
+            }
+
+            init() {
+                this.editor.focus();
+                this.calculateMetrics();
                 this.render();
-                this.contentEl.focus();
+                this.addEventListeners();
+                this.updateStatusBar();
+                this.updateCursor();
             }
 
-            setupEventListeners() {
-                this.contentEl.addEventListener('keydown', (e) => this.handleKeyDown(e));
-                this.contentEl.addEventListener('focus', () => this.render());
-                this.fileInputEl.addEventListener('change', (e) => this.handleFileLoad(e));
+            calculateMetrics() { /* ... unchanged ... */
+                const span = document.createElement('span');
+                span.style.fontFamily = getComputedStyle(document.body).fontFamily;
+                span.style.fontSize = getComputedStyle(document.body).fontSize;
+                span.style.position = 'absolute';
+                span.style.visibility = 'hidden';
+                span.textContent = 'M';
+                document.body.appendChild(span);
+                this.charWidth = span.offsetWidth;
+                document.body.removeChild(span);
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'line';
+                lineDiv.style.visibility = 'hidden';
+                lineDiv.textContent = ' ';
+                this.editor.appendChild(lineDiv);
+                this.lineHeight = lineDiv.offsetHeight;
+                this.editor.removeChild(lineDiv);
+                console.log(`Char Width: ${this.charWidth}, Line Height: ${this.lineHeight}`);
             }
 
-            handleKeyDown(e) {
+
+            addEventListeners() { /* ... unchanged ... */
+                this.editor.addEventListener('keydown', this.handleKeyDown.bind(this));
+                this.fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+                window.addEventListener('resize', () => {
+                   this.calculateMetrics();
+                   this.render();
+                });
+                this.editor.addEventListener('click', (e) => {
+                    this.editor.focus();
+                    const rect = this.editor.getBoundingClientRect();
+                    const y = e.clientY - rect.top + this.editor.scrollTop;
+                    const x = e.clientX - rect.left;
+                    let row = Math.floor(y / this.lineHeight);
+                    let col = Math.round(x / this.charWidth);
+                    row = Math.max(0, Math.min(this.lines.length - 1, row));
+                    col = Math.max(0, Math.min(this.lines[row].length, col));
+                    this.cursor.row = row;
+                    this.cursor.col = col;
+                    this.setMode('NORMAL');
+                    this.updateCursor();
+                    this.updateStatusBar();
+                });
+                this.editor.addEventListener('scroll', this.updateCursor.bind(this));
+            }
+
+
+            // --- Rendering ---
+            render() { /* ... unchanged ... */
+                this.editor.innerHTML = '';
+                this.lineNumbers.innerHTML = '';
+                const fragment = document.createDocumentFragment();
+                const lineNumFragment = document.createDocumentFragment();
+                this.lines.forEach((line, index) => {
+                    const lineDiv = document.createElement('div');
+                    lineDiv.className = 'line';
+                    lineDiv.textContent = line;
+                    fragment.appendChild(lineDiv);
+                    const numDiv = document.createElement('div');
+                    numDiv.textContent = index + 1;
+                    lineNumFragment.appendChild(numDiv);
+                });
+                this.editor.appendChild(fragment);
+                this.lineNumbers.appendChild(lineNumFragment);
+                this.renderVisualSelection();
+                this.updateCursor();
+                this.updateStatusBar();
+            }
+
+            renderVisualSelection() { /* ... unchanged ... */
+                document.querySelectorAll('.visual-selection').forEach(el => el.remove());
+                if (!this.visual.start || !this.visual.end || this.mode === 'NORMAL' || this.mode === 'INSERT') return;
+                const [start, end] = this.getSortedVisualRange();
+                if (this.mode === 'VISUAL_LINE') {
+                    for (let i = start.row; i <= end.row; i++) {
+                       this.createSelectionBlock(i, 0, this.lines[i].length + 1, 1);
+                    }
+                } else if (this.mode === 'VISUAL') {
+                    if (start.row === end.row) {
+                        this.createSelectionBlock(start.row, start.col, end.col - start.col + 1, 1);
+                    } else {
+                        this.createSelectionBlock(start.row, start.col, this.lines[start.row].length - start.col, 1);
+                        for (let i = start.row + 1; i < end.row; i++) {
+                             this.createSelectionBlock(i, 0, this.lines[i].length + 1, 1);
+                        }
+                        this.createSelectionBlock(end.row, 0, end.col + 1, 1);
+                    }
+                } else if (this.mode === 'VISUAL_BLOCK') {
+                     const minCol = Math.min(start.col, end.col);
+                     const maxCol = Math.max(start.col, end.col);
+                     const width = maxCol - minCol + 1;
+                     for (let i = start.row; i <= end.row; i++) {
+                          this.createSelectionBlock(i, minCol, width, 1);
+                     }
+                }
+            }
+
+            createSelectionBlock(row, col, widthChars, heightLines) { /* ... unchanged ... */
+                const block = document.createElement('div');
+                block.className = 'visual-selection';
+                block.style.top = `${row * this.lineHeight}px`;
+                block.style.left = `${col * this.charWidth}px`;
+                block.style.width = `${widthChars * this.charWidth}px`;
+                block.style.height = `${heightLines * this.lineHeight}px`;
+                this.editor.appendChild(block);
+            }
+
+            updateCursor() { /* ... unchanged ... */
+                this.cursor.row = Math.max(0, Math.min(this.lines.length - 1, this.cursor.row));
+                const currentLineLength = this.lines[this.cursor.row].length;
+                let maxCol = (this.mode === 'INSERT') ? currentLineLength : Math.max(0, currentLineLength -1);
+                maxCol = (this.mode !== 'INSERT' && currentLineLength > 0) ? currentLineLength : maxCol;
+                maxCol = Math.max(0, maxCol);
+                this.cursor.col = Math.max(0, Math.min(maxCol, this.cursor.col));
+                const cursorTop = this.cursor.row * this.lineHeight - this.editor.scrollTop;
+                const cursorLeft = this.cursor.col * this.charWidth + this.lineNumbers.offsetWidth;
+                this.cursorElement.style.top = `${cursorTop}px`;
+                this.cursorElement.style.left = `${cursorLeft}px`;
+                this.cursorElement.classList.toggle('insert-mode', this.mode === 'INSERT');
+            }
+
+
+            updateStatusBar() { /* ... unchanged ... */
+                this.statusBarMode.textContent = this.mode === 'COMMAND' ? '-- COMMAND --' : `-- ${this.mode} --`;
+                this.statusBarInfo.textContent = `${this.cursor.row + 1},${this.cursor.col + 1}`;
+                if (this.mode === 'COMMAND') {
+                    if (!this.commandInput) {
+                        this.statusBarCommand.innerHTML = `<input type="text" id="command-line-input">`;
+                        this.commandInput = document.getElementById('command-line-input');
+                        this.commandInput.addEventListener('keydown', this.handleCommandInput.bind(this));
+                        this.commandInput.addEventListener('blur', () => {
+                           if (this.mode === 'COMMAND') this.setMode('NORMAL');
+                        });
+                    }
+                    this.commandInput.value = ':' + this.commandBuffer;
+                    this.commandInput.focus();
+                    this.commandInput.selectionStart = this.commandInput.selectionEnd = this.commandInput.value.length;
+                } else {
+                    this.statusBarCommand.textContent = this.pendingKey ? this.pendingKey : '';
+                    if (this.commandInput) {
+                       this.statusBarCommand.innerHTML = this.pendingKey ? this.pendingKey : '';
+                       this.commandInput = null;
+                       this.editor.focus();
+                    }
+                }
+            }
+
+
+            ensureCursorVisible() { /* ... unchanged ... */
+                const cursorTop = this.cursor.row * this.lineHeight;
+                const cursorBottom = cursorTop + this.lineHeight;
+                const editorHeight = this.editor.clientHeight;
+                const scrollTop = this.editor.scrollTop;
+                if (cursorTop < scrollTop) {
+                    this.editor.scrollTop = cursorTop;
+                } else if (cursorBottom > scrollTop + editorHeight) {
+                    this.editor.scrollTop = cursorBottom - editorHeight;
+                }
+                this.updateCursor();
+            }
+
+
+            // --- Modes ---
+            setMode(newMode) { /* ... unchanged ... */
+                if (this.mode === newMode) return;
+                this.pendingKey = null;
+                if (this.mode.startsWith('VISUAL') && !newMode.startsWith('VISUAL')) {
+                    this.visual.start = null;
+                    this.visual.end = null;
+                    this.renderVisualSelection();
+                }
+                if (this.mode === 'COMMAND' && newMode !== 'COMMAND') {
+                    this.commandBuffer = '';
+                    this.statusBarCommand.innerHTML = '';
+                    this.commandInput = null;
+                    this.editor.focus();
+                }
+                this.mode = newMode;
+                if (this.mode.startsWith('VISUAL')) {
+                    this.visual.start = { ...this.cursor };
+                    this.visual.end = { ...this.cursor };
+                }
+                this.updateCursor();
+                this.updateStatusBar();
+                console.log("Mode set to:", this.mode);
+            }
+
+
+            // --- Key Handling ---
+            handleKeyDown(e) { /* ... unchanged ... */
+                if (e.ctrlKey && (e.key === 'd' || e.key === 'u')) {
+                     e.preventDefault();
+                     if (this.mode === 'NORMAL' || this.mode.startsWith('VISUAL')) {
+                         if (e.key === 'd') this.scrollPageDown();
+                         if (e.key === 'u') this.scrollPageUp();
+                     }
+                     return;
+                }
+                if (this.mode === 'COMMAND' && this.commandInput && e.key !== 'Escape') {
+                   this.handleCommandInput(e); // Let command input handle its keys
+                   return;
+                }
                 e.preventDefault();
-                
                 if (this.mode === 'NORMAL') {
                     this.handleNormalMode(e);
                 } else if (this.mode === 'INSERT') {
                     this.handleInsertMode(e);
-                } else if (this.mode === 'COMMAND') {
-                    this.handleCommandMode(e);
-                } else if (this.mode === 'VISUAL') {
+                } else if (this.mode.startsWith('VISUAL')) {
                     this.handleVisualMode(e);
+                } else if (this.mode === 'COMMAND') {
+                    this.handleCommandInput(e); // Handle Escape in command mode
                 }
-                
+            }
+
+
+            handleNormalMode(e) {
+                // Check for pending keys first
+                if (this.pendingKey) {
+                    const currentPending = this.pendingKey;
+                    this.pendingKey = null; // Clear immediately
+                    this.updateStatusBar();
+
+                    if (currentPending === 'g' && e.key === 'g') {
+                        this.goToTop();
+                    } else if (currentPending === 'd' && e.key === 'd') {
+                        this.deleteLine(); // This now cuts the line
+                        this.render();
+                    } else if (currentPending === 'y' && e.key === 'y') {
+                        this.yankLine();
+                    }
+                    // If none matched, the pending key is cancelled, and we do nothing.
+                    return;
+                }
+
+                // Handle regular keys
+                switch (e.key) {
+                    case 'h': this.cursor.col--; break;
+                    case 'j': this.cursor.row++; break;
+                    case 'k': this.cursor.row--; break;
+                    case 'l': this.cursor.col++; break;
+                    case '0': this.cursor.col = 0; break;
+                    case '$': this.cursor.col = this.lines[this.cursor.row].length; break;
+                    case 'i': this.setMode('INSERT'); break;
+                    case 'a': this.cursor.col++; this.setMode('INSERT'); break;
+                    case 'A': this.cursor.col = this.lines[this.cursor.row].length; this.setMode('INSERT'); break;
+                    case 'I': this.cursor.col = 0; this.setMode('INSERT'); break;
+                    case 'o': this.insertLineAfter(); this.setMode('INSERT'); break;
+                    case 'O': this.insertLineBefore(); this.setMode('INSERT'); break;
+                    case 'x': this.cutCharacter(); this.render(); break; // Changed to cutCharacter
+                    case 'd': this.waitForKey('d'); break; // Wait for 'dd'
+                    case 'y': this.waitForKey('y'); break; // Wait for 'yy'
+                    case 'p': this.pasteAfter(); break;
+                    case 'P': this.pasteBefore(); break;
+                    case ':': this.setMode('COMMAND'); this.commandBuffer = ''; break;
+                    case 'v': this.setMode('VISUAL'); break;
+                    case 'V': this.setMode('VISUAL_LINE'); break;
+                    case 'g': this.waitForKey('g'); break;
+                    case 'G': this.goToBottom(); break;
+                    case 'Escape': this.pendingKey = null; this.updateStatusBar(); break;
+                }
+                this.updateCursor();
+                this.ensureCursorVisible();
+                this.updateStatusBar();
+            }
+
+            handleInsertMode(e) { /* ... unchanged ... */
+                switch (e.key) {
+                    case 'Escape': this.setMode('NORMAL'); break;
+                    case 'Backspace': this.deleteCharacterBefore(); break;
+                    case 'Delete': this.deleteCharacter(); break;
+                    case 'Enter': this.insertLineAfter(); break;
+                    case 'ArrowUp': this.cursor.row--; break;
+                    case 'ArrowDown': this.cursor.row++; break;
+                    case 'ArrowLeft': this.cursor.col--; break;
+                    case 'ArrowRight': this.cursor.col++; break;
+                    default:
+                        if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                            this.insertCharacter(e.key);
+                        } else { return; }
+                        break;
+                }
+                 this.render();
+                 this.ensureCursorVisible();
+                 this.updateStatusBar();
+            }
+
+
+            handleVisualMode(e) {
+                 if (this.pendingKey) { // Handle gg in visual
+                    const currentPending = this.pendingKey;
+                    this.pendingKey = null;
+                    this.updateStatusBar();
+                    if (currentPending === 'g' && e.key === 'g') {
+                        this.goToTop();
+                    } else { return; } // Cancel if not gg
+                 }
+
+                switch (e.key) {
+                    case 'Escape': this.setMode('NORMAL'); break;
+                    case 'h': this.cursor.col--; break;
+                    case 'j': this.cursor.row++; break;
+                    case 'k': this.cursor.row--; break;
+                    case 'l': this.cursor.col++; break;
+                    case '0': this.cursor.col = 0; break;
+                    case '$': this.cursor.col = this.lines[this.cursor.row].length; break;
+                    case 'y': this.yankVisual(); this.setMode('NORMAL'); break;
+                    case 'd': this.deleteVisual(); this.setMode('NORMAL'); break;
+                    case 'x': this.deleteVisual(); this.setMode('NORMAL'); break; // x calls deleteVisual (which yanks first)
+                    case 'V':
+                        if (this.mode === 'VISUAL') this.setMode('VISUAL_LINE');
+                        else if (this.mode === 'VISUAL_LINE') this.setMode('VISUAL');
+                        break;
+                    case 'G': this.goToBottom(); break;
+                    case 'g': this.waitForKey('g'); break;
+                }
+                this.updateCursor();
+                this.visual.end = { ...this.cursor };
+                this.renderVisualSelection();
+                this.ensureCursorVisible();
+                this.updateStatusBar();
+            }
+
+            handleCommandInput(e) { /* ... unchanged ... */
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    this.setMode('NORMAL');
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    this.executeCommand(this.commandInput.value.substring(1)); // Use current input value
+                } else if (e.key === 'Backspace') {
+                     // Let input handle backspace, update buffer after timeout
+                      setTimeout(() => {
+                           this.commandBuffer = this.commandInput.value.substring(1);
+                      }, 0);
+                } else if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                    setTimeout(() => {
+                       this.commandBuffer = this.commandInput.value.substring(1);
+                    }, 0);
+                }
+            }
+
+
+            waitForKey(key) { /* ... unchanged ... */
+                this.pendingKey = key;
+                this.updateStatusBar();
+            }
+
+
+            // --- Movement ---
+            goToTop() { /* ... unchanged ... */
+                this.cursor.row = 0;
+                this.cursor.col = 0;
+                this.updateCursor();
+                this.ensureCursorVisible();
+            }
+
+            goToBottom() { /* ... unchanged ... */
+                this.cursor.row = this.lines.length - 1;
+                this.cursor.col = 0;
+                this.updateCursor();
+                this.ensureCursorVisible();
+            }
+
+            // --- Editing Actions ---
+            insertCharacter(char) { /* ... unchanged ... */
+                const line = this.lines[this.cursor.row];
+                this.lines[this.cursor.row] = line.slice(0, this.cursor.col) + char + line.slice(this.cursor.col);
+                this.cursor.col++;
+            }
+
+            deleteCharacterBefore() { /* ... unchanged ... */
+                if (this.cursor.col > 0) {
+                    const line = this.lines[this.cursor.row];
+                    this.lines[this.cursor.row] = line.slice(0, this.cursor.col - 1) + line.slice(this.cursor.col);
+                    this.cursor.col--;
+                } else if (this.cursor.row > 0) {
+                    const currentLine = this.lines[this.cursor.row];
+                    this.cursor.row--;
+                    this.cursor.col = this.lines[this.cursor.row].length;
+                    this.lines[this.cursor.row] += currentLine;
+                    this.lines.splice(this.cursor.row + 1, 1);
+                }
+            }
+
+
+            deleteCharacter() { // Just deletes (for Insert mode)
+                 const line = this.lines[this.cursor.row];
+                 if (this.cursor.col < line.length) {
+                    this.lines[this.cursor.row] = line.slice(0, this.cursor.col) + line.slice(this.cursor.col + 1);
+                 }
+            }
+
+            cutCharacter() { // Deletes and copies (for 'x')
+                 const line = this.lines[this.cursor.row];
+                 if (this.cursor.col < line.length) {
+                    const deletedChar = line[this.cursor.col];
+                    this.copyToClipboard(deletedChar); // Copy before deleting
+                    this.lines[this.cursor.row] = line.slice(0, this.cursor.col) + line.slice(this.cursor.col + 1);
+                 }
+            }
+
+            insertLineAfter() { /* ... unchanged ... */
+                const currentLine = this.lines[this.cursor.row];
+                const restOfLine = currentLine.slice(this.cursor.col);
+                this.lines[this.cursor.row] = currentLine.slice(0, this.cursor.col);
+                this.cursor.row++;
+                this.cursor.col = 0;
+                this.lines.splice(this.cursor.row, 0, restOfLine);
                 this.render();
             }
 
-            handleNormalMode(e) {
-                const key = e.key;
-                
-                switch (key) {
-                    case 'i':
-                        this.mode = 'INSERT';
-                        break;
-                    case 'I':
-                        this.cursorCol = 0;
-                        this.mode = 'INSERT';
-                        break;
-                    case 'a':
-                        this.cursorCol = Math.min(this.cursorCol + 1, this.getCurrentLine().length);
-                        this.mode = 'INSERT';
-                        break;
-                    case 'A':
-                        this.cursorCol = this.getCurrentLine().length;
-                        this.mode = 'INSERT';
-                        break;
-                    case 'o':
-                        this.content.splice(this.cursorRow + 1, 0, '');
-                        this.cursorRow++;
-                        this.cursorCol = 0;
-                        this.mode = 'INSERT';
-                        this.saveState();
-                        break;
-                    case 'O':
-                        this.content.splice(this.cursorRow, 0, '');
-                        this.cursorCol = 0;
-                        this.mode = 'INSERT';
-                        this.saveState();
-                        break;
-                    case 'h':
-                    case 'ArrowLeft':
-                        this.moveCursor(-1, 0);
-                        break;
-                    case 'j':
-                    case 'ArrowDown':
-                        this.moveCursor(0, 1);
-                        break;
-                    case 'k':
-                    case 'ArrowUp':
-                        this.moveCursor(0, -1);
-                        break;
-                    case 'l':
-                    case 'ArrowRight':
-                        this.moveCursor(1, 0);
-                        break;
-                    case '0':
-                        this.cursorCol = 0;
-                        break;
-                    case '$':
-                        this.cursorCol = Math.max(0, this.getCurrentLine().length - 1);
-                        break;
-                    case 'w':
-                        this.moveWordForward();
-                        break;
-                    case 'b':
-                        this.moveWordBackward();
-                        break;
-                    case 'x':
-                        this.deleteChar();
-                        break;
-                    case 'X':
-                        if (this.cursorCol > 0) {
-                            this.cursorCol--;
-                            this.deleteChar();
-                        }
-                        break;
-                    case 'd':
-                        if (this.lastCommand === 'd') {
-                            this.deleteLine();
-                            this.lastCommand = '';
-                        } else {
-                            this.lastCommand = 'd';
-                        }
-                        break;
-                    case 'y':
-                        if (this.lastCommand === 'y') {
-                            this.yankLine();
-                            this.lastCommand = '';
-                        } else {
-                            this.lastCommand = 'y';
-                        }
-                        break;
-                    case 'p':
-                        this.paste();
-                        break;
-                    case 'u':
-                        this.undo();
-                        break;
-                    case 'r':
-                        this.lastCommand = 'r';
-                        break;
-                    case 'v':
-                        this.mode = 'VISUAL';
-                        this.visualStart = { row: this.cursorRow, col: this.cursorCol };
-                        break;
-                    case 'e':
-                        this.openFile();
-                        break;
-                    case ':':
-                        this.mode = 'COMMAND';
-                        this.command = '';
-                        break;
-                    case '/':
-                        this.mode = 'COMMAND';
-                        this.command = '/';
-                        break;
-                    case 'G':
-                        this.cursorRow = this.content.length - 1;
-                        this.cursorCol = 0;
-                        break;
-                    case 'g':
-                        if (this.lastCommand === 'g') {
-                            this.cursorRow = 0;
-                            this.cursorCol = 0;
-                            this.lastCommand = '';
-                        } else {
-                            this.lastCommand = 'g';
-                        }
-                        break;
-                    default:
-                        if (this.lastCommand === 'r' && key.length === 1) {
-                            this.replaceChar(key);
-                            this.lastCommand = '';
-                        } else {
-                            this.lastCommand = '';
-                        }
-                        break;
+
+            insertLineBefore() { /* ... unchanged ... */
+                this.lines.splice(this.cursor.row, 0, '');
+                this.cursor.col = 0;
+                this.render();
+            }
+
+
+            deleteLine() { // Now acts as 'cut line'
+                if (this.lines.length > 0) {
+                    const deleted = this.lines.splice(this.cursor.row, 1);
+                    this.copyToClipboard(deleted.join('\n') + '\n'); // Cut deleted line
+                    if (this.lines.length === 0) this.lines.push('');
+                    this.cursor.row = Math.min(this.cursor.row, this.lines.length - 1);
                 }
+                this.cursor.col = 0;
             }
 
-            handleInsertMode(e) {
-                const key = e.key;
-                
-                if (key === 'Escape') {
-                    this.mode = 'NORMAL';
-                    this.cursorCol = Math.max(0, this.cursorCol - 1);
-                    this.saveState();
-                } else if (key === 'Backspace') {
-                    if (this.cursorCol > 0) {
-                        this.content[this.cursorRow] = 
-                            this.content[this.cursorRow].slice(0, this.cursorCol - 1) +
-                            this.content[this.cursorRow].slice(this.cursorCol);
-                        this.cursorCol--;
-                    } else if (this.cursorRow > 0) {
-                        const currentLine = this.content[this.cursorRow];
-                        this.content.splice(this.cursorRow, 1);
-                        this.cursorRow--;
-                        this.cursorCol = this.content[this.cursorRow].length;
-                        this.content[this.cursorRow] += currentLine;
-                    }
-                } else if (key === 'Enter') {
-                    const currentLine = this.content[this.cursorRow];
-                    const beforeCursor = currentLine.slice(0, this.cursorCol);
-                    const afterCursor = currentLine.slice(this.cursorCol);
-                    
-                    this.content[this.cursorRow] = beforeCursor;
-                    this.content.splice(this.cursorRow + 1, 0, afterCursor);
-                    this.cursorRow++;
-                    this.cursorCol = 0;
-                } else if (key === 'Tab') {
-                    this.insertText('    ');
-                } else if (key.length === 1) {
-                    this.insertText(key);
-                }
-            }
-
-            handleCommandMode(e) {
-                const key = e.key;
-                
-                if (key === 'Escape') {
-                    this.mode = 'NORMAL';
-                    this.command = '';
-                } else if (key === 'Enter') {
-                    this.executeCommand();
-                    this.mode = 'NORMAL';
-                    this.command = '';
-                } else if (key === 'Backspace') {
-                    this.command = this.command.slice(0, -1);
-                    if (this.command === '') {
-                        this.mode = 'NORMAL';
-                    }
-                } else if (key.length === 1) {
-                    this.command += key;
-                }
-            }
-
-            handleVisualMode(e) {
-                const key = e.key;
-                
-                if (key === 'Escape') {
-                    this.mode = 'NORMAL';
-                    this.visualStart = null;
-                } else if (key === 'd') {
-                    this.deleteSelection();
-                    this.mode = 'NORMAL';
-                    this.visualStart = null;
-                } else if (key === 'y') {
-                    this.yankSelection();
-                    this.mode = 'NORMAL';
-                    this.visualStart = null;
-                } else {
-                    // Handle movement in visual mode
-                    this.handleNormalMode(e);
-                }
-            }
-
-            insertText(text) {
-                const line = this.content[this.cursorRow];
-                this.content[this.cursorRow] = 
-                    line.slice(0, this.cursorCol) + text + line.slice(this.cursorCol);
-                this.cursorCol += text.length;
-            }
-
-            deleteChar() {
-                const line = this.getCurrentLine();
-                if (this.cursorCol < line.length) {
-                    this.content[this.cursorRow] = 
-                        line.slice(0, this.cursorCol) + line.slice(this.cursorCol + 1);
-                    this.saveState();
-                }
-            }
-
-            deleteLine() {
-                this.registers['"'] = this.content[this.cursorRow];
-                if (this.content.length > 1) {
-                    this.content.splice(this.cursorRow, 1);
-                    if (this.cursorRow >= this.content.length) {
-                        this.cursorRow = this.content.length - 1;
-                    }
-                } else {
-                    this.content[0] = '';
-                }
-                this.cursorCol = 0;
-                this.saveState();
-            }
-
-            yankLine() {
-                this.registers['"'] = this.content[this.cursorRow];
-                this.copyToClipboard(this.content[this.cursorRow]);
-            }
-
-            async paste() {
-                let textToPaste = this.registers['"'];
-                
-                // Try to get text from system clipboard
-                try {
-                    if (navigator.clipboard && navigator.clipboard.readText) {
-                        const clipboardText = await navigator.clipboard.readText();
-                        if (clipboardText) {
-                            textToPaste = clipboardText;
-                        }
-                    }
+            // --- Clipboard ---
+            async copyToClipboard(text) { /* ... unchanged ... */
+                 try {
+                    await navigator.clipboard.writeText(text);
+                    console.log('Copied/Cut:', text.length, "chars");
                 } catch (err) {
-                    // Fall back to register content
-                }
-                
-                if (textToPaste) {
-                    if (textToPaste.includes('\n')) {
-                        // Multi-line paste
-                        const lines = textToPaste.split('\n');
-                        this.content.splice(this.cursorRow + 1, 0, ...lines);
-                        this.cursorRow += lines.length;
-                        this.cursorCol = 0;
-                    } else {
-                        // Single line paste
-                        this.content.splice(this.cursorRow + 1, 0, textToPaste);
-                        this.cursorRow++;
-                        this.cursorCol = 0;
-                    }
-                    this.saveState();
+                    console.error('Failed to copy text: ', err);
+                    this.statusBarCommand.textContent = "Error: Clipboard write failed.";
                 }
             }
 
-            replaceChar(char) {
-                const line = this.getCurrentLine();
-                if (this.cursorCol < line.length) {
-                    this.content[this.cursorRow] = 
-                        line.slice(0, this.cursorCol) + char + line.slice(this.cursorCol + 1);
-                    this.saveState();
+            async pasteFromClipboard() { /* ... unchanged ... */
+                 try {
+                    return await navigator.clipboard.readText();
+                } catch (err) {
+                    console.error('Failed to read clipboard contents: ', err);
+                    this.statusBarCommand.textContent = "Error: Clipboard read failed.";
+                    return null;
                 }
             }
 
-            moveCursor(deltaCol, deltaRow) {
-                this.cursorRow = Math.max(0, Math.min(this.content.length - 1, this.cursorRow + deltaRow));
-                const maxCol = Math.max(0, this.getCurrentLine().length - (this.mode === 'NORMAL' ? 1 : 0));
-                this.cursorCol = Math.max(0, Math.min(maxCol, this.cursorCol + deltaCol));
+
+            yankLine() { /* ... unchanged ... */
+                this.copyToClipboard(this.lines[this.cursor.row] + '\n');
+                this.statusBarCommand.textContent = "1 line yanked";
             }
 
-            moveWordForward() {
-                const line = this.getCurrentLine();
-                let pos = this.cursorCol;
-                
-                // Skip current word
-                while (pos < line.length && /\w/.test(line[pos])) pos++;
-                // Skip spaces
-                while (pos < line.length && /\s/.test(line[pos])) pos++;
-                
-                this.cursorCol = Math.min(pos, line.length - 1);
-            }
+            async pasteAfter() { /* ... unchanged ... */
+                const text = await this.pasteFromClipboard();
+                if (text === null) return;
+                const pasteLines = text.split('\n');
+                if (text.endsWith('\n') && pasteLines.length > 1) pasteLines.pop();
 
-            moveWordBackward() {
-                const line = this.getCurrentLine();
-                let pos = this.cursorCol;
-                
-                if (pos > 0) pos--;
-                // Skip spaces
-                while (pos > 0 && /\s/.test(line[pos])) pos--;
-                // Skip to beginning of word
-                while (pos > 0 && /\w/.test(line[pos - 1])) pos--;
-                
-                this.cursorCol = pos;
-            }
-
-            executeCommand() {
-                const cmd = this.command;
-                
-                if (cmd.startsWith('/')) {
-                    this.searchTerm = cmd.slice(1);
-                    this.search();
-                } else if (cmd === 'q' || cmd === 'quit') {
-                    alert('Thanks for using Vim!');
-                } else if (cmd === 'w' || cmd === 'write') {
-                    this.downloadFile();
-                } else if (cmd.match(/^\d+$/)) {
-                    const lineNum = parseInt(cmd) - 1;
-                    this.cursorRow = Math.max(0, Math.min(this.content.length - 1, lineNum));
-                    this.cursorCol = 0;
-                }
-            }
-
-            search() {
-                if (!this.searchTerm) return;
-                
-                for (let i = this.cursorRow; i < this.content.length; i++) {
-                    const startCol = i === this.cursorRow ? this.cursorCol + 1 : 0;
-                    const index = this.content[i].indexOf(this.searchTerm, startCol);
-                    if (index !== -1) {
-                        this.cursorRow = i;
-                        this.cursorCol = index;
-                        return;
-                    }
-                }
-                
-                // Search from beginning
-                for (let i = 0; i <= this.cursorRow; i++) {
-                    const endCol = i === this.cursorRow ? this.cursorCol : this.content[i].length;
-                    const index = this.content[i].indexOf(this.searchTerm, 0);
-                    if (index !== -1 && index < endCol) {
-                        this.cursorRow = i;
-                        this.cursorCol = index;
-                        return;
-                    }
-                }
-            }
-
-            deleteSelection() {
-                if (!this.visualStart) return;
-                
-                const start = this.visualStart;
-                const end = { row: this.cursorRow, col: this.cursorCol };
-                
-                if (start.row === end.row) {
-                    const minCol = Math.min(start.col, end.col);
-                    const maxCol = Math.max(start.col, end.col);
-                    const line = this.content[start.row];
-                    this.registers['"'] = line.slice(minCol, maxCol + 1);
-                    this.content[start.row] = line.slice(0, minCol) + line.slice(maxCol + 1);
-                    this.cursorCol = minCol;
-                }
-                this.saveState();
-            }
-
-            yankSelection() {
-                if (!this.visualStart) return;
-                
-                const start = this.visualStart;
-                const end = { row: this.cursorRow, col: this.cursorCol };
-                
-                if (start.row === end.row) {
-                    const minCol = Math.min(start.col, end.col);
-                    const maxCol = Math.max(start.col, end.col);
-                    const selectedText = this.content[start.row].slice(minCol, maxCol + 1);
-                    this.registers['"'] = selectedText;
-                    this.copyToClipboard(selectedText);
-                }
-            }
-
-            copyToClipboard(text) {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).catch(err => {
-                        console.warn('Could not copy to clipboard:', err);
-                    });
+                if (pasteLines.length === 1 && !text.includes('\n')) {
+                    const line = this.lines[this.cursor.row];
+                    this.lines[this.cursor.row] = line.slice(0, this.cursor.col + 1) + pasteLines[0] + line.slice(this.cursor.col + 1);
+                    this.cursor.col += pasteLines[0].length;
                 } else {
-                    // Fallback for older browsers
-                    const textArea = document.createElement('textarea');
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                    } catch (err) {
-                        console.warn('Could not copy to clipboard:', err);
+                    this.lines.splice(this.cursor.row + 1, 0, ...pasteLines);
+                    this.cursor.row++;
+                    this.cursor.col = 0;
+                }
+                this.render();
+            }
+
+            async pasteBefore() { /* ... unchanged ... */
+                const text = await this.pasteFromClipboard();
+                if (text === null) return;
+                const pasteLines = text.split('\n');
+                if (text.endsWith('\n') && pasteLines.length > 1) pasteLines.pop();
+
+                if (pasteLines.length === 1 && !text.includes('\n')) {
+                     const line = this.lines[this.cursor.row];
+                     this.lines[this.cursor.row] = line.slice(0, this.cursor.col) + pasteLines[0] + line.slice(this.cursor.col);
+                     this.cursor.col += pasteLines[0].length -1;
+                } else {
+                    this.lines.splice(this.cursor.row, 0, ...pasteLines);
+                    this.cursor.col = 0;
+                }
+                this.render();
+            }
+
+
+            // --- Visual Mode Actions ---
+            getSortedVisualRange() { /* ... unchanged ... */
+                 const { start, end } = this.visual;
+                if (!start || !end) return [null, null];
+                if (start.row < end.row || (start.row === end.row && start.col <= end.col)) {
+                    return [{ ...start }, { ...end }];
+                } else {
+                    return [{ ...end }, { ...start }];
+                }
+            }
+
+
+            yankVisual() { /* ... unchanged ... */
+                const [start, end] = this.getSortedVisualRange();
+                if (!start) return;
+                let textToYank = '';
+                if (this.mode === 'VISUAL_LINE') {
+                    textToYank = this.lines.slice(start.row, end.row + 1).join('\n') + '\n';
+                } else if (this.mode === 'VISUAL') {
+                    if (start.row === end.row) {
+                        textToYank = this.lines[start.row].substring(start.col, end.col + 1);
+                    } else {
+                        textToYank += this.lines[start.row].substring(start.col) + '\n';
+                        for (let i = start.row + 1; i < end.row; i++) { textToYank += this.lines[i] + '\n'; }
+                        textToYank += this.lines[end.row].substring(0, end.col + 1);
                     }
-                    document.body.removeChild(textArea);
+                } else if (this.mode === 'VISUAL_BLOCK') {
+                     const minCol = Math.min(start.col, end.col);
+                     const maxCol = Math.max(start.col, end.col);
+                     for (let i = start.row; i <= end.row; i++) {
+                        textToYank += (this.lines[i] || '').substring(minCol, maxCol + 1) + '\n';
+                     }
                 }
+                this.copyToClipboard(textToYank);
+                this.statusBarCommand.textContent = "Visual text yanked";
             }
 
-            openFile() {
-                this.fileInputEl.click();
-            }
-
-            handleFileLoad(event) {
-                const file = event.target.files[0];
-                if (!file) return;
-
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const text = e.target.result;
-                    this.content = text.split('\n');
-                    if (this.content.length === 0) {
-                        this.content = [''];
+            deleteVisual() { // This now acts as 'cut visual'
+                const [start, end] = this.getSortedVisualRange();
+                if (!start) return;
+                this.yankVisual(); // Yank (cut) before deleting
+                if (this.mode === 'VISUAL_LINE') {
+                    this.lines.splice(start.row, end.row - start.row + 1);
+                     if (this.lines.length === 0) this.lines.push('');
+                    this.cursor.row = start.row;
+                } else if (this.mode === 'VISUAL') {
+                   if (start.row === end.row) {
+                        const line = this.lines[start.row];
+                        this.lines[start.row] = line.slice(0, start.col) + line.slice(end.col + 1);
+                        this.cursor.col = start.col;
+                    } else {
+                        const startLine = this.lines[start.row].slice(0, start.col);
+                        const endLine = this.lines[end.row].slice(end.col + 1);
+                        this.lines.splice(start.row, end.row - start.row + 1, startLine + endLine);
+                        this.cursor.row = start.row;
+                        this.cursor.col = start.col;
                     }
-                    this.cursorRow = 0;
-                    this.cursorCol = 0;
-                    this.saveState();
-                    this.render();
-                    this.contentEl.focus();
-                };
-                reader.readAsText(file);
-                
-                // Clear the input so the same file can be selected again
-                event.target.value = '';
+                } else if (this.mode === 'VISUAL_BLOCK') {
+                     const minCol = Math.min(start.col, end.col);
+                     const maxCol = Math.max(start.col, end.col);
+                      for (let i = start.row; i <= end.row; i++) {
+                          const line = this.lines[i] || '';
+                          this.lines[i] = line.slice(0, minCol) + line.slice(maxCol + 1);
+                      }
+                      this.cursor.row = start.row;
+                      this.cursor.col = minCol;
+                }
+                this.cursor.row = Math.max(0, Math.min(this.lines.length - 1, this.cursor.row));
+                this.render();
             }
 
-            saveState() {
-                this.history = this.history.slice(0, this.historyIndex + 1);
-                this.history.push(JSON.parse(JSON.stringify(this.content)));
-                this.historyIndex = this.history.length - 1;
-                
-                if (this.history.length > 50) {
-                    this.history.shift();
-                    this.historyIndex--;
+            // --- Scrolling ---
+            scrollPage(direction) { /* ... unchanged ... */
+                const linesPerPage = Math.floor(this.editor.clientHeight / this.lineHeight);
+                const scrollAmount = Math.floor(linesPerPage / 2);
+                const scrollPixels = scrollAmount * this.lineHeight;
+                this.cursor.row = Math.max(0, Math.min(this.lines.length - 1, this.cursor.row + (scrollAmount * direction)));
+                this.editor.scrollTop += scrollPixels * direction;
+                this.updateCursor();
+                this.ensureCursorVisible();
+                this.updateStatusBar();
+            }
+
+            scrollPageDown() { this.scrollPage(1); }
+            scrollPageUp() { this.scrollPage(-1); }
+
+            // --- Commands ---
+            executeCommand(cmd) { /* ... unchanged ... */
+                this.setMode('NORMAL');
+                cmd = cmd.trim();
+                console.log("Executing:", cmd);
+                switch (cmd) {
+                    case 'w': this.saveFile(); break;
+                    case 'q': window.close(); break;
+                    case 'e': this.fileInput.click(); break;
+                    default:
+                        const lineNum = parseInt(cmd, 10);
+                        if (!isNaN(lineNum) && lineNum > 0 && lineNum <= this.lines.length) {
+                            this.cursor.row = lineNum - 1;
+                            this.cursor.col = 0;
+                            this.updateCursor();
+                            this.ensureCursorVisible();
+                        } else {
+                           this.statusBarCommand.textContent = `E492: Not an editor command: ${cmd}`;
+                           setTimeout(() => this.updateStatusBar(), 2000);
+                        }
+                        break;
                 }
             }
 
-            undo() {
-                if (this.historyIndex > 0) {
-                    this.historyIndex--;
-                    this.content = JSON.parse(JSON.stringify(this.history[this.historyIndex]));
-                    this.cursorRow = Math.min(this.cursorRow, this.content.length - 1);
-                    this.cursorCol = Math.min(this.cursorCol, this.getCurrentLine().length - 1);
-                }
-            }
 
-            downloadFile() {
-                const text = this.content.join('\n');
+            // --- File Handling ---
+            saveFile() { /* ... unchanged ... */
+                const text = this.lines.join('\n');
                 const blob = new Blob([text], { type: 'text/plain' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'vim-file.txt';
+                a.download = 'file.txt';
+                document.body.appendChild(a);
                 a.click();
+                document.body.removeChild(a);
                 URL.revokeObjectURL(url);
+                this.statusBarCommand.textContent = "File saved (dialog opened).";
             }
 
-            getCurrentLine() {
-                return this.content[this.cursorRow] || '';
-            }
-
-            render() {
-                // Update content
-                this.contentEl.innerHTML = this.content.map((line, i) => {
-                    let displayLine = line || ' ';
-                    
-                    // Highlight visual selection
-                    if (this.mode === 'VISUAL' && this.visualStart && i === this.cursorRow && i === this.visualStart.row) {
-                        const minCol = Math.min(this.visualStart.col, this.cursorCol);
-                        const maxCol = Math.max(this.visualStart.col, this.cursorCol);
-                        displayLine = 
-                            displayLine.slice(0, minCol) +
-                            '<span class="highlight">' + displayLine.slice(minCol, maxCol + 1) + '</span>' +
-                            displayLine.slice(maxCol + 1);
-                    }
-                    
-                    return `<div>${displayLine}</div>`;
-                }).join('');
-
-                // Update line numbers
-                this.lineNumbersEl.innerHTML = this.content.map((_, i) => i + 1).join('\n');
-
-                // Update cursor position
-                const lineHeight = 20;
-                const charWidth = 8.4;
-                this.cursorEl.style.top = (10 + this.cursorRow * lineHeight) + 'px';
-                this.cursorEl.style.left = (10 + this.cursorCol * charWidth) + 'px';
-                
-                // Update cursor appearance based on mode
-                this.cursorEl.className = 'cursor' + (this.mode === 'INSERT' ? ' insert-mode' : '');
-
-                // Update mode indicator
-                this.modeEl.textContent = `-- ${this.mode} --`;
-                this.modeEl.className = `mode-indicator ${this.mode.toLowerCase()}-mode`;
-
-                // Update status
-                this.statusEl.textContent = `Line ${this.cursorRow + 1}, Col ${this.cursorCol + 1}`;
-
-                // Update command line
-                if (this.mode === 'COMMAND') {
-                    this.commandEl.textContent = this.command;
-                } else {
-                    this.commandEl.textContent = '';
+            handleFileSelect(event) { /* ... unchanged ... */
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const content = e.target.result;
+                        this.lines = content.split('\n');
+                        this.lines = this.lines.map(line => line.replace(/\r$/, ''));
+                        this.cursor = { row: 0, col: 0 };
+                        this.render();
+                        this.statusBarCommand.textContent = `File "${file.name}" loaded.`;
+                    };
+                    reader.readAsText(file);
                 }
+                this.fileInput.value = '';
             }
+
         }
 
-        // Initialize Vim editor
-        const vim = new VimEditor();
-        
-        // Add some sample content
-        vim.content = [
-            'Welcome to Vim!',
-            '',
-            'This is a functional Vim editor implementation.',
-            'Try these commands:',
-            '',
-            '- Press "i" to enter INSERT mode',
-            '- Press "Escape" to return to NORMAL mode',
-            '- Use "h", "j", "k", "l" or arrow keys to move',
-            '- Press "o" to open a new line below',
-            '- Press "dd" to delete a line',
-            '- Press "yy" to yank (copy) a line',
-            '- Press "p" to paste',
-            '- Press "u" to undo',
-            '- Press ":w" to download the file',
-            '- Press ":q" to quit',
-            '',
-            'Happy Vimming!'
-        ];
-        vim.render();
+        document.addEventListener('DOMContentLoaded', () => {
+            new VimEditor();
+        });
     </script>
 </body>
 </html>
-
