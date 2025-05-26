@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vim Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: #1a1a1a;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .vim-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .line-numbers {
+            background: #2a2a2a;
+            border-right: 1px solid #444;
+            padding: 10px 8px;
+            font-size: 14px;
+            color: #666;
+            min-width: 60px;
+            text-align: right;
+            user-select: none;
+            white-space: pre-line;
+            line-height: 20px;
+        }
+
+        .editor {
+            flex: 1;
+            padding: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+            background: #1a1a1a;
+            border: none;
+            outline: none;
+            resize: none;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            overflow: auto;
+        }
+
+        .cursor {
+            position: absolute;
+            width: 8px;
+            height: 20px;
+            background: #ffffff;
+            animation: blink 1s infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .cursor.insert-mode {
+            width: 2px;
+            background: #00ff00;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .status-bar {
+            background: #0066cc;
+            color: white;
+            padding: 5px 10px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .command-line {
+            background: #2a2a2a;
+            color: white;
+            padding: 5px 10px;
+            font-size: 14px;
+            min-height: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .mode-indicator {
+            font-weight: bold;
+        }
+
+        .normal-mode { color: #ffffff; }
+        .insert-mode { color: #00ff00; }
+        .visual-mode { color: #ffff00; }
+        .command-mode { color: #ff6600; }
+
+        .hidden {
+            display: none;
+        }
+
+        .file-input {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+
+        .editor-wrapper {
+            position: relative;
+            flex: 1;
+        }
+
+        .vim-content {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 20px;
+            white-space: pre;
+            overflow: auto;
+            color: #ffffff;
+            z-index: 1;
+        }
+
+        .highlight {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="vim-container">
+        <div class="editor-area">
+            <div class="line-numbers" id="lineNumbers"></div>
+            <div class="editor-wrapper">
+                <div class="vim-content" id="vimContent" tabindex="0"></div>
+                <div class="cursor" id="cursor"></div>
+            </div>
+        </div>
+        <div class="status-bar">
+            <span class="mode-indicator" id="modeIndicator">-- NORMAL --</span>
+            <span id="statusInfo">Line 1, Col 1</span>
+        </div>
+        <div class="command-line" id="commandLine"></div>
+        <input type="file" id="fileInput" class="file-input" accept=".txt,.js,.html,.css,.py,.md,*">
+    </div>
+
+    <script>
+        class VimEditor {
+            constructor() {
+                this.content = [''];
+                this.cursorRow = 0;
+                this.cursorCol = 0;
+                this.mode = 'NORMAL';
+                this.command = '';
+                this.lastCommand = '';
+                this.registers = { '"': '' };
+                this.searchTerm = '';
+                this.visualStart = null;
+                this.history = [['']];
+                this.historyIndex = 0;
+                
+                this.contentEl = document.getElementById('vimContent');
+                this.cursorEl = document.getElementById('cursor');
+                this.modeEl = document.getElementById('modeIndicator');
+                this.statusEl = document.getElementById('statusInfo');
+                this.commandEl = document.getElementById('commandLine');
+                this.lineNumbersEl = document.getElementById('lineNumbers');
+                this.fileInputEl = document.getElementById('fileInput');
+                
+                this.setupEventListeners();
+                this.render();
+                this.contentEl.focus();
+            }
+
+            setupEventListeners() {
+                this.contentEl.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                this.contentEl.addEventListener('focus', () => this.render());
+                this.fileInputEl.addEventListener('change', (e) => this.handleFileLoad(e));
+            }
+
+            handleKeyDown(e) {
+                e.preventDefault();
+                
+                if (this.mode === 'NORMAL') {
+                    this.handleNormalMode(e);
+                } else if (this.mode === 'INSERT') {
+                    this.handleInsertMode(e);
+                } else if (this.mode === 'COMMAND') {
+                    this.handleCommandMode(e);
+                } else if (this.mode === 'VISUAL') {
+                    this.handleVisualMode(e);
+                }
+                
+                this.render();
+            }
+
+            handleNormalMode(e) {
+                const key = e.key;
+                
+                switch (key) {
+                    case 'i':
+                        this.mode = 'INSERT';
+                        break;
+                    case 'I':
+                        this.cursorCol = 0;
+                        this.mode = 'INSERT';
+                        break;
+                    case 'a':
+                        this.cursorCol = Math.min(this.cursorCol + 1, this.getCurrentLine().length);
+                        this.mode = 'INSERT';
+                        break;
+                    case 'A':
+                        this.cursorCol = this.getCurrentLine().length;
+                        this.mode = 'INSERT';
+                        break;
+                    case 'o':
+                        this.content.splice(this.cursorRow + 1, 0, '');
+                        this.cursorRow++;
+                        this.cursorCol = 0;
+                        this.mode = 'INSERT';
+                        this.saveState();
+                        break;
+                    case 'O':
+                        this.content.splice(this.cursorRow, 0, '');
+                        this.cursorCol = 0;
+                        this.mode = 'INSERT';
+                        this.saveState();
+                        break;
+                    case 'h':
+                    case 'ArrowLeft':
+                        this.moveCursor(-1, 0);
+                        break;
+                    case 'j':
+                    case 'ArrowDown':
+                        this.moveCursor(0, 1);
+                        break;
+                    case 'k':
+                    case 'ArrowUp':
+                        this.moveCursor(0, -1);
+                        break;
+                    case 'l':
+                    case 'ArrowRight':
+                        this.moveCursor(1, 0);
+                        break;
+                    case '0':
+                        this.cursorCol = 0;
+                        break;
+                    case '$':
+                        this.cursorCol = Math.max(0, this.getCurrentLine().length - 1);
+                        break;
+                    case 'w':
+                        this.moveWordForward();
+                        break;
+                    case 'b':
+                        this.moveWordBackward();
+                        break;
+                    case 'x':
+                        this.deleteChar();
+                        break;
+                    case 'X':
+                        if (this.cursorCol > 0) {
+                            this.cursorCol--;
+                            this.deleteChar();
+                        }
+                        break;
+                    case 'd':
+                        if (this.lastCommand === 'd') {
+                            this.deleteLine();
+                            this.lastCommand = '';
+                        } else {
+                            this.lastCommand = 'd';
+                        }
+                        break;
+                    case 'y':
+                        if (this.lastCommand === 'y') {
+                            this.yankLine();
+                            this.lastCommand = '';
+                        } else {
+                            this.lastCommand = 'y';
+                        }
+                        break;
+                    case 'p':
+                        this.paste();
+                        break;
+                    case 'u':
+                        this.undo();
+                        break;
+                    case 'r':
+                        this.lastCommand = 'r';
+                        break;
+                    case 'v':
+                        this.mode = 'VISUAL';
+                        this.visualStart = { row: this.cursorRow, col: this.cursorCol };
+                        break;
+                    case 'e':
+                        this.openFile();
+                        break;
+                    case ':':
+                        this.mode = 'COMMAND';
+                        this.command = '';
+                        break;
+                    case '/':
+                        this.mode = 'COMMAND';
+                        this.command = '/';
+                        break;
+                    case 'G':
+                        this.cursorRow = this.content.length - 1;
+                        this.cursorCol = 0;
+                        break;
+                    case 'g':
+                        if (this.lastCommand === 'g') {
+                            this.cursorRow = 0;
+                            this.cursorCol = 0;
+                            this.lastCommand = '';
+                        } else {
+                            this.lastCommand = 'g';
+                        }
+                        break;
+                    default:
+                        if (this.lastCommand === 'r' && key.length === 1) {
+                            this.replaceChar(key);
+                            this.lastCommand = '';
+                        } else {
+                            this.lastCommand = '';
+                        }
+                        break;
+                }
+            }
+
+            handleInsertMode(e) {
+                const key = e.key;
+                
+                if (key === 'Escape') {
+                    this.mode = 'NORMAL';
+                    this.cursorCol = Math.max(0, this.cursorCol - 1);
+                    this.saveState();
+                } else if (key === 'Backspace') {
+                    if (this.cursorCol > 0) {
+                        this.content[this.cursorRow] = 
+                            this.content[this.cursorRow].slice(0, this.cursorCol - 1) +
+                            this.content[this.cursorRow].slice(this.cursorCol);
+                        this.cursorCol--;
+                    } else if (this.cursorRow > 0) {
+                        const currentLine = this.content[this.cursorRow];
+                        this.content.splice(this.cursorRow, 1);
+                        this.cursorRow--;
+                        this.cursorCol = this.content[this.cursorRow].length;
+                        this.content[this.cursorRow] += currentLine;
+                    }
+                } else if (key === 'Enter') {
+                    const currentLine = this.content[this.cursorRow];
+                    const beforeCursor = currentLine.slice(0, this.cursorCol);
+                    const afterCursor = currentLine.slice(this.cursorCol);
+                    
+                    this.content[this.cursorRow] = beforeCursor;
+                    this.content.splice(this.cursorRow + 1, 0, afterCursor);
+                    this.cursorRow++;
+                    this.cursorCol = 0;
+                } else if (key === 'Tab') {
+                    this.insertText('    ');
+                } else if (key.length === 1) {
+                    this.insertText(key);
+                }
+            }
+
+            handleCommandMode(e) {
+                const key = e.key;
+                
+                if (key === 'Escape') {
+                    this.mode = 'NORMAL';
+                    this.command = '';
+                } else if (key === 'Enter') {
+                    this.executeCommand();
+                    this.mode = 'NORMAL';
+                    this.command = '';
+                } else if (key === 'Backspace') {
+                    this.command = this.command.slice(0, -1);
+                    if (this.command === '') {
+                        this.mode = 'NORMAL';
+                    }
+                } else if (key.length === 1) {
+                    this.command += key;
+                }
+            }
+
+            handleVisualMode(e) {
+                const key = e.key;
+                
+                if (key === 'Escape') {
+                    this.mode = 'NORMAL';
+                    this.visualStart = null;
+                } else if (key === 'd') {
+                    this.deleteSelection();
+                    this.mode = 'NORMAL';
+                    this.visualStart = null;
+                } else if (key === 'y') {
+                    this.yankSelection();
+                    this.mode = 'NORMAL';
+                    this.visualStart = null;
+                } else {
+                    // Handle movement in visual mode
+                    this.handleNormalMode(e);
+                }
+            }
+
+            insertText(text) {
+                const line = this.content[this.cursorRow];
+                this.content[this.cursorRow] = 
+                    line.slice(0, this.cursorCol) + text + line.slice(this.cursorCol);
+                this.cursorCol += text.length;
+            }
+
+            deleteChar() {
+                const line = this.getCurrentLine();
+                if (this.cursorCol < line.length) {
+                    this.content[this.cursorRow] = 
+                        line.slice(0, this.cursorCol) + line.slice(this.cursorCol + 1);
+                    this.saveState();
+                }
+            }
+
+            deleteLine() {
+                this.registers['"'] = this.content[this.cursorRow];
+                if (this.content.length > 1) {
+                    this.content.splice(this.cursorRow, 1);
+                    if (this.cursorRow >= this.content.length) {
+                        this.cursorRow = this.content.length - 1;
+                    }
+                } else {
+                    this.content[0] = '';
+                }
+                this.cursorCol = 0;
+                this.saveState();
+            }
+
+            yankLine() {
+                this.registers['"'] = this.content[this.cursorRow];
+                this.copyToClipboard(this.content[this.cursorRow]);
+            }
+
+            async paste() {
+                let textToPaste = this.registers['"'];
+                
+                // Try to get text from system clipboard
+                try {
+                    if (navigator.clipboard && navigator.clipboard.readText) {
+                        const clipboardText = await navigator.clipboard.readText();
+                        if (clipboardText) {
+                            textToPaste = clipboardText;
+                        }
+                    }
+                } catch (err) {
+                    // Fall back to register content
+                }
+                
+                if (textToPaste) {
+                    if (textToPaste.includes('\n')) {
+                        // Multi-line paste
+                        const lines = textToPaste.split('\n');
+                        this.content.splice(this.cursorRow + 1, 0, ...lines);
+                        this.cursorRow += lines.length;
+                        this.cursorCol = 0;
+                    } else {
+                        // Single line paste
+                        this.content.splice(this.cursorRow + 1, 0, textToPaste);
+                        this.cursorRow++;
+                        this.cursorCol = 0;
+                    }
+                    this.saveState();
+                }
+            }
+
+            replaceChar(char) {
+                const line = this.getCurrentLine();
+                if (this.cursorCol < line.length) {
+                    this.content[this.cursorRow] = 
+                        line.slice(0, this.cursorCol) + char + line.slice(this.cursorCol + 1);
+                    this.saveState();
+                }
+            }
+
+            moveCursor(deltaCol, deltaRow) {
+                this.cursorRow = Math.max(0, Math.min(this.content.length - 1, this.cursorRow + deltaRow));
+                const maxCol = Math.max(0, this.getCurrentLine().length - (this.mode === 'NORMAL' ? 1 : 0));
+                this.cursorCol = Math.max(0, Math.min(maxCol, this.cursorCol + deltaCol));
+            }
+
+            moveWordForward() {
+                const line = this.getCurrentLine();
+                let pos = this.cursorCol;
+                
+                // Skip current word
+                while (pos < line.length && /\w/.test(line[pos])) pos++;
+                // Skip spaces
+                while (pos < line.length && /\s/.test(line[pos])) pos++;
+                
+                this.cursorCol = Math.min(pos, line.length - 1);
+            }
+
+            moveWordBackward() {
+                const line = this.getCurrentLine();
+                let pos = this.cursorCol;
+                
+                if (pos > 0) pos--;
+                // Skip spaces
+                while (pos > 0 && /\s/.test(line[pos])) pos--;
+                // Skip to beginning of word
+                while (pos > 0 && /\w/.test(line[pos - 1])) pos--;
+                
+                this.cursorCol = pos;
+            }
+
+            executeCommand() {
+                const cmd = this.command;
+                
+                if (cmd.startsWith('/')) {
+                    this.searchTerm = cmd.slice(1);
+                    this.search();
+                } else if (cmd === 'q' || cmd === 'quit') {
+                    alert('Thanks for using Vim!');
+                } else if (cmd === 'w' || cmd === 'write') {
+                    this.downloadFile();
+                } else if (cmd.match(/^\d+$/)) {
+                    const lineNum = parseInt(cmd) - 1;
+                    this.cursorRow = Math.max(0, Math.min(this.content.length - 1, lineNum));
+                    this.cursorCol = 0;
+                }
+            }
+
+            search() {
+                if (!this.searchTerm) return;
+                
+                for (let i = this.cursorRow; i < this.content.length; i++) {
+                    const startCol = i === this.cursorRow ? this.cursorCol + 1 : 0;
+                    const index = this.content[i].indexOf(this.searchTerm, startCol);
+                    if (index !== -1) {
+                        this.cursorRow = i;
+                        this.cursorCol = index;
+                        return;
+                    }
+                }
+                
+                // Search from beginning
+                for (let i = 0; i <= this.cursorRow; i++) {
+                    const endCol = i === this.cursorRow ? this.cursorCol : this.content[i].length;
+                    const index = this.content[i].indexOf(this.searchTerm, 0);
+                    if (index !== -1 && index < endCol) {
+                        this.cursorRow = i;
+                        this.cursorCol = index;
+                        return;
+                    }
+                }
+            }
+
+            deleteSelection() {
+                if (!this.visualStart) return;
+                
+                const start = this.visualStart;
+                const end = { row: this.cursorRow, col: this.cursorCol };
+                
+                if (start.row === end.row) {
+                    const minCol = Math.min(start.col, end.col);
+                    const maxCol = Math.max(start.col, end.col);
+                    const line = this.content[start.row];
+                    this.registers['"'] = line.slice(minCol, maxCol + 1);
+                    this.content[start.row] = line.slice(0, minCol) + line.slice(maxCol + 1);
+                    this.cursorCol = minCol;
+                }
+                this.saveState();
+            }
+
+            yankSelection() {
+                if (!this.visualStart) return;
+                
+                const start = this.visualStart;
+                const end = { row: this.cursorRow, col: this.cursorCol };
+                
+                if (start.row === end.row) {
+                    const minCol = Math.min(start.col, end.col);
+                    const maxCol = Math.max(start.col, end.col);
+                    const selectedText = this.content[start.row].slice(minCol, maxCol + 1);
+                    this.registers['"'] = selectedText;
+                    this.copyToClipboard(selectedText);
+                }
+            }
+
+            copyToClipboard(text) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).catch(err => {
+                        console.warn('Could not copy to clipboard:', err);
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                    } catch (err) {
+                        console.warn('Could not copy to clipboard:', err);
+                    }
+                    document.body.removeChild(textArea);
+                }
+            }
+
+            openFile() {
+                this.fileInputEl.click();
+            }
+
+            handleFileLoad(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const text = e.target.result;
+                    this.content = text.split('\n');
+                    if (this.content.length === 0) {
+                        this.content = [''];
+                    }
+                    this.cursorRow = 0;
+                    this.cursorCol = 0;
+                    this.saveState();
+                    this.render();
+                    this.contentEl.focus();
+                };
+                reader.readAsText(file);
+                
+                // Clear the input so the same file can be selected again
+                event.target.value = '';
+            }
+
+            saveState() {
+                this.history = this.history.slice(0, this.historyIndex + 1);
+                this.history.push(JSON.parse(JSON.stringify(this.content)));
+                this.historyIndex = this.history.length - 1;
+                
+                if (this.history.length > 50) {
+                    this.history.shift();
+                    this.historyIndex--;
+                }
+            }
+
+            undo() {
+                if (this.historyIndex > 0) {
+                    this.historyIndex--;
+                    this.content = JSON.parse(JSON.stringify(this.history[this.historyIndex]));
+                    this.cursorRow = Math.min(this.cursorRow, this.content.length - 1);
+                    this.cursorCol = Math.min(this.cursorCol, this.getCurrentLine().length - 1);
+                }
+            }
+
+            downloadFile() {
+                const text = this.content.join('\n');
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'vim-file.txt';
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+
+            getCurrentLine() {
+                return this.content[this.cursorRow] || '';
+            }
+
+            render() {
+                // Update content
+                this.contentEl.innerHTML = this.content.map((line, i) => {
+                    let displayLine = line || ' ';
+                    
+                    // Highlight visual selection
+                    if (this.mode === 'VISUAL' && this.visualStart && i === this.cursorRow && i === this.visualStart.row) {
+                        const minCol = Math.min(this.visualStart.col, this.cursorCol);
+                        const maxCol = Math.max(this.visualStart.col, this.cursorCol);
+                        displayLine = 
+                            displayLine.slice(0, minCol) +
+                            '<span class="highlight">' + displayLine.slice(minCol, maxCol + 1) + '</span>' +
+                            displayLine.slice(maxCol + 1);
+                    }
+                    
+                    return `<div>${displayLine}</div>`;
+                }).join('');
+
+                // Update line numbers
+                this.lineNumbersEl.innerHTML = this.content.map((_, i) => i + 1).join('\n');
+
+                // Update cursor position
+                const lineHeight = 20;
+                const charWidth = 8.4;
+                this.cursorEl.style.top = (10 + this.cursorRow * lineHeight) + 'px';
+                this.cursorEl.style.left = (10 + this.cursorCol * charWidth) + 'px';
+                
+                // Update cursor appearance based on mode
+                this.cursorEl.className = 'cursor' + (this.mode === 'INSERT' ? ' insert-mode' : '');
+
+                // Update mode indicator
+                this.modeEl.textContent = `-- ${this.mode} --`;
+                this.modeEl.className = `mode-indicator ${this.mode.toLowerCase()}-mode`;
+
+                // Update status
+                this.statusEl.textContent = `Line ${this.cursorRow + 1}, Col ${this.cursorCol + 1}`;
+
+                // Update command line
+                if (this.mode === 'COMMAND') {
+                    this.commandEl.textContent = this.command;
+                } else {
+                    this.commandEl.textContent = '';
+                }
+            }
+        }
+
+        // Initialize Vim editor
+        const vim = new VimEditor();
+        
+        // Add some sample content
+        vim.content = [
+            'Welcome to Vim!',
+            '',
+            'This is a functional Vim editor implementation.',
+            'Try these commands:',
+            '',
+            '- Press "i" to enter INSERT mode',
+            '- Press "Escape" to return to NORMAL mode',
+            '- Use "h", "j", "k", "l" or arrow keys to move',
+            '- Press "o" to open a new line below',
+            '- Press "dd" to delete a line',
+            '- Press "yy" to yank (copy) a line',
+            '- Press "p" to paste',
+            '- Press "u" to undo',
+            '- Press ":w" to download the file',
+            '- Press ":q" to quit',
+            '',
+            'Happy Vimming!'
+        ];
+        vim.render();
+    </script>
+</body>
+</html>
+
