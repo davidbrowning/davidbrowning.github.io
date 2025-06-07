@@ -1,0 +1,162 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bearclaw Forest IT Consulting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="py-4 fixed w-full top-0 left-0 z-10 bg-white mx-auto flex justify-between items-center px-6">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold">Bearclaw Forest IT Consulting</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-blue-300">Home</a></li>
+                    <li><a href="#about" class="hover:text-blue-300">About</a></li>
+                    <li><a href="#services" class="hover:text-blue-300">Services</a></li>
+                    <li><a href="#contact" class="hover:text-blue-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Keep IT Stupid Simple</h2>
+            <p class="text-lg mb-6">Linux, Programming, IT, and AI Exploration for Small to Medium Businesses</p>
+            <a href="#contact" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-200">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">About Me</h2>
+            <div class="max-w-3xl mx-auto text-center">
+              <p class="text-lg mb-4">I've worn many hats over my career starting out as a system and network administrator for a small manufacturing company. I "learned to code" through practice, professional course work, internships, and finally as a professional software engineer working in industries like aerospace, communications, and financial services. </p>
+              <p class="text-lg mb-4">My skills range from hardware configuration to server administration (linux and windows) to custom software development and anything in-between. I am passionate about understanding complicated systems and communicating that understanding to others. I prioritize simplicity as my gold standard.  </p>
+                <p class="text-lg">My mission is to enable you to manage, upgrade, and improve your systems independently</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-gray-200 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Linux Expertise -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Linux Expertise</h3>
+                    <p>From cloud workloads to on-premise servers, I’ll keep your Linux systems running smoothly. Specializing in Docker and Kubernetes, I optimize performance, troubleshoot issues, and guide upgrades.</p>
+                </div>
+                <!-- Programming Solutions -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Programming Solutions</h3>
+                    <p>Need a quick prototype in Python or a robust app in Go or C? I handle legacy code, business logic, APIs, and simple, effective web frontends with HTML and Tailwind CSS—minus the framework bloat.</p>
+                </div>
+                <!-- IT Management -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">IT Management</h3>
+                    <p>Comprehensive IT support for user management, CRM/MRP tools, domain administration, databases, networking, and patch management, tailored for small to medium businesses.</p>
+                </div>
+                <!-- Customer Support -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Customer Support</h3>
+                    <p>With experience in phone and on-site support, I deescalate issues and provide clear, actionable solutions to keep your customers happy.</p>
+                </div>
+                <!-- AI & LLM Integration -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">AI & LLM Integration</h3>
+                    <p>Stay ahead with Large Language Models. I’ll integrate AI tools if and when it makes sense into your workflows, ensuring your business is ready for the future.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Training</h3>
+                    <p>Guidance navigating your systems, software, and network. Gain confidence in managing, creating, and leveraging technology. Computers don't have to be daunting.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Let’s Work Together</h2>
+            <div class="max-w-lg mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">Ready to solve your tech challenges? Reach out to discuss your needs!</p>
+                    <p class="text-lg mb-4">Email: <a href="mailto:your.email@example.com" class="text-blue-600 hover:underline">your.email@example.com</a></p>
+                    <p class="text-lg">Phone: <a href="tel:+1234567890" class="text-blue-600 hover:underline">+1 (234) 567-890</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-blue-900 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Freelance Tech Solutions. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Minimal JavaScript for Smooth Scrolling -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
