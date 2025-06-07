@@ -37,6 +37,14 @@
         }
         return gk_fileData[filename] || "";
         }
+        function toggleMenu() {
+          const menu = document.getElementById('menu');
+          const hamburgerIcon = document.getElementById('hamburger-icon');
+          const closeIcon = document.getElementById('close-icon');
+          menu.classList.toggle('hidden');
+          hamburgerIcon.classList.toggle('hidden');
+          closeIcon.classList.toggle('hidden');
+        }
         </script>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,20 +61,29 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
     <!-- Header -->
-    <header class="py-4 fixed w-full top-0 left-0 z-10 bg-white mx-auto flex justify-between items-center px-6">
-        <div class="container mx-auto px-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold">Bearclaw Forest IT Consulting</h1>
-            <nav>
-                <ul class="flex space-x-6">
-                    <li><a href="#home" class="hover:text-blue-300">Home</a></li>
-                    <li><a href="#about" class="hover:text-blue-300">About</a></li>
-                    <li><a href="#services" class="hover:text-blue-300">Services</a></li>
-                    <li><a href="#contact" class="hover:text-blue-300">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
+    <header class="py-4 w-full sticky top-0 z-10 bg-white shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <h1 class="text-xl font-bold pr-4 sm:pr-6">Bearclaw Forest IT</h1>
+        <!-- Hamburger Button (visible on mobile, fixed in top-right) -->
+        <button id="hamburger" class="md:hidden text-gray-800 focus:outline-none fixed top-4 right-4 z-20" onclick="toggleMenu()" aria-label="Toggle menu">
+          <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <!-- Menu Items -->
+        <nav id="menu" class="hidden md:flex md:items-center">
+          <ul class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 p-6 md:p-0 bg-white md:bg-transparent absolute md:static top-16 left-0 w-full md:w-auto text-lg md:text-base">
+            <li><a href="#home" class="text-gray-800 hover:text-blue-300 transition duration-200">Home</a></li>
+            <li><a href="#about" class="text-gray-800 hover:text-blue-300 transition duration-200">About</a></li>
+            <li><a href="#services" class="text-gray-800 hover:text-blue-300 transition duration-200">Services</a></li>
+            <li><a href="#contact" class="text-gray-800 hover:text-blue-300 transition duration-200">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
-
     <!-- Hero Section -->
     <section id="home" class="bg-gradient-to-r from-blue-700 to-blue-500 text-white py-20">
         <div class="container mx-auto px-4 text-center">
