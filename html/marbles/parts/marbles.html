@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marbles (Refactored)</title>
+    <style>
+        body {
+            background-color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 4px solid #666;
+            background: #272727;
+        }
+    </style>
+</head>
+<body>
+<script>
+
+// ================================================================= //
+//                            CONSTANTS                              //
+// ================================================================= //
+
+const CANVAS_SIZE = 580;
+const GRID_SPACING = 30;
+const BOARD_PADDING = 10;
+const MARBLE_RADIUS = 10; // Half of the old 20x20 image size
+const OUTER_TRACK_END = CANVAS_SIZE - BOARD_PADDING;
+
+const PLAYER_CONFIG = {
+    BLUE: {
+        name: "Blue",
+        color: "#007BFF",
+        marbleImageSrc: "blueMarble.png",
+        homePositions: [
+            { x: 40, y: 250 }, { x: 70, y: 250 }, { x: 100, y: 250 },
+            { x: 70, y: 220 }, { x: 70, y: 280 }
+        ],
+        startPosition: { x: BOARD_PADDING, y: 250 },
+        finishGate: { x: BOARD_PADDING, y: 100 },
+        finishLine: [
+            { x: 40, y: 100 }, { x: 70, y: 100 }, { x: 100, y: 100 },
+            { x: 100, y: 70 }, { x: 130, y: 70 }
+        ]
+    },
+    GREEN: {
+        name: "Green",
+        color: "#28A745",
+        marbleImageSrc: "greenMarble.png",
+        homePositions: [
+            { x: 310, y: 40 }, { x: 310, y: 70 }, { x: 310, y: 100 },
+            { x: 280, y: 70 }, { x: 340, y: 70 }
+        ],
+        startPosition: { x: 310, y: BOARD_PADDING },
+        finishGate: { x: 460, y: BOARD_PADDING },
+        finishLine: [
+            { x: 460, y: 40 }, { x: 460, y: 70 }, { x: 460, y: 100 },
+            { x: 490, y: 100 }, { x: 490, y: 130 }
+        ]
+    },
+    RED: {
+        name: "Red",
+        color: "#DC3545",
+        marbleImageSrc: "redMarble.png",
+        homePositions: [
+            { x: 520, y: 310 }, { x: 490, y: 310 }, { x: 460, y: 310 },
+            { x: 490, y: 280 }, { x: 490, y: 340 }
+        ],
+        startPosition: { x: OUTER_TRACK_END, y: 310 },
+        finishGate: { x: OUTER_TRACK_END, y: 460 },
+        finishLine: [
+            { x: 520, y: 460 }, { x: 490, y: 460 }, { x: 460, y: 460 },
+            { x: 460, y: 490 }, { x: 430, y: 490 }
+        ]
+    },
+    YELLOW: {
+        name: "Yellow",
+        color: "#FFC107",
+        marbleImageSrc: "yellowMarble.png",
+        homePositions: [
+            { x: 250, y: 520 }, { x: 250, y: 490 }, { x: 250, y: 460 },
+            { x: 220, y: 490 }, { x: 280, y: 490 }
+        ],
+        startPosition: { x: 250, y: OUTER_TRACK_END },
+        finishGate: { x: 100, y: OUTER_TRACK_END },
+        finishLine: [
+            { x: 100, y: 520 }, { x: 100, y: 490 }, { x: 100, y: 460 },
+            { x: 70, y: 460 }, { x: 70, y: 430 }
+        ]
+    }
+};
+
+// ================================================================= //
+//                             CLASSES                               //
+// ================================================================= //
+
+class Marble {
+    constructor(player, homePosition, imageSrc) {
+        this.player = player;
+        this.homePosition = homePosition;
+        this.x = homePosition.x;
+        this.y = homePosition.y;
+        this.image = new Image();
+        this.image.src = imageSrc;
+        this.isInHome = true;
+    }
+
+    draw(ctx) {
+        ctx.drawImage(this.image, this.x, this.y);
+    }
+
+    moveTo(x, y) {
+        this.x = x;
+        this.y = y;
+        this.isInHome = false;
+    }
+
+    returnToHome() {
+        this.x = this.homePosition.x;
+        this.y = this.homePosition.y;
+        this.isInHome = true;
+    }
+    
+    isAtPosition(px, py) {
+        // Simple bounding box collision detection
+        const size = GRID_SPACING;
+        return px > this.x && px < this.x + size && py > this.y && py < this.y + size;
+    }
+}
+
+class Player {
+    constructor(config) {
+        this.name = config.name;
+        this.color = config.color;
+        this.startPosition = config.startPosition;
+        this.finishGate = config.finishGate;
+        this.finishLine = config.finishLine;
+        this.marbles = config.homePositions.map(pos => new Marble(this, pos, config.marbleImageSrc));
+    }
+}
+
+class Game {
+    constructor(canvas) {
+        this.canvas = canvas;
+        this.canvas.width = CANVAS_SIZE;
+        this.canvas.height = CANVAS_SIZE;
+        this.ctx = this.canvas.getContext("2d");
+
+        this.players = [];
+        this.boardSpaces = new Map();
+        this.currentPlayerIndex = 0;
+    }
+    
+    // --- Initialization --- //
+
+    init() {
+        this._setupPlayers();
+        this._setupBoard();
+        this._setupEventListeners();
+        this._gameLoop();
+    }
+
+    _setupPlayers() {
+        this.players.push(new Player(PLAYER_CONFIG.BLUE));
+        this.players.push(new Player(PLAYER_CONFIG.GREEN));
+        this.players.push(new Player(PLAYER_CONFIG.RED));
+        this.players.push(new Player(PLAYER_CONFIG.YELLOW));
+    }
+
+    _setupBoard() {
+        // Create all the grey, empty spaces on the board
+        const trackCoords = [];
+        for (let i = 0; i < 18; i++) trackCoords.push({ x: BOARD_PADDING + i * GRID_SPACING, y: BOARD_PADDING }); // Top (right to left)
+        for (let i = 0; i < 18; i++) trackCoords.push({ x: OUTER_TRACK_END, y: BOARD_PADDING + i * GRID_SPACING }); // Right (top to bottom)
+        for (let i = 0; i < 18; i++) trackCoords.push({ x: OUTER_TRACK_END - i * GRID_SPACING, y: OUTER_TRACK_END }); // Bottom (right to left)
+        for (let i = 0; i < 18; i++) trackCoords.push({ x: BOARD_PADDING, y: OUTER_TRACK_END - i * GRID_SPACING }); // Left (bottom to top)
+        
+        trackCoords.forEach(coord => this.boardSpaces.set(`${coord.x},${coord.y}`, { type: 'track' }));
+
+        // Add finish line spaces
+        Object.values(PLAYER_CONFIG).forEach(p => {
+             p.finishLine.forEach(coord => this.boardSpaces.set(`${coord.x},${coord.y}`, { type: 'finish' }));
+        });
+    }
+
+    _setupEventListeners() {
+        this.canvas.addEventListener("mousedown", (event) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const mouseX = event.clientX - rect.left;
+            const mouseY = event.clientY - rect.top;
+            this._handleMarbleClick(mouseX, mouseY);
+        });
+    }
+
+    // --- Game Logic --- //
+
+    _handleMarbleClick(mouseX, mouseY) {
+        const currentPlayer = this.players[this.currentPlayerIndex];
+        const clickedMarble = currentPlayer.marbles.find(m => m.isAtPosition(mouseX, mouseY));
+
+        if (clickedMarble) {
+            // NOTE: Replaced the original prompt with a fixed value for demonstration.
+            // In a real application, you would get this value from a UI element.
+            const moves = parseInt(prompt(`Enter number of spaces for ${currentPlayer.name}:`), 10);
+            if (!isNaN(moves) && moves > 0) {
+                this._moveMarble(clickedMarble, moves);
+                this._nextTurn();
+            }
+        }
+    }
+    
+    _moveMarble(marble, totalMoves) {
+        for (let i = 0; i < totalMoves; i++) {
+            const isFinalMove = (i === totalMoves - 1);
+            
+            if (marble.isInHome) {
+                const startPos = marble.player.startPosition;
+                this._attemptMove(marble, startPos.x, startPos.y, isFinalMove);
+                continue;
+            }
+
+            const nextPos = this._calculateNextPosition(marble);
+            this._attemptMove(marble, nextPos.x, nextPos.y, isFinalMove);
+        }
+    }
+
+    _attemptMove(marble, newX, newY, isFinalMove) {
+        const targetMarble = this._getMarbleAt(newX, newY);
+        
+        if (targetMarble) { // Space is occupied
+            if (targetMarble.player === marble.player) {
+                // Cannot land on your own marble. Original game sent player home.
+                console.log("Cannot land on your own marble.");
+                marble.returnToHome(); 
+            } else {
+                // It's an opponent.
+                if (isFinalMove) {
+                    console.log(`Sending ${targetMarble.player.name} marble home!`);
+                    targetMarble.returnToHome();
+                    marble.moveTo(newX, newY);
+                } else {
+                    // Cannot jump over an opponent. Move is blocked.
+                    // NOTE: This behavior is an assumption. The original code was ambiguous.
+                    console.log("Move blocked by opponent.");
+                    return; // Stop subsequent moves
+                }
+            }
+        } else { // Space is free
+            marble.moveTo(newX, newY);
+        }
+    }
+    
+    _calculateNextPosition(marble) {
+        const { x, y } = marble;
+        const p = marble.player;
+
+        // Check for entering the finish line
+        if (x === p.finishGate.x && y === p.finishGate.y) {
+            return p.finishLine[0];
+        }
+
+        // Check if on a finish line path
+        const finishIndex = p.finishLine.findIndex(pos => pos.x === x && pos.y === y);
+        if (finishIndex > -1 && finishIndex < p.finishLine.length - 1) {
+            return p.finishLine[finishIndex + 1];
+        }
+
+        // Standard movement around the board
+        if (y === BOARD_PADDING && x > BOARD_PADDING) return { x: x - GRID_SPACING, y: y }; // Top row
+        if (x === OUTER_TRACK_END && y < OUTER_TRACK_END) return { x: x, y: y + GRID_SPACING }; // Right col
+        if (y === OUTER_TRACK_END && x < OUTER_TRACK_END) return { x: x + GRID_SPACING, y: y }; // Bottom row
+        if (x === BOARD_PADDING && y > BOARD_PADDING) return { x: x, y: y - GRID_SPACING }; // Left col
+        
+        // Corner turns
+        if (x === BOARD_PADDING && y === BOARD_PADDING) return { x: x, y: y + GRID_SPACING }; // Top-left
+        if (x === OUTER_TRACK_END && y === BOARD_PADDING) return { x: x - GRID_SPACING, y: y }; // Top-right
+        if (x === OUTER_TRACK_END && y === OUTER_TRACK_END) return { x: x, y: y - GRID_SPACING }; // Bottom-right
+        if (x === BOARD_PADDING && y === OUTER_TRACK_END) return { x: x + GRID_SPACING, y: y }; // Bottom-left
+
+        console.warn("Could not determine next position for marble at:", x, y);
+        return { x, y }; // Stay in place if logic fails
+    }
+    
+    _getMarbleAt(x, y) {
+        for (const player of this.players) {
+            for (const marble of player.marbles) {
+                // Check exact position match
+                if (marble.x === x && marble.y === y) {
+                    return marble;
+                }
+            }
+        }
+        return null;
+    }
+
+    _nextTurn() {
+        this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
+    }
+
+    // --- Rendering --- //
+
+    _gameLoop() {
+        this._render();
+        window.requestAnimationFrame(() => this._gameLoop());
+    }
+
+    _render() {
+        this.ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+        // Draw board spaces
+        this.ctx.fillStyle = "grey";
+        for (const [key, value] of this.boardSpaces.entries()) {
+            const [x, y] = key.split(',').map(Number);
+            this.ctx.beginPath();
+            this.ctx.arc(x + MARBLE_RADIUS, y + MARBLE_RADIUS, MARBLE_RADIUS, 0, 2 * Math.PI);
+            this.ctx.fill();
+        }
+
+        // Draw marbles
+        this.players.forEach(player => {
+            player.marbles.forEach(marble => marble.draw(this.ctx));
+        });
+
+        // Draw player turn text
+        const currentPlayer = this.players[this.currentPlayerIndex];
+        this.ctx.font = "30px Arial";
+        this.ctx.fillStyle = currentPlayer.color;
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(`${currentPlayer.name}'s Turn`, CANVAS_SIZE / 2, CANVAS_SIZE / 2);
+    }
+}
+
+// ================================================================= //
+//                         ENTRY POINT                               //
+// ================================================================= //
+
+window.onload = function() {
+    const canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    
+    const game = new Game(canvas);
+    game.init();
+};
+
+</script>
+</body>
+</html>
