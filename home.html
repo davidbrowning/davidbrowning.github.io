@@ -1,0 +1,164 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        function toggleMenu() {
+          const menu = document.getElementById('menu');
+          const hamburgerIcon = document.getElementById('hamburger-icon');
+          const closeIcon = document.getElementById('close-icon');
+          menu.classList.toggle('hidden');
+          hamburgerIcon.classList.toggle('hidden');
+          closeIcon.classList.toggle('hidden');
+        }
+        </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bearclaw Forest LLC</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+    <!-- Header -->
+    <header class="py-4 w-full sticky top-0 z-10 bg-white shadow-md">
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <h1 class="text-xl font-bold pr-4 sm:pr-6">Bearclaw Forest LLC</h1>
+        <!-- Hamburger Button (visible on mobile, fixed in top-right) -->
+        <button id="hamburger" class="md:hidden text-gray-800 focus:outline-none fixed top-4 right-4 z-20" onclick="toggleMenu()" aria-label="Toggle menu">
+          <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg id="close-icon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <!-- Menu Items -->
+        <nav id="menu" class="hidden md:flex md:items-center">
+          <ul class="flex flex-col md:flex-row md:space-x-4 space-y-4 md:space-y-0 p-6 md:p-0 bg-white md:bg-transparent absolute md:static top-16 left-0 w-full md:w-auto text-lg md:text-base">
+            <li><a href="#home" onclick="toggleMenu()" class="text-gray-800 hover:text-blue-300 transition duration-200">Home</a></li>
+            <li><a href="#about" onclick="toggleMenu()" class="text-gray-800 hover:text-blue-300 transition duration-200">About</a></li>
+            <li><a href="#services" onclick="toggleMenu()" class="text-gray-800 hover:text-blue-300 transition duration-200">Services</a></li>
+            <li><a href="#contact" onclick="toggleMenu()" class="text-gray-800 hover:text-blue-300 transition duration-200">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-green-900 to-green-800 text-white py-20">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-4">Independence, Simplicity, Growth, Stewardship</h2>
+            <p class="text-lg mb-6">The pursuit of excellence</p>
+            <a href="#contact" class="bg-white text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-gray-200">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">About Us</h2>
+            <div class="max-w-3xl mx-auto text-center">
+              <p class="text-lg mb-4">We are awesome. </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="bg-green-100 py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">What are we working on?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Linux Expertise -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-semibold mb-4">Farm</h3>
+                    <p>Working with nature to fix the problems with america's food and offer people another choice</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <a href="./recipes/index.html">
+                        <h3 class="text-xl font-semibold mb-4">To Table</h3>
+                        <p>Checkout our /recipes!</p>
+                    </a>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <a href="./consulting.html">
+                            <h3 class="text-xl font-semibold mb-4">IT Consulting</h3>
+                            <p>Dave has a background in computers. See IT Consulting</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Let’s Work Together</h2>
+            <div class="max-w-lg mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <p class="text-lg mb-4">For further inquiries, email us!</p>
+                    <p class="text-lg mb-4">Email: <a href="mailto:bearclawforestconsulting@gmail.com" class="text-blue-600 hover:underline">bearclawforestconsulting@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-900 text-white py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Bearclaw Forest LLC. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Minimal JavaScript for Smooth Scrolling -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
