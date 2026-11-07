@@ -1,0 +1,54 @@
+:root {
+  --bg: #0c0c0c; --fg: #d3d7cf; --dim: #555753; --green: #4e9a06; --bgreen: #8ae234;
+  --blue: #729fcf; --cyan: #34e2e2; --red: #ef2929; --yellow: #fce94f; --bar: #4e9a06;
+  --font: "DejaVu Sans Mono", "Ubuntu Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); overflow: hidden; }
+#app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+#panes { flex: 1; display: flex; min-height: 0; }
+#panes.row { flex-direction: row; }
+#panes.col { flex-direction: column; }
+.pane { position: relative; flex: 1 1 0; min-width: 0; min-height: 0; display: flex; }
+.pane + .pane { border-left: 1px solid var(--dim); }
+#panes.col .pane + .pane { border-left: 0; border-top: 1px solid var(--dim); }
+.pane.active { box-shadow: inset 0 0 0 1px var(--bgreen); }
+.out {
+  flex: 1; overflow: auto; padding: 8px 10px 12px; font: 15px/1.25 var(--font);
+  white-space: pre; tab-size: 8; -webkit-text-size-adjust: 100%;
+}
+.line { white-space: pre-wrap; word-break: break-all; }
+.cursor { display: inline-block; width: .6em; height: 1.1em; vertical-align: text-bottom; background: var(--fg); animation: blink 1s step-end infinite; }
+.pane:not(.active) .cursor { background: transparent; outline: 1px solid var(--dim); animation: none; }
+#panes:not(:has(.pane + .pane)) .pane .cursor { background: var(--fg); outline: 0; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.pu { color: var(--bgreen); font-weight: bold; }
+.pp { color: var(--blue); font-weight: bold; }
+.err { color: #f5a3a3; }
+.c-dir { color: var(--blue); font-weight: bold; }
+.c-ex { color: var(--bgreen); font-weight: bold; }
+.c-ln { color: var(--cyan); font-weight: bold; }
+.g { color: var(--bgreen); } .r { color: var(--red); }
+#tmuxbar { display: flex; justify-content: space-between; background: var(--bar); color: #000; font: 14px/1.4 var(--font); padding: 0 6px; white-space: pre; overflow: hidden; }
+#tmuxbar[hidden] { display: none; }
+#keybar { display: none; gap: 4px; padding: 4px; background: #1a1a1a; border-top: 1px solid #333; }
+#keybar button { flex: 1; min-height: 36px; font: 14px var(--font); color: var(--fg); background: #2a2a2a; border: 1px solid #444; border-radius: 4px; padding: 0; touch-action: manipulation; }
+#keybar button:active { background: var(--green); color: #000; }
+@media (pointer: coarse) { #keybar { display: flex; } }
+#help {
+  position: fixed; top: 4px; right: 6px; z-index: 5; font: 14px var(--font); padding: 4px 8px;
+  color: #000; background: var(--fg); border: 0; border-radius: 4px; cursor: pointer;
+}
+#help:hover, #help:focus-visible { background: var(--bgreen); }
+#kbd { position: fixed; left: 0; bottom: 0; width: 1px; height: 1px; opacity: 0; border: 0; padding: 0; font-size: 16px; caret-color: transparent; }
+.vim { position: absolute; inset: 0; display: flex; flex-direction: column; background: var(--bg); font: 15px/1.25 var(--font); z-index: 2; }
+.vbuf { flex: 1; overflow: hidden; padding: 8px 10px 0; white-space: pre; }
+.vst { display: flex; justify-content: space-between; padding: 0 10px 6px; white-space: pre; }
+.vt { color: var(--blue); }
+.vc { background: var(--fg); color: var(--bg); }
+@media (max-width: 700px) {
+  #panes.row { flex-direction: column; }
+  #panes.row .pane + .pane { border-left: 0; border-top: 1px solid var(--dim); }
+  .out, .vim { font-size: 12.5px; }
+  .out { padding: 6px 6px 10px; }
+}

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dave.sh</title>
-    <link href='css/style.css' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+  <title>learn bash</title>
+  <meta name="description" content="A pretend linux computer in your browser. Learn the shell, one mission at a time, and find the evil fed franz.">
+  <link rel="stylesheet" href="learn-bash/style.css">
 </head>
 <body>
-    <button class="help-button" onclick="showHelp()">Help!</button>
-    <!--mobile sucks. #todo, maybe make the website work for it someday-->
-    <div id="terminal"></div>
-    <script src="app.js"></script>
+  <div id="app">
+    <div id="panes" class="row"></div>
+    <div id="tmuxbar" hidden></div>
+    <div id="keybar">
+      <button data-k="Escape">Esc</button><button data-k="Tab">Tab</button><button data-k="^c">^C</button><button data-k="^b">^B</button>
+      <button data-k="ArrowLeft">&larr;</button><button data-k="ArrowUp">&uarr;</button><button data-k="ArrowDown">&darr;</button><button data-k="ArrowRight">&rarr;</button>
+    </div>
+  </div>
+  <button id="help" type="button">Help!</button>
+  <input id="kbd" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="terminal input">
+  <noscript><pre>learn bash needs JavaScript. The old site is at <a href="davesh.html">davesh.html</a>.</pre></noscript>
+  <script src="learn-bash/assets.js"></script>
+  <script src="learn-bash/engine.js"></script>
+  <script src="learn-bash/missions.js"></script>
+  <script>Term.init();</script>
 </body>
 </html>
