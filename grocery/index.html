@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grocery List</title>
+<style>
+  :root {
+    --bg: #faf8f4; --card: #fff; --ink: #222; --muted: #888; --line: #e6e1d8;
+    --accent: #3d7a4f; --done: #aaa;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161616; --card: #202020; --ink: #eee; --muted: #888; --line: #333; --accent: #6fbf86; --done: #666; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 17px/1.4 -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+  main { max-width: 560px; margin: 0 auto; padding: 16px 14px 80px; }
+  header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  h1 { font-size: 1.4rem; margin: 0; flex: 1; }
+  select, button, input { font: inherit; }
+  select { padding: 4px 6px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+  .progress { color: var(--muted); font-size: .9rem; margin: 6px 0 12px; }
+  .notes { background: var(--card); border-left: 4px solid var(--accent); padding: 8px 12px; margin-bottom: 14px; border-radius: 4px; }
+  .notes div::before { content: "📝 "; }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+  section h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); margin: 0; padding: 8px 12px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; }
+  section h2 span { color: var(--muted); font-weight: normal; }
+  section.complete h2 { color: var(--muted); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  li + li { border-top: 1px solid var(--line); }
+  label { display: flex; align-items: center; gap: 12px; padding: 11px 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--accent); flex: none; margin: 0; }
+  .note { color: var(--muted); font-size: .85rem; }
+  li.done .name { text-decoration: line-through; color: var(--done); }
+  li.done .note { display: none; }
+  .add { display: flex; gap: 6px; margin: 18px 0 8px; }
+  .add input { flex: 1; min-width: 0; padding: 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+  .add select { max-width: 40%; }
+  button { padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .reset { display: block; margin: 20px auto 0; color: var(--muted); }
+  .error { color: #c33; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1 id="title">Grocery List</h1>
+    <select id="picker" aria-label="Choose list" hidden></select>
+  </header>
+  <div class="progress" id="progress"></div>
+  <div id="notes"></div>
+  <div id="sections"></div>
+  <form class="add" id="addForm">
+    <input id="addName" placeholder="Add an item…" autocomplete="off">
+    <select id="addSection" aria-label="Section"></select>
+    <button class="primary">Add</button>
+  </form>
+  <button class="reset" id="reset">Uncheck everything</button>
+</main>
+<script>
+// Data lives in lists/*.json (one file per trip) and sections.json (aisle order).
+// Per-list state (checked items + items added in the store) is kept in localStorage.
+const $ = id => document.getElementById(id);
+let sections = [], list = null, listId = null, state = { checked: [], extra: [] };
+
+const key = () => 'grocery:' + listId;
+const save = () => localStorage.setItem(key(), JSON.stringify(state));
+const load = () => {
+  try { state = JSON.parse(localStorage.getItem(key())) || { checked: [], extra: [] }; }
+  catch { state = { checked: [], extra: [] }; }
+};
+const getJSON = url => fetch(url, { cache: 'no-cache' }).then(r => {
+  if (!r.ok) throw new Error(url + ': ' + r.status);
+  return r.json();
+});
+const el = (tag, props = {}, ...kids) => {
+  const e = Object.assign(document.createElement(tag), props);
+  e.append(...kids);
+  return e;
+};
+
+function allItems() {
+  // Item ids are stable positions so duplicate names are fine.
+  return [
+    ...list.items.map((it, i) => ({ ...it, id: 'i' + i })),
+    ...state.extra.map((it, i) => ({ ...it, id: 'x' + i })),
+  ];
+}
+
+function render() {
+  const known = new Set(sections.map(s => s.id));
+  const items = allItems();
+  const checked = new Set(state.checked);
+  const box = $('sections');
+  box.replaceChildren();
+
+  for (const sec of sections) {
+    const mine = items.filter(it => (known.has(it.section) ? it.section : 'other') === sec.id);
+    if (!mine.length) continue;
+    // Unchecked first in list order; checked ones sink in the order they were checked.
+    const todo = mine.filter(it => !checked.has(it.id));
+    const done = state.checked.map(id => mine.find(it => it.id === id)).filter(Boolean);
+    const ul = el('ul');
+    for (const it of [...todo, ...done]) {
+      const isDone = checked.has(it.id);
+      const cb = el('input', { type: 'checkbox', checked: isDone });
+      cb.addEventListener('change', () => toggle(it.id));
+      const text = el('div', {}, el('div', { className: 'name', textContent: it.name }));
+      if (it.note) text.append(el('div', { className: 'note', textContent: it.note }));
+      ul.append(el('li', { className: isDone ? 'done' : '' }, el('label', {}, cb, text)));
+    }
+    const h2 = el('h2', {}, sec.name, el('span', { textContent: `${done.length}/${mine.length}` }));
+    box.append(el('section', { className: todo.length ? '' : 'complete' }, h2, ul));
+  }
+
+  const n = items.length, d = items.filter(it => checked.has(it.id)).length;
+  $('progress').textContent = n ? `${d} of ${n} in the cart${d === n ? ' — done! 🎉' : ''}` : '';
+}
+
+function toggle(id) {
+  state.checked = state.checked.includes(id)
+    ? state.checked.filter(x => x !== id)
+    : [...state.checked, id];
+  save();
+  render();
+}
+
+async function openList(id) {
+  listId = id;
+  list = await getJSON(`lists/${encodeURIComponent(id)}.json`);
+  load();
+  document.title = $('title').textContent = list.title || id;
+  $('notes').replaceChildren();
+  if (list.notes?.length) {
+    $('notes').append(el('div', { className: 'notes' },
+      ...list.notes.map(n => el('div', { textContent: n }))));
+  }
+  render();
+}
+
+$('addForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('addName').value.trim();
+  if (!name) return;
+  state.extra.push({ name, section: $('addSection').value, note: 'added in store' });
+  save();
+  $('addName').value = '';
+  render();
+});
+
+$('reset').addEventListener('click', () => {
+  if (!confirm('Uncheck every item on this list?')) return;
+  state.checked = [];
+  save();
+  render();
+});
+
+(async () => {
+  try {
+    const [secs, index] = await Promise.all([getJSON('sections.json'), getJSON('lists/index.json')]);
+    sections = secs;
+    if (!sections.some(s => s.id === 'other')) sections.push({ id: 'other', name: 'Other' });
+    $('addSection').append(...sections.map(s => el('option', { value: s.id, textContent: s.name })));
+
+    const wanted = new URLSearchParams(location.search).get('list');
+    const first = index.find(l => l.id === wanted) || index[0];
+    if (index.length > 1) {
+      const picker = $('picker');
+      picker.append(...index.map(l => el('option', { value: l.id, textContent: l.title || l.id })));
+      picker.value = first.id;
+      picker.hidden = false;
+      picker.addEventListener('change', () => {
+        history.replaceState(null, '', '?list=' + encodeURIComponent(picker.value));
+        openList(picker.value);
+      });
+    }
+    await openList(first.id);
+  } catch (err) {
+    $('sections').append(el('p', { className: 'error', textContent: 'Could not load the list: ' + err.message }));
+  }
+})();
+</script>
+</body>
+</html>
