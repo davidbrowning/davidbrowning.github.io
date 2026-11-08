@@ -1,0 +1,55 @@
+{
+  "title": "Groceries — Nov 8, 2026",
+  "notes": ["Cook cabbage stew (from the whiteboard)"],
+  "items": [
+    {"name": "Grapes", "section": "produce"},
+    {"name": "Raspberries", "section": "produce"},
+    {"name": "Blackberries", "section": "produce"},
+    {"name": "Blueberries", "section": "produce"},
+    {"name": "Pomegranate", "section": "produce"},
+    {"name": "Bananas", "section": "produce", "note": "best guess at \"banies\""},
+    {"name": "Carrots", "section": "produce", "note": "to go with hummus"},
+
+    {"name": "Black Forest ham", "section": "deli"},
+    {"name": "Salami", "section": "deli"},
+    {"name": "Sliced cheddar & provolone", "section": "deli"},
+    {"name": "Hummus", "section": "deli"},
+    {"name": "Hummus cups", "section": "deli"},
+
+    {"name": "Bacon", "section": "meat"},
+
+    {"name": "Milk", "section": "dairy"},
+    {"name": "Cream", "section": "dairy"},
+    {"name": "Cream cheese", "section": "dairy"},
+    {"name": "Eggs", "section": "dairy"},
+    {"name": "Babybel cheese", "section": "dairy"},
+
+    {"name": "Bread", "section": "bakery"},
+    {"name": "Bagels", "section": "bakery"},
+    {"name": "Tortillas", "section": "bakery"},
+
+    {"name": "Peanut butter", "section": "pantry"},
+    {"name": "Jelly", "section": "pantry", "note": "raspberry preferred"},
+    {"name": "Lentils", "section": "pantry"},
+    {"name": "Rice", "section": "pantry"},
+    {"name": "Matcha", "section": "pantry"},
+
+    {"name": "Chocolate", "section": "snacks"},
+    {"name": "Cheddar bunnies", "section": "snacks"},
+    {"name": "Crackers", "section": "snacks", "note": "saltines"},
+    {"name": "Potato chips", "section": "snacks"},
+    {"name": "Granola bars", "section": "snacks"},
+    {"name": "Fruit snacks", "section": "snacks"},
+    {"name": "Fruit strips", "section": "snacks"},
+    {"name": "Gum", "section": "snacks"},
+
+    {"name": "Gallon bags", "section": "household"},
+    {"name": "Sandwich Ziplocs", "section": "household"},
+    {"name": "Can opener", "section": "household"},
+
+    {"name": "Toothbrush", "section": "health"},
+    {"name": "Shampoo", "section": "health"},
+
+    {"name": "Henry planner", "section": "other"}
+  ]
+}

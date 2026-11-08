@@ -1,0 +1,12 @@
+[
+  {"id": "produce",   "name": "Produce"},
+  {"id": "deli",      "name": "Deli & Refrigerated"},
+  {"id": "meat",      "name": "Meat"},
+  {"id": "dairy",     "name": "Dairy & Eggs"},
+  {"id": "bakery",    "name": "Bread & Bakery"},
+  {"id": "pantry",    "name": "Pantry"},
+  {"id": "snacks",    "name": "Snacks & Candy"},
+  {"id": "household", "name": "Household & Kitchen"},
+  {"id": "health",    "name": "Health & Beauty"},
+  {"id": "other",     "name": "Other"}
+]
