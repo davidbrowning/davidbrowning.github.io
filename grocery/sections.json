@@ -8,5 +8,6 @@
   {"id": "snacks",    "name": "Snacks & Candy"},
   {"id": "household", "name": "Household & Kitchen"},
   {"id": "health",    "name": "Health & Beauty"},
-  {"id": "other",     "name": "Other"}
+  {"id": "other",     "name": "Other"},
+  {"id": "earthfair", "name": "Earth Fair"}
 ]

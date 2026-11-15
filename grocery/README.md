@@ -1,6 +1,6 @@
 # Grocery list
 
-`index.html` renders a tappable shopping list. Checked items get struck out and drop to the bottom of their section. Checks (and items added in the store) are saved in the phone's browser per list, so a refresh doesn't lose them.
+`index.html` renders a tappable shopping list. Checked items leave their aisle section and move to one "Located" section at the bottom (newest first); unchecking sends an item back. Checks (and items added in the store) are saved in the phone's browser per list, so a refresh doesn't lose them.
 
 ## New trip
 

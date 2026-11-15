@@ -1,0 +1,41 @@
+{
+  "title": "Groceries — Nov 15, 2026",
+  "items": [
+    {"name": "Pomegranate", "section": "produce"},
+    {"name": "Berries", "section": "produce"},
+    {"name": "Blueberries", "section": "produce"},
+    {"name": "Raspberries", "section": "produce"},
+    {"name": "Blackberries", "section": "produce"},
+    {"name": "Bananas", "section": "produce"},
+    {"name": "Carrots", "section": "produce"},
+
+    {"name": "Ham", "section": "deli"},
+    {"name": "Hummus", "section": "deli"},
+
+    {"name": "Milk", "section": "dairy"},
+    {"name": "Cream", "section": "dairy"},
+    {"name": "Cheese", "section": "dairy"},
+    {"name": "Eggs", "section": "dairy"},
+
+    {"name": "Bread", "section": "bakery", "note": "on the list twice"},
+
+    {"name": "Coffee", "section": "pantry"},
+    {"name": "Vinegar", "section": "pantry"},
+    {"name": "Raisins", "section": "pantry"},
+    {"name": "Granola", "section": "pantry"},
+
+    {"name": "Chocolate", "section": "snacks"},
+    {"name": "Chocolate bar with almonds", "section": "snacks"},
+    {"name": "Salted peanuts", "section": "snacks"},
+    {"name": "Granola bars", "section": "snacks"},
+    {"name": "Fruit strips", "section": "snacks"},
+    {"name": "Fruit gummies", "section": "snacks"},
+    {"name": "Crackers", "section": "snacks"},
+
+    {"name": "Tissues", "section": "household"},
+    {"name": "Scissors", "section": "household"},
+
+    {"name": "Poppy", "section": "earthfair", "note": "or Liquid Death"},
+    {"name": "Chicken dinner", "section": "earthfair"}
+  ]
+}
