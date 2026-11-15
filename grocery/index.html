@@ -32,7 +32,7 @@
   input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--accent); flex: none; margin: 0; }
   .note { color: var(--muted); font-size: .85rem; }
   li.done .name { text-decoration: line-through; color: var(--done); }
-  li.done .note { display: none; }
+  li.done .note { color: var(--done); }
   .add { display: flex; gap: 6px; margin: 18px 0 8px; }
   .add input { flex: 1; min-width: 0; padding: 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
   .add select { max-width: 40%; }
@@ -95,23 +95,31 @@ function render() {
   const box = $('sections');
   box.replaceChildren();
 
+  const row = (it, note) => {
+    const isDone = checked.has(it.id);
+    const cb = el('input', { type: 'checkbox', checked: isDone });
+    cb.addEventListener('change', () => toggle(it.id));
+    const text = el('div', {}, el('div', { className: 'name', textContent: it.name }));
+    if (note) text.append(el('div', { className: 'note', textContent: note }));
+    return el('li', { className: isDone ? 'done' : '' }, el('label', {}, cb, text));
+  };
+  const secOf = it => known.has(it.section) ? it.section : 'other';
+
+  // Each section shows only what's still to find; checked items move to "Located".
   for (const sec of sections) {
-    const mine = items.filter(it => (known.has(it.section) ? it.section : 'other') === sec.id);
-    if (!mine.length) continue;
-    // Unchecked first in list order; checked ones sink in the order they were checked.
-    const todo = mine.filter(it => !checked.has(it.id));
-    const done = state.checked.map(id => mine.find(it => it.id === id)).filter(Boolean);
-    const ul = el('ul');
-    for (const it of [...todo, ...done]) {
-      const isDone = checked.has(it.id);
-      const cb = el('input', { type: 'checkbox', checked: isDone });
-      cb.addEventListener('change', () => toggle(it.id));
-      const text = el('div', {}, el('div', { className: 'name', textContent: it.name }));
-      if (it.note) text.append(el('div', { className: 'note', textContent: it.note }));
-      ul.append(el('li', { className: isDone ? 'done' : '' }, el('label', {}, cb, text)));
-    }
-    const h2 = el('h2', {}, sec.name, el('span', { textContent: `${done.length}/${mine.length}` }));
-    box.append(el('section', { className: todo.length ? '' : 'complete' }, h2, ul));
+    const todo = items.filter(it => secOf(it) === sec.id && !checked.has(it.id));
+    if (!todo.length) continue;
+    const h2 = el('h2', {}, sec.name, el('span', { textContent: `${todo.length} left` }));
+    box.append(el('section', {}, h2, el('ul', {}, ...todo.map(it => row(it, it.note)))));
+  }
+
+  // Located: newest check on top, labelled with its home section. Uncheck to send it back.
+  const located = state.checked.map(id => items.find(it => it.id === id)).filter(Boolean).reverse();
+  if (located.length) {
+    const name = id => sections.find(s => s.id === id).name;
+    const h2 = el('h2', {}, 'Located', el('span', { textContent: String(located.length) }));
+    box.append(el('section', { className: 'complete' }, h2,
+      el('ul', {}, ...located.map(it => row(it, name(secOf(it)) + (it.note ? ' · ' + it.note : ''))))));
   }
 
   const n = items.length, d = items.filter(it => checked.has(it.id)).length;
