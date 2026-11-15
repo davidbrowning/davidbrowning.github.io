@@ -23,9 +23,9 @@
     {"name": "Vinegar", "section": "pantry"},
     {"name": "Raisins", "section": "pantry"},
     {"name": "Granola", "section": "pantry"},
-    {"name": "Almonds", "section": "pantry", "note": "list said \"almond\""},
 
-    {"name": "Chocolate", "section": "snacks", "note": "on the list twice"},
+    {"name": "Chocolate", "section": "snacks"},
+    {"name": "Chocolate bar with almonds", "section": "snacks"},
     {"name": "Salted peanuts", "section": "snacks"},
     {"name": "Granola bars", "section": "snacks"},
     {"name": "Fruit strips", "section": "snacks"},
