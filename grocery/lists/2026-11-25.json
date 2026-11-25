@@ -1,0 +1,12 @@
+{
+  "title": "Groceries — Nov 25, 2026",
+  "items": [
+    {"name": "Milk", "section": "dairy"},
+    {"name": "Eggs", "section": "dairy"},
+    {"name": "Cream cheese", "section": "dairy"},
+
+    {"name": "Raisins", "section": "pantry"},
+
+    {"name": "Liquid Death", "section": "other"}
+  ]
+}
